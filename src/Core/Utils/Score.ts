@@ -18,16 +18,16 @@ export function calculateAccuracy(scoreInfo: IScoreInfo): number {
 
   switch (scoreInfo.rulesetId) {
     case 0:
-      return (c50 / 6 + c100 / 3 + c300) / total;
+      return Math.max(0, (c50 / 6 + c100 / 3 + c300) / total);
 
     case 1:
-      return (c100 / 2 + c300) / total;
+      return Math.max(0, (c100 / 2 + c300) / total);
 
     case 2:
-      return (c50 + c100 + c300) / total;
+      return Math.max(0, (c50 + c100 + c300) / total);
 
     case 3:
-      return (c50 / 6 + c100 / 3 + katu / 1.5 + (c300 + geki)) / total;
+      return Math.max(0, (c50 / 6 + c100 / 3 + katu / 1.5 + (c300 + geki)) / total);
   }
 
   return 1;
