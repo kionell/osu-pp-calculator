@@ -24,7 +24,7 @@ export async function parseBeatmap(options: IBeatmapParsingOptions): Promise<IBe
   }
 
   if (typeof fileURL === 'string') {
-    return parseCustomBeatmap(fileURL, hash);
+    return parseCustomBeatmap(fileURL, hash, savePath);
   }
 
   throw new Error('No beatmap ID or beatmap URL was specified!');
@@ -38,17 +38,17 @@ export async function parseBeatmap(options: IBeatmapParsingOptions): Promise<IBe
  * @returns Parsed beatmap.
  */
 async function parseBeatmapById(id: string | number, hash?: string, savePath?: string): Promise<IBeatmap> {
-  const result = await downloadFile(savePath ?? '', {
+  const result = await downloadFile(savePath, {
     save: typeof savePath === 'string',
     id,
   });
 
-  if (!result.isSuccessful) {
+  if (!result.isSuccessful || (!savePath && !result.buffer)) {
     throw new Error(`${result.fileName} failed to download!`);
   }
 
   const data = savePath
-    ? readFileSync(result.filePath)
+    ? readFileSync(result.filePath as string)
     : result.buffer as Buffer;
 
   const parsed = parseBeatmapData(data, hash);
@@ -66,16 +66,20 @@ async function parseBeatmapById(id: string | number, hash?: string, savePath?: s
  * @returns Parsed beatmap.
  */
 async function parseCustomBeatmap(url: string, hash?: string, savePath?: string): Promise<IBeatmap> {
-  const result = await downloadFile(savePath ?? '', {
+  const result = await downloadFile(savePath, {
     save: typeof savePath === 'string',
     url,
   });
 
-  if (!result.isSuccessful || !result.buffer) {
+  if (!result.isSuccessful || (!savePath && !result.buffer)) {
     throw new Error('Custom beatmap failed to download!');
   }
 
-  return parseBeatmapData(result.buffer, hash);
+  const data = savePath
+    ? readFileSync(result.filePath as string)
+    : result.buffer as Buffer;
+
+  return parseBeatmapData(data, hash);
 }
 
 /**
