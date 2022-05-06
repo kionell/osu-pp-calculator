@@ -31,7 +31,12 @@ export interface IBeatmapCalculationOptions extends IBeatmapParsingOptions {
   difficulty?: DifficultyAttributes;
 
   /**
-   * List of total scores for osu!mania or list of accuracy for other game modes.
+   * List of accuracy for all game modes except osu!mania.
    */
-  values?: number[];
+  accuracy?: number[];
+
+  /**
+   * List of total scores for osu!mania game mode.
+   */
+  totalScores?: number[];
 }

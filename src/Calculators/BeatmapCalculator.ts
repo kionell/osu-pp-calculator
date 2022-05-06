@@ -37,7 +37,7 @@ export class BeatmapCalculator {
     const combination = ruleset.createModCombination(options.mods);
 
     const beatmap = ruleset.applyToBeatmapWithMods(parsed, combination);
-    const scores = this._simulateScores(beatmap, options.values);
+    const scores = this._simulateScores(beatmap, options);
 
     const difficulty = calculateDifficulty({ beatmap, ruleset });
 
@@ -57,18 +57,42 @@ export class BeatmapCalculator {
   /**
    * Simulates custom scores by accuracy or total score values.
    * @param beatmap IBeatmap object.
-   * @param values Accuracy or total score values.
+   * @param options Beatmap calculation options.
    * @returns Simulated scores.
    */
-  private _simulateScores(beatmap: IBeatmap, values?: number[]): IScoreInfo[] {
-    if (!values) return [];
+  private _simulateScores(beatmap: IBeatmap, options: IBeatmapCalculationOptions): IScoreInfo[] {
+    return beatmap.mode === GameMode.Mania
+      ? this._simulateOtherScores(beatmap, options.accuracy)
+      : this._simulateManiaScores(beatmap, options.totalScores);
+  }
 
-    const isForMania = beatmap.mode === GameMode.Mania;
+  /**
+   * Simulates custom scores by accuracy values.
+   * @param beatmap IBeatmap object.
+   * @param options Accuracy values.
+   * @returns Simulated scores.
+   */
+  private _simulateOtherScores(beatmap: IBeatmap, accuracy?: number[]): IScoreInfo[] {
+    if (!accuracy) return [];
 
-    return values.map((value) => this._scoreSimulator.simulate({
+    return accuracy.map((accuracy) => this._scoreSimulator.simulate({
       beatmap,
-      accuracy: isForMania ? 1 : value,
-      totalScore: isForMania ? value : 0,
+      accuracy,
+    }));
+  }
+
+  /**
+   * Simulates custom osu!mania scores by total score values.
+   * @param beatmap IBeatmap object.
+   * @param totalScores Total score values.
+   * @returns Simulated osu!mania scores.
+   */
+  private _simulateManiaScores(beatmap: IBeatmap, totalScores?: number[]): IScoreInfo[] {
+    if (!totalScores) return [];
+
+    return totalScores.map((totalScore) => this._scoreSimulator.simulate({
+      beatmap,
+      totalScore,
     }));
   }
 }
