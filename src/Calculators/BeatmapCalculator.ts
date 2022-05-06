@@ -1,6 +1,5 @@
 import {
   type IBeatmap,
-  type IRuleset,
   type IScoreInfo,
 } from 'osu-classes';
 
@@ -33,8 +32,11 @@ export class BeatmapCalculator {
    * @returns Calculated beatmap.
    */
   async calculate(options: IBeatmapCalculationOptions): Promise<ICalculatedBeatmap> {
-    const ruleset = this._getRuleset(options);
-    const beatmap = await this._getBeatmap(ruleset, options);
+    const parsed = options.beatmap ?? await parseBeatmap(options);
+    const ruleset = options.ruleset ?? getRulesetById(options.rulesetId ?? parsed.mode);
+    const combination = ruleset.createModCombination(options.mods);
+
+    const beatmap = ruleset.applyToBeatmapWithMods(parsed, combination);
     const scores = this._simulateScores(beatmap, options.values);
 
     const difficulty = calculateDifficulty({ beatmap, ruleset });
@@ -68,29 +70,5 @@ export class BeatmapCalculator {
       accuracy: isForMania ? 1 : value,
       totalScore: isForMania ? value : 0,
     }));
-  }
-
-  /**
-   * Tries to get ruleset instance from beatmap calculation options.
-   * @param options Beatmap calculation options.
-   * @returns Ruleset instance.
-   */
-  private _getRuleset({ ruleset, rulesetId }: IBeatmapCalculationOptions): IRuleset {
-    return ruleset ?? getRulesetById(rulesetId);
-  }
-
-  /**
-   * Tries to get parsed beatmap instance from beatmap calculation options.
-   * @param ruleset Ruleset instance.
-   * @param options Beatmap calculation options.
-   * @returns Parsed beatmap instance.
-   */
-  private async _getBeatmap(ruleset: IRuleset, options: IBeatmapCalculationOptions): Promise<IBeatmap> {
-    if (options.beatmap) return options.beatmap;
-
-    const parsed = await parseBeatmap(options);
-    const combination = ruleset.createModCombination(options.mods);
-
-    return ruleset.applyToBeatmapWithMods(parsed, combination);
   }
 }
