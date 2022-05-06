@@ -62,8 +62,8 @@ export class BeatmapCalculator {
    */
   private _simulateScores(beatmap: IBeatmap, options: IBeatmapCalculationOptions): IScoreInfo[] {
     return beatmap.mode === GameMode.Mania
-      ? this._simulateOtherScores(beatmap, options.accuracy)
-      : this._simulateManiaScores(beatmap, options.totalScores);
+      ? this._simulateManiaScores(beatmap, options.totalScores)
+      : this._simulateOtherScores(beatmap, options.accuracy);
   }
 
   /**
