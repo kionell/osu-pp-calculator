@@ -2,9 +2,16 @@
   "name": "@kionell/osu-pp-calculator",
   "version": "1.0.0",
   "description": "Reimplementation of original osu-tools written in TypeScript",
-  "main": "index.js",
+  "main": "./lib/index.cjs",
+  "module": "./lib/index.mjs",
+  "types": "./lib/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "postinstall": "npm run build",
+    "build": "rollup -c && npm run format",
+    "test": "jest --verbose --passWithNoTests",
+    "fix": "eslint --fix ./src",
+    "format": "eslint --fix ./lib/** --no-ignore",
+    "prepublishOnly": "npm run build && npm run test"
   },
   "author": "Kionell",
   "license": "ISC",
