@@ -14,9 +14,15 @@
     "format": "eslint --fix ./lib/** --no-ignore",
     "prepublishOnly": "npm run build && npm run test"
   },
+  "husky": {
+    "hooks": {
+      "pre-push": "npm run build"
+    }
+  },
   "author": "Kionell",
   "license": "ISC",
   "dependencies": {
+    "husky": "^7.0.4",
     "md5": "^2.3.0",
     "osu-catch-stable": "^2.1.3",
     "osu-classes": "^0.6.2",
