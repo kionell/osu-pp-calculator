@@ -293,9 +293,13 @@ interface IBeatmapCalculationOptions extends IBeatmapParsingOptions {
      */
   difficulty?: DifficultyAttributes;
   /**
-     * List of total scores for osu!mania or list of accuracy for other game modes.
+     * List of accuracy for all game modes except osu!mania.
      */
-  values?: number[];
+  accuracy?: number[];
+  /**
+     * List of total scores for osu!mania game mode.
+     */
+  totalScores?: number[];
 }
 
 /**
@@ -385,10 +389,24 @@ declare class BeatmapCalculator {
   /**
      * Simulates custom scores by accuracy or total score values.
      * @param beatmap IBeatmap object.
-     * @param values Accuracy or total score values.
+     * @param options Beatmap calculation options.
      * @returns Simulated scores.
      */
   private _simulateScores;
+  /**
+     * Simulates custom scores by accuracy values.
+     * @param beatmap IBeatmap object.
+     * @param options Accuracy values.
+     * @returns Simulated scores.
+     */
+  private _simulateOtherScores;
+  /**
+     * Simulates custom osu!mania scores by total score values.
+     * @param beatmap IBeatmap object.
+     * @param totalScores Total score values.
+     * @returns Simulated osu!mania scores.
+     */
+  private _simulateManiaScores;
 }
 
 /**
