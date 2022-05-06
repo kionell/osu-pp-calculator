@@ -34,6 +34,7 @@ export async function parseBeatmap(options: IBeatmapParsingOptions): Promise<IBe
  * Downloads beatmap by its ID and tries to parse it.
  * @param id Beatmap ID.
  * @param hash Original hash to validate downloaded file.
+ * @param savePath The path where this file should be saved.
  * @returns Parsed beatmap.
  */
 async function parseBeatmapById(id: string | number, hash?: string, savePath?: string): Promise<IBeatmap> {
@@ -61,11 +62,12 @@ async function parseBeatmapById(id: string | number, hash?: string, savePath?: s
  * Downloads custom beatmap file and tries to parse it.
  * @param url Custom beatmap file URL.
  * @param hash Original hash to validate downloaded file.
+ * @param savePath The path where this file should be saved.
  * @returns Parsed beatmap.
  */
-async function parseCustomBeatmap(url: string, hash?: string): Promise<IBeatmap> {
-  const result = await downloadFile('', {
-    save: false,
+async function parseCustomBeatmap(url: string, hash?: string, savePath?: string): Promise<IBeatmap> {
+  const result = await downloadFile(savePath ?? '', {
+    save: typeof savePath === 'string',
     url,
   });
 
