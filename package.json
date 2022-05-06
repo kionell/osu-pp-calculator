@@ -2,8 +2,10 @@
   "name": "@kionell/osu-pp-calculator",
   "version": "1.0.2",
   "description": "Reimplementation of original osu-tools written in TypeScript",
-  "main": "./lib/index.cjs",
-  "module": "./lib/index.mjs",
+  "exports": {
+    "import": "./lib/index.mjs",
+    "require": "./lib/index.cjs"
+  },
   "types": "./lib/index.d.ts",
   "scripts": {
     "build": "rollup -c && npm run format",
