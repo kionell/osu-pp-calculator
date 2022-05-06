@@ -389,19 +389,6 @@ declare class BeatmapCalculator {
      * @returns Simulated scores.
      */
   private _simulateScores;
-  /**
-     * Tries to get ruleset instance from beatmap calculation options.
-     * @param options Beatmap calculation options.
-     * @returns Ruleset instance.
-     */
-  private _getRuleset;
-  /**
-     * Tries to get parsed beatmap instance from beatmap calculation options.
-     * @param ruleset Ruleset instance.
-     * @param options Beatmap calculation options.
-     * @returns Parsed beatmap instance.
-     */
-  private _getBeatmap;
 }
 
 /**
@@ -419,20 +406,7 @@ declare class ScoreCalculator {
      * @param options Beatmap calculation options.
      * @returns Ruleset instance.
      */
-  private _getRuleset;
-  /**
-     * Tries to get ruleset instance from beatmap calculation options.
-     * @param options Beatmap calculation options.
-     * @returns Ruleset instance.
-     */
   private _getScore;
-  /**
-     * Tries to get parsed beatmap instance from beatmap calculation options.
-     * @param ruleset Ruleset instance.
-     * @param options Beatmap calculation options.
-     * @returns Parsed beatmap instance.
-     */
-  private _getBeatmap;
 }
 
 export { BeatmapCalculator, GameMode, IBeatmapCalculationOptions, IBeatmapParsingOptions, ICalculatedBeatmap, ICalculatedScore, IDifficultyCalculationOptions, IPerformanceCalculationOptions, IScoreCalculationOptions, IScoreParsingOptions, IScoreSimulationOptions, ScoreCalculator, ScoreSimulator, calculateAccuracy, calculateDifficulty, calculatePerformance, calculateRank, countDroplets, countFruits, countObjects, countTinyDroplets, createBeatmapInfoFromBeatmap, downloadFile, generateHitStatistics, getDifficultyMods, getMaxCombo, getMods, getRulesetById, getRulesetIdByName, getTotalHits, getValidHitStatistics, parseBeatmap, parseScore };
