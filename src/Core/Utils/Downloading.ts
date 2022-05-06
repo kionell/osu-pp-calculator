@@ -11,8 +11,8 @@ import {
  * @param options Download options.
  * @returns Download result.
  */
-export async function downloadFile(path: string, options?: IDownloadEntryOptions): Promise<DownloadResult> {
-  const downloader = new Downloader(path);
+export async function downloadFile(path?: string, options?: IDownloadEntryOptions): Promise<DownloadResult> {
+  const downloader = new Downloader({ rootPath: path });
   const entry = new DownloadEntry(options);
 
   downloader.addSingleEntry(entry);
