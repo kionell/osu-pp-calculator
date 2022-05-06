@@ -1,5 +1,5 @@
 {
-  "name": "osu-pp-calculator",
+  "name": "@kionell/osu-pp-calculator",
   "version": "1.0.0",
   "description": "Reimplementation of original osu-tools written in TypeScript",
   "main": "index.js",
