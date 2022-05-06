@@ -237,7 +237,7 @@ declare function getMods(beatmap: IBeatmap): ModCombination | null;
  * @param options Download options.
  * @returns Download result.
  */
-declare function downloadFile(path: string, options?: IDownloadEntryOptions): Promise<DownloadResult>;
+declare function downloadFile(path?: string, options?: IDownloadEntryOptions): Promise<DownloadResult>;
 
 declare function generateHitStatistics(beatmap: IBeatmap, accuracy?: number, countMiss?: number, count50?: number, count100?: number): Partial<IHitStatistics>;
 declare function getValidHitStatistics(original?: Partial<IHitStatistics>): IHitStatistics;
