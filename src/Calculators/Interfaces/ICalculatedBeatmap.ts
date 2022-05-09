@@ -1,5 +1,5 @@
 import type {
-  IBeatmap,
+  IBeatmapInfo,
   DifficultyAttributes,
   PerformanceAttributes,
 } from 'osu-classes';
@@ -9,9 +9,9 @@ import type {
  */
 export interface ICalculatedBeatmap {
   /**
-   * Parsed beatmap with applied ruleset.
+   * Beatmap information.
    */
-  beatmap: IBeatmap;
+  beatmapInfo: IBeatmapInfo;
 
   /**
    * Difficulty attributes of calculated beatmap.

@@ -11,6 +11,7 @@ import {
 import {
   ScoreSimulator,
   parseBeatmap,
+  createBeatmapInfoFromBeatmap,
   calculateDifficulty,
   calculatePerformance,
   getRulesetById,
@@ -48,7 +49,7 @@ export class BeatmapCalculator {
     }));
 
     return {
-      beatmap,
+      beatmapInfo: createBeatmapInfoFromBeatmap(beatmap),
       difficulty,
       performance,
     };
