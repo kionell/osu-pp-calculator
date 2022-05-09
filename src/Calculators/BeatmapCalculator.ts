@@ -40,7 +40,7 @@ export class BeatmapCalculator {
     const beatmap = ruleset.applyToBeatmapWithMods(parsed, combination);
     const scores = this._simulateScores(beatmap, options);
 
-    const difficulty = calculateDifficulty({ beatmap, ruleset });
+    const difficulty = options.difficulty ?? calculateDifficulty({ beatmap, ruleset });
 
     const performance = scores.map((scoreInfo) => calculatePerformance({
       difficulty,
@@ -48,8 +48,10 @@ export class BeatmapCalculator {
       scoreInfo,
     }));
 
+    const beatmapInfo = options.beatmapInfo ?? createBeatmapInfoFromBeatmap(beatmap);
+
     return {
-      beatmapInfo: createBeatmapInfoFromBeatmap(beatmap),
+      beatmapInfo,
       difficulty,
       performance,
     };
