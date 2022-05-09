@@ -1,4 +1,5 @@
 import {
+  DifficultyAttributes,
   type IScoreInfo,
 } from 'osu-classes';
 
@@ -25,22 +26,15 @@ export class ScoreCalculator {
    */
   async calculate(options: IScoreCalculationOptions): Promise<ICalculatedScore> {
     const scoreInfo = this._getScore(options);
-    const parsed = options.beatmap ?? await parseBeatmap(options);
-    const ruleset = options.ruleset ?? getRulesetById(options.rulesetId ?? parsed.mode);
-    const combination = ruleset.createModCombination(options.mods);
-
-    const beatmap = ruleset.applyToBeatmapWithMods(parsed, combination);
-
-    const difficulty = calculateDifficulty({ beatmap, ruleset });
+    const difficulty = await this._getDifficulty(options);
 
     const performance = calculatePerformance({
+      ruleset: getRulesetById(difficulty.mods.mode),
       difficulty,
-      ruleset,
       scoreInfo,
     });
 
     return {
-      beatmap,
       scoreInfo,
       difficulty,
       performance,
@@ -56,5 +50,20 @@ export class ScoreCalculator {
     if (scoreInfo) return scoreInfo;
 
     throw new Error('Wrong score information!');
+  }
+
+  private async _getDifficulty(options: IScoreCalculationOptions): Promise<DifficultyAttributes> {
+    if (options.difficulty) return options.difficulty;
+
+    const parsed = options.beatmap
+      ?? await parseBeatmap(options);
+
+    const ruleset = options.ruleset
+      ?? getRulesetById(options.rulesetId ?? parsed.mode);
+
+    return calculateDifficulty({
+      beatmap: parsed,
+      ruleset,
+    });
   }
 }
