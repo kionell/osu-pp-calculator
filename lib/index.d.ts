@@ -277,6 +277,10 @@ interface IBeatmapCalculationOptions extends IBeatmapParsingOptions {
      */
   beatmap?: IBeatmap;
   /**
+     * This can be used to replace beatmap information from final result.
+     */
+  beatmapInfo?: IBeatmapInfo;
+  /**
      * Ruleset ID.
      */
   rulesetId?: GameMode;
@@ -307,9 +311,9 @@ interface IBeatmapCalculationOptions extends IBeatmapParsingOptions {
  */
 interface ICalculatedBeatmap {
   /**
-     * Parsed beatmap with applied ruleset.
+     * Beatmap information.
      */
-  beatmap: IBeatmap;
+  beatmapInfo: IBeatmapInfo;
   /**
      * Difficulty attributes of calculated beatmap.
      */
