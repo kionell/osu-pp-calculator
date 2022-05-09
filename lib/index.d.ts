@@ -325,10 +325,6 @@ interface ICalculatedBeatmap {
  */
 interface ICalculatedScore {
   /**
-     * Parsed beatmap with applied ruleset.
-     */
-  beatmap: IBeatmap;
-  /**
      * Score information.
      */
   scoreInfo: IScoreInfo;
@@ -425,6 +421,7 @@ declare class ScoreCalculator {
      * @returns Ruleset instance.
      */
   private _getScore;
+  private _getDifficulty;
 }
 
 export { BeatmapCalculator, GameMode, IBeatmapCalculationOptions, IBeatmapParsingOptions, ICalculatedBeatmap, ICalculatedScore, IDifficultyCalculationOptions, IPerformanceCalculationOptions, IScoreCalculationOptions, IScoreParsingOptions, IScoreSimulationOptions, ScoreCalculator, ScoreSimulator, calculateAccuracy, calculateDifficulty, calculatePerformance, calculateRank, countDroplets, countFruits, countObjects, countTinyDroplets, createBeatmapInfoFromBeatmap, downloadFile, generateHitStatistics, getDifficultyMods, getMaxCombo, getMods, getRulesetById, getRulesetIdByName, getTotalHits, getValidHitStatistics, parseBeatmap, parseScore };
