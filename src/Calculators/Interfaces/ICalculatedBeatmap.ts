@@ -26,5 +26,5 @@ export interface ICalculatedBeatmap {
   /**
    * Beatmap MD5 hash.
    */
-  hash: string;
+  beatmapMD5: string;
 }

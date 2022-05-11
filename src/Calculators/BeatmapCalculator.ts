@@ -33,7 +33,7 @@ export class BeatmapCalculator {
    * @returns Calculated beatmap.
    */
   async calculate(options: IBeatmapCalculationOptions): Promise<ICalculatedBeatmap> {
-    const { data: parsed, hash } = await parseBeatmap(options);
+    const { data: parsed, hash: beatmapMD5 } = await parseBeatmap(options);
 
     const ruleset = options.ruleset ?? getRulesetById(options.rulesetId ?? parsed.mode);
     const combination = ruleset.createModCombination(options.mods);
@@ -55,7 +55,7 @@ export class BeatmapCalculator {
       beatmapInfo,
       difficulty,
       performance,
-      hash,
+      beatmapMD5,
     };
   }
 
