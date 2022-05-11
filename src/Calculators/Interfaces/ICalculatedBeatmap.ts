@@ -22,4 +22,9 @@ export interface ICalculatedBeatmap {
    * List of performance attributes of calculated beatmap.
    */
   performance: PerformanceAttributes[];
+
+  /**
+   * Beatmap MD5 hash.
+   */
+  hash: string;
 }
