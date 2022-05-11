@@ -11,12 +11,22 @@ import type {
 
 import { downloadFile } from './Utils';
 
+type BeatmapParsingResult = {
+  data: IBeatmap;
+  hash: string;
+};
+
+type ScoreParsingResult = {
+  data: IScore;
+  hash: string;
+};
+
 /**
  * Tries to parse beatmap by beatmap ID or custom file URL.
  * @param options Beatmap parsing options.
  * @returns Parsed beatmap.
  */
-export async function parseBeatmap(options: IBeatmapParsingOptions): Promise<IBeatmap> {
+export async function parseBeatmap(options: IBeatmapParsingOptions): Promise<BeatmapParsingResult> {
   const { beatmapId, fileURL, hash, savePath } = options;
 
   if (typeof beatmapId === 'string' || typeof beatmapId === 'number') {
@@ -37,7 +47,7 @@ export async function parseBeatmap(options: IBeatmapParsingOptions): Promise<IBe
  * @param savePath The path where this file should be saved.
  * @returns Parsed beatmap.
  */
-async function parseBeatmapById(id: string | number, hash?: string, savePath?: string): Promise<IBeatmap> {
+async function parseBeatmapById(id: string | number, hash?: string, savePath?: string): Promise<BeatmapParsingResult> {
   const result = await downloadFile(savePath, {
     save: typeof savePath === 'string',
     id,
@@ -53,7 +63,7 @@ async function parseBeatmapById(id: string | number, hash?: string, savePath?: s
 
   const parsed = parseBeatmapData(data, hash);
 
-  parsed.metadata.beatmapId ||= parseInt(id as string);
+  parsed.data.metadata.beatmapId ||= parseInt(id as string);
 
   return parsed;
 }
@@ -65,7 +75,7 @@ async function parseBeatmapById(id: string | number, hash?: string, savePath?: s
  * @param savePath The path where this file should be saved.
  * @returns Parsed beatmap.
  */
-async function parseCustomBeatmap(url: string, hash?: string, savePath?: string): Promise<IBeatmap> {
+async function parseCustomBeatmap(url: string, hash?: string, savePath?: string): Promise<BeatmapParsingResult> {
   const result = await downloadFile(savePath, {
     save: typeof savePath === 'string',
     url,
@@ -88,20 +98,25 @@ async function parseCustomBeatmap(url: string, hash?: string, savePath?: string)
  * @param hash Original hash of the file.
  * @returns Parsed beatmap.
  */
-function parseBeatmapData(data: Buffer, hash?: string): IBeatmap {
+function parseBeatmapData(data: Buffer, hash?: string): BeatmapParsingResult {
   const stringified = data.toString();
 
   /**
    * Compare original hash with hash of a file.
    */
-  if (hash && hash !== md5(stringified)) {
+  const targetHash = md5(stringified);
+
+  if (hash && hash !== targetHash) {
     throw new Error('Wrong beatmap file!');
   }
 
   const decoder = new BeatmapDecoder();
   const parseSb = false;
 
-  return decoder.decodeFromString(stringified, parseSb);
+  return {
+    data: decoder.decodeFromString(stringified, parseSb),
+    hash: targetHash,
+  };
 }
 
 /**
@@ -110,7 +125,7 @@ function parseBeatmapData(data: Buffer, hash?: string): IBeatmap {
  * @param options Score parsing options.
  * @returns Parsed score.
  */
-export async function parseScore(options: IScoreParsingOptions): Promise<IScore> {
+export async function parseScore(options: IScoreParsingOptions): Promise<ScoreParsingResult> {
   const { fileURL, hash } = options;
 
   if (typeof fileURL === 'string') {
@@ -126,7 +141,7 @@ export async function parseScore(options: IScoreParsingOptions): Promise<IScore>
  * @param hash Original hash to validate downloaded file.
  * @returns Parsed score.
  */
-async function parseCustomScore(url: string, hash?: string): Promise<IScore> {
+async function parseCustomScore(url: string, hash?: string): Promise<ScoreParsingResult> {
   const result = await downloadFile('', {
     type: DownloadType.Replay,
     save: false,
@@ -146,16 +161,21 @@ async function parseCustomScore(url: string, hash?: string): Promise<IScore> {
  * @param hash Original hash of the file.
  * @returns Parsed score.
  */
-async function parseScoreData(data: Buffer, hash?: string): Promise<IScore> {
+async function parseScoreData(data: Buffer, hash?: string): Promise<ScoreParsingResult> {
   /**
    * Compare original hash with hash of a file.
    */
-  if (hash && hash !== md5(data)) {
+  const targetHash = md5(data);
+
+  if (hash && hash !== targetHash) {
     throw new Error('Wrong beatmap file!');
   }
 
   const decoder = new ScoreDecoder();
   const parseReplay = false;
 
-  return decoder.decodeFromBuffer(data, parseReplay);
+  return {
+    data: await decoder.decodeFromBuffer(data, parseReplay),
+    hash: targetHash,
+  };
 }
