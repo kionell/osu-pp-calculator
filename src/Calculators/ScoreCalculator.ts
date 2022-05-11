@@ -55,14 +55,13 @@ export class ScoreCalculator {
   private async _getDifficulty(options: IScoreCalculationOptions): Promise<DifficultyAttributes> {
     if (options.difficulty) return options.difficulty;
 
-    const parsed = options.beatmap
-      ?? await parseBeatmap(options);
+    const parsed = await parseBeatmap(options);
 
     const ruleset = options.ruleset
-      ?? getRulesetById(options.rulesetId ?? parsed.mode);
+      ?? getRulesetById(options.rulesetId ?? parsed.data.mode);
 
     return calculateDifficulty({
-      beatmap: parsed,
+      beatmap: parsed.data,
       ruleset,
     });
   }
