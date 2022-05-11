@@ -1,20 +1,10 @@
 import { GameMode, IBeatmapParsingOptions } from '@Core';
-import { DifficultyAttributes, IBeatmap, IBeatmapInfo, IRuleset } from 'osu-classes';
+import { DifficultyAttributes, IRuleset } from 'osu-classes';
 
 /**
  * Options for beatmap calculation.
  */
 export interface IBeatmapCalculationOptions extends IBeatmapParsingOptions {
-  /**
-   * Any beatmap. This can be used to skip beatmap parsing process.
-   */
-  beatmap?: IBeatmap;
-
-  /**
-   * This can be used to replace beatmap information from final result.
-   */
-  beatmapInfo?: IBeatmapInfo;
-
   /**
    * Ruleset ID.
    */
