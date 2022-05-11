@@ -141,19 +141,27 @@ declare enum GameMode {
   Mania = 3
 }
 
+declare type BeatmapParsingResult = {
+  data: IBeatmap;
+  hash: string;
+};
+declare type ScoreParsingResult = {
+  data: IScore;
+  hash: string;
+};
 /**
  * Tries to parse beatmap by beatmap ID or custom file URL.
  * @param options Beatmap parsing options.
  * @returns Parsed beatmap.
  */
-declare function parseBeatmap(options: IBeatmapParsingOptions): Promise<IBeatmap>;
+declare function parseBeatmap(options: IBeatmapParsingOptions): Promise<BeatmapParsingResult>;
 /**
  * Downloads replay file and tries to parse a score from it.
  * Returns null if parsing was not successful.
  * @param options Score parsing options.
  * @returns Parsed score.
  */
-declare function parseScore(options: IScoreParsingOptions): Promise<IScore>;
+declare function parseScore(options: IScoreParsingOptions): Promise<ScoreParsingResult>;
 
 /**
  * A score simulator.
@@ -273,14 +281,6 @@ declare function calculateRank(scoreInfo: IScoreInfo): ScoreRank;
  */
 interface IBeatmapCalculationOptions extends IBeatmapParsingOptions {
   /**
-     * Any beatmap. This can be used to skip beatmap parsing process.
-     */
-  beatmap?: IBeatmap;
-  /**
-     * This can be used to replace beatmap information from final result.
-     */
-  beatmapInfo?: IBeatmapInfo;
-  /**
      * Ruleset ID.
      */
   rulesetId?: GameMode;
@@ -322,6 +322,10 @@ interface ICalculatedBeatmap {
      * List of performance attributes of calculated beatmap.
      */
   performance: PerformanceAttributes[];
+  /**
+     * Beatmap MD5 hash.
+     */
+  beatmapMD5: string;
 }
 
 /**
@@ -346,10 +350,6 @@ interface ICalculatedScore {
  * Options for score calculation.
  */
 interface IScoreCalculationOptions extends IBeatmapParsingOptions {
-  /**
-     * Any beatmap. This can be used to skip beatmap parsing process.
-     */
-  beatmap?: IBeatmap;
   /**
      * Ruleset ID.
      */
