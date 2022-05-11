@@ -6,11 +6,6 @@ import { DifficultyAttributes, IBeatmap, IRuleset, IScoreInfo } from 'osu-classe
  */
 export interface IScoreCalculationOptions extends IBeatmapParsingOptions {
   /**
-   * Any beatmap. This can be used to skip beatmap parsing process.
-   */
-  beatmap?: IBeatmap;
-
-  /**
    * Ruleset ID.
    */
   rulesetId?: GameMode;
