@@ -15,7 +15,7 @@ export async function downloadFile(path?: string, options?: IDownloadEntryOption
   const downloader = new Downloader({ rootPath: path });
   const entry = new DownloadEntry(options);
 
-  downloader.addSingleEntry(entry);
+  await downloader.addSingleEntry(entry);
 
   return downloader.downloadSingle();
 }
