@@ -9,6 +9,7 @@ import {
 } from './Interfaces';
 
 import {
+  ScoreSimulator,
   parseBeatmap,
   calculateDifficulty,
   calculatePerformance,
@@ -19,6 +20,11 @@ import {
  * A score calculator.
  */
 export class ScoreCalculator {
+  /**
+   * Instance of a score simulator.
+   */
+  private _scoreSimulator = new ScoreSimulator();
+
   /**
    * Calculates difficulty and performance of a score.
    * @param options Score calculation options.
@@ -46,10 +52,10 @@ export class ScoreCalculator {
    * @param options Beatmap calculation options.
    * @returns Ruleset instance.
    */
-  private _getScore({ scoreInfo }: IScoreCalculationOptions): IScoreInfo {
-    if (scoreInfo) return scoreInfo;
+  private _getScore(options: IScoreCalculationOptions): IScoreInfo {
+    if (options.scoreInfo) return options.scoreInfo;
 
-    throw new Error('Wrong score information!');
+    return this._scoreSimulator.simulate(options);
   }
 
   private async _getDifficulty(options: IScoreCalculationOptions): Promise<DifficultyAttributes> {
