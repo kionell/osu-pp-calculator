@@ -349,7 +349,7 @@ interface ICalculatedScore {
 /**
  * Options for score calculation.
  */
-interface IScoreCalculationOptions extends IBeatmapParsingOptions {
+interface IScoreCalculationOptions extends IBeatmapParsingOptions, IScoreSimulationOptions {
   /**
      * Ruleset ID.
      */
@@ -413,6 +413,10 @@ declare class BeatmapCalculator {
  * A score calculator.
  */
 declare class ScoreCalculator {
+  /**
+     * Instance of a score simulator.
+     */
+  private _scoreSimulator;
   /**
      * Calculates difficulty and performance of a score.
      * @param options Score calculation options.
