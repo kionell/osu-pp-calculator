@@ -1,9 +1,4 @@
 import {
-  DifficultyAttributes,
-  type IScoreInfo,
-} from 'osu-classes';
-
-import {
   type IScoreCalculationOptions,
   type ICalculatedScore,
 } from './Interfaces';
@@ -31,8 +26,20 @@ export class ScoreCalculator {
    * @returns Calculated score.
    */
   async calculate(options: IScoreCalculationOptions): Promise<ICalculatedScore> {
-    const scoreInfo = this._getScore(options);
-    const difficulty = await this._getDifficulty(options);
+    const { data: parsed } = await parseBeatmap(options);
+
+    const ruleset = options.ruleset
+      ?? getRulesetById(options.rulesetId ?? parsed.mode);
+
+    const combination = ruleset.createModCombination(options.mods);
+
+    const beatmap = ruleset.applyToBeatmapWithMods(parsed, combination);
+
+    const difficulty = options.difficulty
+      ?? calculateDifficulty({ beatmap, ruleset });
+
+    const scoreInfo = options.scoreInfo
+      ?? this._scoreSimulator.simulate({ ...options, beatmap });
 
     const performance = calculatePerformance({
       ruleset: getRulesetById(difficulty.mods.mode),
@@ -45,30 +52,5 @@ export class ScoreCalculator {
       difficulty,
       performance,
     };
-  }
-
-  /**
-   * Tries to get ruleset instance from beatmap calculation options.
-   * @param options Beatmap calculation options.
-   * @returns Ruleset instance.
-   */
-  private _getScore(options: IScoreCalculationOptions): IScoreInfo {
-    if (options.scoreInfo) return options.scoreInfo;
-
-    return this._scoreSimulator.simulate(options);
-  }
-
-  private async _getDifficulty(options: IScoreCalculationOptions): Promise<DifficultyAttributes> {
-    if (options.difficulty) return options.difficulty;
-
-    const parsed = await parseBeatmap(options);
-
-    const ruleset = options.ruleset
-      ?? getRulesetById(options.rulesetId ?? parsed.data.mode);
-
-    return calculateDifficulty({
-      beatmap: parsed.data,
-      ruleset,
-    });
   }
 }
