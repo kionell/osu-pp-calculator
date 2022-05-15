@@ -3,13 +3,13 @@ import {
   type DifficultyAttributes,
   type PerformanceAttributes,
   type ModCombination,
-  type IRuleset,
 } from 'osu-classes';
 
 import type {
   IDifficultyCalculationOptions,
   IPerformanceCalculationOptions,
 } from './Interfaces';
+import { getRulesetById } from './Utils';
 
 /**
  * Calculates difficulty attributes by ID, custom file or IBeatmap object.
@@ -53,11 +53,12 @@ export function calculatePerformance(options: IPerformanceCalculationOptions): P
 
 /**
  * Filters mods from combination to get only difficulty mods.
+ * @param ruleset Target ruleset ID.
  * @param mods Original mods.
- * @param ruleset Target ruleset.
  * @returns Difficulty mods.
  */
-export function getDifficultyMods(ruleset: IRuleset, mods: string | number): ModCombination {
+export function getDifficultyMods(rulesetId: number, mods: string | number): ModCombination {
+  const ruleset = getRulesetById(rulesetId);
   const difficultyCalculator = ruleset.createDifficultyCalculator(new Beatmap());
   const difficultyMods = difficultyCalculator.difficultyMods;
   const combination = ruleset.createModCombination(mods);
