@@ -128,11 +128,11 @@ declare function calculateDifficulty(options: IDifficultyCalculationOptions): Di
 declare function calculatePerformance(options: IPerformanceCalculationOptions): PerformanceAttributes;
 /**
  * Filters mods from combination to get only difficulty mods.
+ * @param ruleset Target ruleset ID.
  * @param mods Original mods.
- * @param ruleset Target ruleset.
  * @returns Difficulty mods.
  */
-declare function getDifficultyMods(ruleset: IRuleset, mods: string | number): ModCombination;
+declare function getDifficultyMods(rulesetId: number, mods: string | number): ModCombination;
 
 declare enum GameMode {
   Osu = 0,
