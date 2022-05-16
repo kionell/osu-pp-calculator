@@ -270,6 +270,12 @@ declare function getRulesetById(rulesetId?: number): IRuleset;
  */
 declare function calculateAccuracy(scoreInfo: IScoreInfo): number;
 /**
+ * Calculates total score of a play.
+ * @param scoreInfo Score information.
+ * @returns Calculated total score.
+ */
+declare function calculateTotalScore(scoreInfo: IScoreInfo): number;
+/**
  * Calculates rank of a score.
  * @param scoreInfo Score information.
  * @returns Calculated score rank.
@@ -425,4 +431,4 @@ declare class ScoreCalculator {
   calculate(options: IScoreCalculationOptions): Promise<ICalculatedScore>;
 }
 
-export { BeatmapCalculator, GameMode, IBeatmapCalculationOptions, IBeatmapParsingOptions, ICalculatedBeatmap, ICalculatedScore, IDifficultyCalculationOptions, IPerformanceCalculationOptions, IScoreCalculationOptions, IScoreParsingOptions, IScoreSimulationOptions, ScoreCalculator, ScoreSimulator, calculateAccuracy, calculateDifficulty, calculatePerformance, calculateRank, countDroplets, countFruits, countObjects, countTinyDroplets, createBeatmapInfoFromBeatmap, downloadFile, generateHitStatistics, getDifficultyMods, getMaxCombo, getMods, getRulesetById, getRulesetIdByName, getTotalHits, getValidHitStatistics, parseBeatmap, parseScore };
+export { BeatmapCalculator, GameMode, IBeatmapCalculationOptions, IBeatmapParsingOptions, ICalculatedBeatmap, ICalculatedScore, IDifficultyCalculationOptions, IPerformanceCalculationOptions, IScoreCalculationOptions, IScoreParsingOptions, IScoreSimulationOptions, ScoreCalculator, ScoreSimulator, calculateAccuracy, calculateDifficulty, calculatePerformance, calculateRank, calculateTotalScore, countDroplets, countFruits, countObjects, countTinyDroplets, createBeatmapInfoFromBeatmap, downloadFile, generateHitStatistics, getDifficultyMods, getMaxCombo, getMods, getRulesetById, getRulesetIdByName, getTotalHits, getValidHitStatistics, parseBeatmap, parseScore };
