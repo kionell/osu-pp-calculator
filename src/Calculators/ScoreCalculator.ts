@@ -26,7 +26,7 @@ export class ScoreCalculator {
    * @returns Calculated score.
    */
   async calculate(options: IScoreCalculationOptions): Promise<ICalculatedScore> {
-    const { data: parsed } = await parseBeatmap(options);
+    const { data: parsed, hash } = await parseBeatmap(options);
 
     const ruleset = options.ruleset
       ?? getRulesetById(options.rulesetId ?? parsed.mode);
@@ -40,6 +40,8 @@ export class ScoreCalculator {
 
     const scoreInfo = options.scoreInfo
       ?? this._scoreSimulator.simulate({ ...options, beatmap });
+
+    scoreInfo.beatmapHashMD5 = hash;
 
     const performance = calculatePerformance({
       ruleset: getRulesetById(difficulty.mods.mode),
