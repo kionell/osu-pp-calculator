@@ -13,7 +13,7 @@ import {
   getValidHitStatistics,
   calculateAccuracy,
   calculateRank,
-  calculateTotalScore,
+  scaleTotalScore,
 } from './Utils';
 
 import { GameMode } from './Enums';
@@ -147,9 +147,12 @@ export class ScoreSimulator {
     scoreInfo.rulesetId = options?.rulesetId ?? GameMode.Osu;
     scoreInfo.passed = scoreInfo.totalHits >= (options?.totalHits ?? 0);
     scoreInfo.perfect = options?.perfect ?? false;
-    scoreInfo.totalScore = options?.totalScore ?? calculateTotalScore(scoreInfo);
+    scoreInfo.totalScore = options?.totalScore
+      ?? scaleTotalScore(1e6, scoreInfo.mods);
 
-    scoreInfo.accuracy = options.accuracy ?? calculateAccuracy(scoreInfo);
+    scoreInfo.accuracy = options.accuracy
+      ?? calculateAccuracy(scoreInfo);
+
     scoreInfo.rank = ScoreRank[calculateRank(scoreInfo)] as keyof typeof ScoreRank;
 
     return scoreInfo;

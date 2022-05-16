@@ -1,4 +1,4 @@
-import { IScoreInfo, ModType, ScoreRank } from 'osu-classes';
+import { IScoreInfo, ModCombination, ModType, ScoreRank } from 'osu-classes';
 import { GameMode } from '../Enums';
 
 /**
@@ -34,18 +34,16 @@ export function calculateAccuracy(scoreInfo: IScoreInfo): number {
 }
 
 /**
- * Calculates total score of a play.
- * @param scoreInfo Score information.
- * @returns Calculated total score.
+ * Scales total score of a play with mod multipliers.
+ * @param totalScore Original total score.
+ * @returns Scaled total score.
  */
-export function calculateTotalScore(scoreInfo: IScoreInfo): number {
-  if (scoreInfo.rulesetId !== GameMode.Mania) return 0;
-
-  const difficultyReduction = scoreInfo.mods?.all
+export function scaleTotalScore(totalScore: number, mods?: ModCombination | null): number {
+  const difficultyReduction = mods?.all
     .filter((m) => m.type === ModType.DifficultyReduction) ?? [];
 
   return difficultyReduction
-    .reduce((score, mod) => score * mod.multiplier, 1);
+    .reduce((score, mod) => score * mod.multiplier, totalScore);
 }
 
 /**
