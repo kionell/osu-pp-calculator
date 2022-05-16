@@ -49,6 +49,8 @@ export class ScoreSimulator {
     const maxCombo = Math.max(0, limitedCombo);
 
     const scoreInfo = this._generateScoreInfo({
+      beatmapId: beatmap.metadata.beatmapId,
+      perfect: maxCombo >= beatmapCombo,
       totalScore: options.totalScore,
       rulesetId: beatmap.mode,
       mods: getMods(options.beatmap),
@@ -96,6 +98,8 @@ export class ScoreSimulator {
     statistics.miss = 0;
 
     return this._generateScoreInfo({
+      beatmapId: beatmap.metadata.beatmapId,
+      perfect: true,
       rulesetId: beatmap.mode,
       maxCombo: getMaxCombo(beatmap),
       mods: scoreInfo.mods ?? getMods(beatmap),
@@ -114,6 +118,8 @@ export class ScoreSimulator {
     const totalHits = getTotalHits(beatmap);
 
     const score = this._generateScoreInfo({
+      beatmapId: beatmap.metadata.beatmapId,
+      perfect: true,
       rulesetId: beatmap.mode,
       maxCombo: getMaxCombo(beatmap),
       mods: getMods(beatmap),
@@ -131,13 +137,17 @@ export class ScoreSimulator {
   private _generateScoreInfo(options: Partial<IScoreInfo>): IScoreInfo {
     const scoreInfo = new ScoreInfo();
 
+    scoreInfo.beatmapId = options?.beatmapId ?? 0;
+    scoreInfo.userId = options?.userId ?? 0;
+    scoreInfo.username = options?.username ?? 'osu!';
     scoreInfo.maxCombo = options?.maxCombo ?? 0;
     scoreInfo.statistics = getValidHitStatistics(options?.statistics);
     scoreInfo.mods = options?.mods?.clone() ?? null;
     scoreInfo.rulesetId = options?.rulesetId ?? GameMode.Osu;
     scoreInfo.passed = scoreInfo.totalHits >= (options?.totalHits ?? 0);
+    scoreInfo.perfect = options?.perfect ?? false;
     scoreInfo.totalScore = options?.totalScore
-      ?? (scoreInfo.rulesetId === GameMode.Mania ? 1e6 : 0);
+    ?? (scoreInfo.rulesetId === GameMode.Mania ? 1e6 : 0);
 
     scoreInfo.accuracy = options.accuracy ?? calculateAccuracy(scoreInfo);
     scoreInfo.rank = ScoreRank[calculateRank(scoreInfo)] as keyof typeof ScoreRank;
