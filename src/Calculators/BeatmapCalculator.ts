@@ -1,4 +1,5 @@
 import {
+  type RulesetBeatmap,
   type IBeatmap,
   type IScoreInfo,
 } from 'osu-classes';
@@ -11,6 +12,7 @@ import {
 import {
   ScoreSimulator,
   parseBeatmap,
+  scaleTotalScore,
   createBeatmapInfoFromBeatmap,
   calculateDifficulty,
   calculatePerformance,
@@ -39,9 +41,9 @@ export class BeatmapCalculator {
     const combination = ruleset.createModCombination(options.mods);
 
     const beatmap = ruleset.applyToBeatmapWithMods(parsed, combination);
-    const scores = this._simulateScores(beatmap, options);
-
     const difficulty = options.difficulty ?? calculateDifficulty({ beatmap, ruleset });
+
+    const scores = this._simulateScores(beatmap, options);
 
     const performance = scores.map((scoreInfo) => calculatePerformance({
       difficulty,
@@ -78,7 +80,10 @@ export class BeatmapCalculator {
    * @returns Simulated scores.
    */
   private _simulateOtherScores(beatmap: IBeatmap, accuracy?: number[]): IScoreInfo[] {
-    if (!accuracy) return [];
+    /**
+     * Default accuracy list for simulation.
+     */
+    accuracy ??= [ 95, 97, 99, 100 ];
 
     return accuracy.map((accuracy) => this._scoreSimulator.simulate({
       beatmap,
@@ -93,7 +98,17 @@ export class BeatmapCalculator {
    * @returns Simulated osu!mania scores.
    */
   private _simulateManiaScores(beatmap: IBeatmap, totalScores?: number[]): IScoreInfo[] {
-    if (!totalScores) return [];
+    const mods = (beatmap as RulesetBeatmap).mods;
+
+    /**
+     * Default total score list for simulation.
+     */
+    totalScores ??= [
+      scaleTotalScore(7e5, mods),
+      scaleTotalScore(8e5, mods),
+      scaleTotalScore(9e5, mods),
+      scaleTotalScore(1e6, mods),
+    ];
 
     return totalScores.map((totalScore) => this._scoreSimulator.simulate({
       beatmap,
