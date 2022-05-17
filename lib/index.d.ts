@@ -246,18 +246,18 @@ declare function getValidHitStatistics(original?: Partial<IHitStatistics>): IHit
 
 /**
  * Filters mods from combination to get only difficulty mods.
- * @param rulesetId Target ruleset ID.
  * @param mods Original mods.
+ * @param rulesetId Target ruleset ID.
  * @returns Difficulty mods.
  */
-declare function getDifficultyMods(rulesetId: number, mods: string | number): ModCombination;
+declare function getDifficultyMods(mods?: string | number, rulesetId?: number): ModCombination;
 /**
  * Converts unknown input to stringified mod combination.
- * @param rulesetId Target ruleset ID.
  * @param mods Original mods.
- * @returns Difficulty mods.
+ * @param rulesetId Target ruleset ID.
+ * @returns Stringified mod combination.
  */
-declare function toCombination(rulesetId: number, mods: string | number): string;
+declare function toCombination(mods?: string | number, rulesetId?: number): string;
 
 /**
  * Converts ruleset name to ruleset ID.
