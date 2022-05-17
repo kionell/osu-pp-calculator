@@ -1,14 +1,15 @@
 import { Beatmap, ModCombination } from 'osu-classes';
+import { GameMode } from '../Enums';
 import { getRulesetById } from './Ruleset';
 
 /**
  * Filters mods from combination to get only difficulty mods.
- * @param rulesetId Target ruleset ID.
  * @param mods Original mods.
+ * @param rulesetId Target ruleset ID.
  * @returns Difficulty mods.
  */
-export function getDifficultyMods(rulesetId: number, mods: string | number): ModCombination {
-  const ruleset = getRulesetById(rulesetId);
+export function getDifficultyMods(mods?: string | number, rulesetId?: number): ModCombination {
+  const ruleset = getRulesetById(rulesetId ?? GameMode.Osu);
   const difficultyCalculator = ruleset.createDifficultyCalculator(new Beatmap());
   const difficultyMods = difficultyCalculator.difficultyMods;
   const combination = ruleset.createModCombination(mods);
@@ -29,12 +30,12 @@ export function getDifficultyMods(rulesetId: number, mods: string | number): Mod
 
 /**
  * Converts unknown input to stringified mod combination.
- * @param rulesetId Target ruleset ID.
  * @param mods Original mods.
- * @returns Difficulty mods.
+ * @param rulesetId Target ruleset ID.
+ * @returns Stringified mod combination.
  */
-export function toCombination(rulesetId: number, mods: string | number): string {
-  const ruleset = getRulesetById(rulesetId);
+export function toCombination(mods?: string | number, rulesetId?: number): string {
+  const ruleset = getRulesetById(rulesetId ?? GameMode.Osu);
   const combination = ruleset.createModCombination(mods);
 
   return combination.toString();
