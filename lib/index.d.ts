@@ -1,4 +1,4 @@
-import { IBeatmap, IRuleset, DifficultyAttributes, IScoreInfo, PerformanceAttributes, ModCombination, IScore, IBeatmapInfo, HitType, IHitStatistics, ScoreRank, IJsonableBeatmapInfo, IJsonableScoreInfo } from 'osu-classes';
+import { IBeatmap, IRuleset, DifficultyAttributes, IScoreInfo, PerformanceAttributes, IScore, IBeatmapInfo, HitType, ModCombination, IHitStatistics, ScoreRank, IJsonableBeatmapInfo, IJsonableScoreInfo } from 'osu-classes';
 import { IDownloadEntryOptions, DownloadResult } from 'osu-downloader';
 
 /**
@@ -126,13 +126,6 @@ declare function calculateDifficulty(options: IDifficultyCalculationOptions): Di
  * @returns Calculated difficulty attributes.
  */
 declare function calculatePerformance(options: IPerformanceCalculationOptions): PerformanceAttributes;
-/**
- * Filters mods from combination to get only difficulty mods.
- * @param ruleset Target ruleset ID.
- * @param mods Original mods.
- * @returns Difficulty mods.
- */
-declare function getDifficultyMods(rulesetId: number, mods: string | number): ModCombination;
 
 declare enum GameMode {
   Osu = 0,
@@ -250,6 +243,21 @@ declare function downloadFile(path?: string, options?: IDownloadEntryOptions): P
 
 declare function generateHitStatistics(beatmap: IBeatmap, accuracy?: number, countMiss?: number, count50?: number, count100?: number): Partial<IHitStatistics>;
 declare function getValidHitStatistics(original?: Partial<IHitStatistics>): IHitStatistics;
+
+/**
+ * Filters mods from combination to get only difficulty mods.
+ * @param rulesetId Target ruleset ID.
+ * @param mods Original mods.
+ * @returns Difficulty mods.
+ */
+declare function getDifficultyMods(rulesetId: number, mods: string | number): ModCombination;
+/**
+ * Converts unknown input to stringified mod combination.
+ * @param rulesetId Target ruleset ID.
+ * @param mods Original mods.
+ * @returns Difficulty mods.
+ */
+declare function toCombination(rulesetId: number, mods: string | number): string;
 
 /**
  * Converts ruleset name to ruleset ID.
@@ -428,4 +436,4 @@ declare class ScoreCalculator {
   calculate(options: IScoreCalculationOptions): Promise<ICalculatedScore>;
 }
 
-export { BeatmapCalculator, GameMode, IBeatmapCalculationOptions, IBeatmapParsingOptions, ICalculatedBeatmap, ICalculatedScore, IDifficultyCalculationOptions, IPerformanceCalculationOptions, IScoreCalculationOptions, IScoreParsingOptions, IScoreSimulationOptions, ScoreCalculator, ScoreSimulator, calculateAccuracy, calculateDifficulty, calculatePerformance, calculateRank, countDroplets, countFruits, countObjects, countTinyDroplets, createBeatmapInfoFromBeatmap, downloadFile, generateHitStatistics, getDifficultyMods, getMaxCombo, getMods, getRulesetById, getRulesetIdByName, getTotalHits, getValidHitStatistics, parseBeatmap, parseScore, scaleTotalScore };
+export { BeatmapCalculator, GameMode, IBeatmapCalculationOptions, IBeatmapParsingOptions, ICalculatedBeatmap, ICalculatedScore, IDifficultyCalculationOptions, IPerformanceCalculationOptions, IScoreCalculationOptions, IScoreParsingOptions, IScoreSimulationOptions, ScoreCalculator, ScoreSimulator, calculateAccuracy, calculateDifficulty, calculatePerformance, calculateRank, countDroplets, countFruits, countObjects, countTinyDroplets, createBeatmapInfoFromBeatmap, downloadFile, generateHitStatistics, getDifficultyMods, getMaxCombo, getMods, getRulesetById, getRulesetIdByName, getTotalHits, getValidHitStatistics, parseBeatmap, parseScore, scaleTotalScore, toCombination };
