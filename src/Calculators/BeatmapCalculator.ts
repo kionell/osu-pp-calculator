@@ -51,13 +51,12 @@ export class BeatmapCalculator {
       scoreInfo,
     }));
 
-    const beatmapInfo = createBeatmapInfoFromBeatmap(beatmap);
+    const beatmapInfo = createBeatmapInfoFromBeatmap(beatmap, beatmapMD5).toJSON();
 
     return {
       beatmapInfo,
       difficulty,
       performance,
-      beatmapMD5,
     };
   }
 

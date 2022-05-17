@@ -18,9 +18,10 @@ import { GameMode } from '../Enums';
 /**
  * Converts beatmap to beatmap information.
  * @param beatmap IBeatmap object.
+ * @param hash Beatmap MD5 hash.
  * @returns Converted beatmap info.
  */
-export function createBeatmapInfoFromBeatmap(beatmap: IBeatmap): IBeatmapInfo {
+export function createBeatmapInfoFromBeatmap(beatmap: IBeatmap, hash?: string): IBeatmapInfo {
   const rulesetBeatmap = beatmap as RulesetBeatmap;
 
   return new BeatmapInfo({
@@ -46,6 +47,7 @@ export function createBeatmapInfoFromBeatmap(beatmap: IBeatmap): IBeatmapInfo {
     mods: rulesetBeatmap.mods ?? null,
     maxCombo: rulesetBeatmap.maxCombo ?? 0,
     isConvert: beatmap.originalMode !== beatmap.mode,
+    md5: hash ?? '',
   });
 }
 

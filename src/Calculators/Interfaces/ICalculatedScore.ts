@@ -1,5 +1,5 @@
 import {
-  IScoreInfo,
+  IJsonableScoreInfo,
   DifficultyAttributes,
   PerformanceAttributes,
 } from 'osu-classes';
@@ -11,7 +11,7 @@ export interface ICalculatedScore {
   /**
    * Score information.
    */
-  scoreInfo: IScoreInfo;
+  scoreInfo: IJsonableScoreInfo;
 
   /**
    * Difficulty attributes of calculated beatmap.

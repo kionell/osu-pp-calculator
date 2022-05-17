@@ -50,7 +50,7 @@ export class ScoreCalculator {
     });
 
     return {
-      scoreInfo,
+      scoreInfo: scoreInfo.toJSON(),
       difficulty,
       performance,
     };

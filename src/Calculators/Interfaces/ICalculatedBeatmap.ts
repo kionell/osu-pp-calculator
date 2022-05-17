@@ -1,5 +1,5 @@
 import type {
-  IBeatmapInfo,
+  IJsonableBeatmapInfo,
   DifficultyAttributes,
   PerformanceAttributes,
 } from 'osu-classes';
@@ -11,7 +11,7 @@ export interface ICalculatedBeatmap {
   /**
    * Beatmap information.
    */
-  beatmapInfo: IBeatmapInfo;
+  beatmapInfo: IJsonableBeatmapInfo;
 
   /**
    * Difficulty attributes of calculated beatmap.
@@ -22,9 +22,4 @@ export interface ICalculatedBeatmap {
    * List of performance attributes of calculated beatmap.
    */
   performance: PerformanceAttributes[];
-
-  /**
-   * Beatmap MD5 hash.
-   */
-  beatmapMD5: string;
 }
