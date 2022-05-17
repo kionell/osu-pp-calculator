@@ -1,4 +1,4 @@
-import { IBeatmap, IRuleset, DifficultyAttributes, IScoreInfo, PerformanceAttributes, ModCombination, IScore, IBeatmapInfo, HitType, IHitStatistics, ScoreRank } from 'osu-classes';
+import { IBeatmap, IRuleset, DifficultyAttributes, IScoreInfo, PerformanceAttributes, ModCombination, IScore, IBeatmapInfo, HitType, IHitStatistics, ScoreRank, IJsonableBeatmapInfo, IJsonableScoreInfo } from 'osu-classes';
 import { IDownloadEntryOptions, DownloadResult } from 'osu-downloader';
 
 /**
@@ -192,9 +192,10 @@ declare class ScoreSimulator {
 /**
  * Converts beatmap to beatmap information.
  * @param beatmap IBeatmap object.
+ * @param hash Beatmap MD5 hash.
  * @returns Converted beatmap info.
  */
-declare function createBeatmapInfoFromBeatmap(beatmap: IBeatmap): IBeatmapInfo;
+declare function createBeatmapInfoFromBeatmap(beatmap: IBeatmap, hash?: string): IBeatmapInfo;
 /**
  * Counts the number of objects of the specific hit type.
  * @param beatmap IBeatmap object.
@@ -319,7 +320,7 @@ interface ICalculatedBeatmap {
   /**
      * Beatmap information.
      */
-  beatmapInfo: IBeatmapInfo;
+  beatmapInfo: IJsonableBeatmapInfo;
   /**
      * Difficulty attributes of calculated beatmap.
      */
@@ -328,10 +329,6 @@ interface ICalculatedBeatmap {
      * List of performance attributes of calculated beatmap.
      */
   performance: PerformanceAttributes[];
-  /**
-     * Beatmap MD5 hash.
-     */
-  beatmapMD5: string;
 }
 
 /**
@@ -341,7 +338,7 @@ interface ICalculatedScore {
   /**
      * Score information.
      */
-  scoreInfo: IScoreInfo;
+  scoreInfo: IJsonableScoreInfo;
   /**
      * Difficulty attributes of calculated beatmap.
      */
