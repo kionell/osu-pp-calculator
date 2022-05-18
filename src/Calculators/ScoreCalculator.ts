@@ -70,14 +70,17 @@ export class ScoreCalculator {
    */
   private _processPrecalculated(options: Required<IScoreCalculationOptions>): ICalculatedScore {
     const ruleset = options.ruleset ?? getRulesetById(options.attributes.rulesetId);
+    const scoreInfo = options.scoreInfo ?? this._scoreSimulator.simulate(options);
     const difficulty = toDifficultyAttributes(options.difficulty, ruleset.id);
 
-    const scoreInfo = options.scoreInfo ?? this._scoreSimulator.simulate(options);
+    if (options.attributes.hash || options.hash) {
+      scoreInfo.beatmapHashMD5 = options.attributes.hash ?? options.hash;
+    }
 
     const performance = calculatePerformance({
-      difficulty,
       ruleset,
       scoreInfo,
+      difficulty,
     });
 
     return {
