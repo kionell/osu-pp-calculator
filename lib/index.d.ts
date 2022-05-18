@@ -368,6 +368,10 @@ interface ICalculatedBeatmap {
      */
   beatmapInfo: IJsonableBeatmapInfo;
   /**
+     * Beatmap missing attributes.
+     */
+  attributes: IBeatmapAttributes;
+  /**
      * Difficulty attributes of calculated beatmap.
      */
   difficulty: DifficultyAttributes;
