@@ -1,5 +1,47 @@
-import { IBeatmap, IRuleset, DifficultyAttributes, IScoreInfo, PerformanceAttributes, IScore, IBeatmapInfo, HitType, ModCombination, IHitStatistics, ScoreRank, IJsonableBeatmapInfo, IJsonableScoreInfo } from 'osu-classes';
+import { IBeatmap, IRuleset, DifficultyAttributes, IScoreInfo, PerformanceAttributes, IScore, IBeatmapInfo, IHitStatistics, ModCombination, ScoreRank, IJsonableBeatmapInfo, IJsonableScoreInfo } from 'osu-classes';
 import { IDownloadEntryOptions, DownloadResult } from 'osu-downloader';
+
+/**
+ * Beatmap attributes that will be used to simulate scores.
+ */
+interface IBeatmapAttributes {
+  /**
+     * Beatmap ID.
+     */
+  beatmapId?: number;
+  /**
+     * Beatmap MD5 hash.
+     */
+  hash?: string;
+  /**
+     * Beatmap ruleset ID.
+     */
+  rulesetId?: number;
+  /**
+     * Mod combination or bitwise.
+     */
+  mods?: string | number;
+  /**
+     * Beatmap total hits.
+     */
+  totalHits?: number;
+  /**
+     * Beatmap max combo.
+     */
+  maxCombo?: number;
+  /**
+     * The number of fruits in osu!catch beatmap.
+     */
+  maxFruits?: number;
+  /**
+     * The number of droplets in osu!catch beatmap.
+     */
+  maxDroplets?: number;
+  /**
+     * The number of tiny droplets in osu!catch beatmap.
+     */
+  maxTinyDroplets?: number;
+}
 
 /**
  * Options for beatmap parsing.
@@ -22,6 +64,24 @@ interface IBeatmapParsingOptions {
      * If wasn't specified then file will not be validated.
      */
   hash?: string;
+}
+
+/**
+ * Raw difficulty attributes with no methods.
+ */
+interface IDifficultyAttributes {
+  /**
+     * The combined star rating of all skill.
+     */
+  starRating: number;
+  /**
+     * The maximum achievable combo.
+     */
+  maxCombo: number;
+  /**
+     * Mod combination or bitwise.
+     */
+  mods: string | number;
 }
 
 interface IDifficultyCalculationOptions {
@@ -81,9 +141,9 @@ interface IScoreParsingOptions {
  */
 interface IScoreSimulationOptions {
   /**
-     * Target beatmap.
+     * Beatmap attributes for score simulation.
      */
-  beatmap: IBeatmap;
+  attributes: IBeatmapAttributes;
   /**
      * Target score misses.
      */
@@ -169,69 +229,32 @@ declare class ScoreSimulator {
   /**
      * Simulates a new score with full combo.
      * @param scoreInfo Original score.
-     * @param beatmap Beatmap of the score.
+     * @param attributes Beatmap attributes of this score.
      * @returns Simulated FC score.
      */
-  simulateFC(scoreInfo: IScoreInfo, beatmap: IBeatmap): IScoreInfo;
+  simulateFC(scoreInfo: IScoreInfo, attributes: IBeatmapAttributes): IScoreInfo;
   /**
      * Simulates a new score with max possible performance.
-     * @param beatmap Beatmap of the score.
+     * @param attributes Beatmap attributes of this score.
      * @returns Simulated SS score.
      */
-  simulateMax(beatmap: IBeatmap): IScoreInfo;
+  simulateMax(attributes: IBeatmapAttributes): IScoreInfo;
   private _generateScoreInfo;
 }
 
 /**
- * Converts beatmap to beatmap information.
+ * Converts IBeatmap object to beatmap information.
  * @param beatmap IBeatmap object.
  * @param hash Beatmap MD5 hash.
  * @returns Converted beatmap info.
  */
-declare function createBeatmapInfoFromBeatmap(beatmap: IBeatmap, hash?: string): IBeatmapInfo;
+declare function createBeatmapInfo(beatmap?: IBeatmap, hash?: string): IBeatmapInfo;
 /**
- * Counts the number of objects of the specific hit type.
+ * Converts IBeatmap object to beatmap attributes.
  * @param beatmap IBeatmap object.
- * @param hitType Hit type to be calculated.
- * @returns Number of objects of this hit type.
+ * @returns Converted beatmap attributes.
  */
-declare function countObjects(beatmap: IBeatmap, hitType: HitType): number;
-/**
- * Counts the number of nested fruits in the beatmap.
- * @param beatmap IBeatmap object.
- * @returns Number of nested fruits.
- */
-declare function countFruits(beatmap: IBeatmap): number;
-/**
- * Counts the number of nested droplets in the beatmap.
- * @param beatmap IBeatmap object.
- * @returns Number of nested droplets.
- */
-declare function countDroplets(beatmap: IBeatmap): number;
-/**
- * Counts the number of nested tiny droplets in the beatmap.
- * @param beatmap IBeatmap object.
- * @returns Number of nested tiny droplets.
- */
-declare function countTinyDroplets(beatmap: IBeatmap): number;
-/**
- * Calculates total hits of a beatmap.
- * @param beatmap IBeatmap object.
- * @returns Total hits of a beatmap or 0.
- */
-declare function getTotalHits(beatmap: IBeatmap): number;
-/**
- * Tries to get max combo of a beatmap.
- * @param beatmap IBeatmap object.
- * @returns Max combo of a beatmap or 0.
- */
-declare function getMaxCombo(beatmap: IBeatmap): number;
-/**
- * Tries to get mod combination from IBeatmap object.
- * @param beatmap IBeatmap object.
- * @returns Mod combination or null.
- */
-declare function getMods(beatmap: IBeatmap): ModCombination | null;
+declare function createBeatmapAttributes(beatmap?: IBeatmap): IBeatmapAttributes;
 
 /**
  * Downloads an osu! file by ID or URL.
@@ -241,7 +264,7 @@ declare function getMods(beatmap: IBeatmap): ModCombination | null;
  */
 declare function downloadFile(path?: string, options?: IDownloadEntryOptions): Promise<DownloadResult>;
 
-declare function generateHitStatistics(beatmap: IBeatmap, accuracy?: number, countMiss?: number, count50?: number, count100?: number): Partial<IHitStatistics>;
+declare function generateHitStatistics(attributes: IBeatmapAttributes, accuracy?: number, countMiss?: number, count50?: number, count100?: number): Partial<IHitStatistics>;
 declare function getValidHitStatistics(original?: Partial<IHitStatistics>): IHitStatistics;
 
 /**
@@ -250,14 +273,14 @@ declare function getValidHitStatistics(original?: Partial<IHitStatistics>): IHit
  * @param rulesetId Target ruleset ID.
  * @returns Difficulty mods.
  */
-declare function getDifficultyMods(mods?: string | number, rulesetId?: number): ModCombination;
+declare function toDifficultyMods(mods?: string | number, rulesetId?: number): ModCombination;
 /**
- * Converts unknown input to stringified mod combination.
+ * Converts unknown input to mod combination.
  * @param mods Original mods.
  * @param rulesetId Target ruleset ID.
- * @returns Stringified mod combination.
+ * @returns Mod combination.
  */
-declare function toCombination(mods?: string | number, rulesetId?: number): string;
+declare function toCombination(mods?: string | number, rulesetId?: number): ModCombination;
 
 /**
  * Converts ruleset name to ruleset ID.
@@ -296,6 +319,14 @@ declare function calculateRank(scoreInfo: IScoreInfo): ScoreRank;
  */
 interface IBeatmapCalculationOptions extends IBeatmapParsingOptions {
   /**
+     * Precalculated beatmap information.
+     */
+  beatmapInfo?: IBeatmapInfo;
+  /**
+     * Beatmap attributes for score simulation.
+     */
+  attributes?: IBeatmapAttributes;
+  /**
      * Ruleset ID.
      */
   rulesetId?: GameMode;
@@ -310,7 +341,7 @@ interface IBeatmapCalculationOptions extends IBeatmapParsingOptions {
   /**
      * Precalculated difficulty attributes.
      */
-  difficulty?: DifficultyAttributes;
+  difficulty?: IDifficultyAttributes;
   /**
      * List of accuracy for all game modes except osu!mania.
      */
@@ -360,7 +391,7 @@ interface ICalculatedScore {
 /**
  * Options for score calculation.
  */
-interface IScoreCalculationOptions extends IBeatmapParsingOptions, Omit<IScoreSimulationOptions, 'beatmap'> {
+interface IScoreCalculationOptions extends IBeatmapParsingOptions, IScoreSimulationOptions {
   /**
      * Ruleset ID.
      */
@@ -376,7 +407,7 @@ interface IScoreCalculationOptions extends IBeatmapParsingOptions, Omit<IScoreSi
   /**
      * Precalculated difficulty attributes.
      */
-  difficulty?: DifficultyAttributes;
+  difficulty?: IDifficultyAttributes;
   /**
      * Target score.
      */
@@ -398,22 +429,34 @@ declare class BeatmapCalculator {
      */
   calculate(options: IBeatmapCalculationOptions): Promise<ICalculatedBeatmap>;
   /**
+     * This is the special case in which all precalculated stuff is present.
+     * @param options Beatmap calculation options.
+     * @returns Calculated beatmap.
+     */
+  private _processPrecalculated;
+  /**
+     * Tests these beatmap calculation options for the possibility of skipping beatmap parsing.
+     * @param options Beatmap calculation options.
+     * @returns If these options enough to skip beatmap parsing.
+     */
+  private _checkPrecalculated;
+  /**
      * Simulates custom scores by accuracy or total score values.
-     * @param beatmap IBeatmap object.
+     * @param attributes Beatmap attributes.
      * @param options Beatmap calculation options.
      * @returns Simulated scores.
      */
   private _simulateScores;
   /**
      * Simulates custom scores by accuracy values.
-     * @param beatmap IBeatmap object.
+     * @param attributes Beatmap attributes.
      * @param options Accuracy values.
      * @returns Simulated scores.
      */
   private _simulateOtherScores;
   /**
      * Simulates custom osu!mania scores by total score values.
-     * @param beatmap IBeatmap object.
+     * @param attributes Beatmap attributes.
      * @param totalScores Total score values.
      * @returns Simulated osu!mania scores.
      */
@@ -434,6 +477,18 @@ declare class ScoreCalculator {
      * @returns Calculated score.
      */
   calculate(options: IScoreCalculationOptions): Promise<ICalculatedScore>;
+  /**
+     * This is the special case in which all precalculated stuff is present.
+     * @param options Score calculation options.
+     * @returns Calculated score.
+     */
+  private _processPrecalculated;
+  /**
+     * Tests these score calculation options for the possibility of skipping beatmap parsing.
+     * @param options Score calculation options.
+     * @returns If these options enough to skip beatmap parsing.
+     */
+  private _checkPrecalculated;
 }
 
-export { BeatmapCalculator, GameMode, IBeatmapCalculationOptions, IBeatmapParsingOptions, ICalculatedBeatmap, ICalculatedScore, IDifficultyCalculationOptions, IPerformanceCalculationOptions, IScoreCalculationOptions, IScoreParsingOptions, IScoreSimulationOptions, ScoreCalculator, ScoreSimulator, calculateAccuracy, calculateDifficulty, calculatePerformance, calculateRank, countDroplets, countFruits, countObjects, countTinyDroplets, createBeatmapInfoFromBeatmap, downloadFile, generateHitStatistics, getDifficultyMods, getMaxCombo, getMods, getRulesetById, getRulesetIdByName, getTotalHits, getValidHitStatistics, parseBeatmap, parseScore, scaleTotalScore, toCombination };
+export { BeatmapCalculator, GameMode, IBeatmapAttributes, IBeatmapCalculationOptions, IBeatmapParsingOptions, ICalculatedBeatmap, ICalculatedScore, IDifficultyAttributes, IDifficultyCalculationOptions, IPerformanceCalculationOptions, IScoreCalculationOptions, IScoreParsingOptions, IScoreSimulationOptions, ScoreCalculator, ScoreSimulator, calculateAccuracy, calculateDifficulty, calculatePerformance, calculateRank, createBeatmapAttributes, createBeatmapInfo, downloadFile, generateHitStatistics, getRulesetById, getRulesetIdByName, getValidHitStatistics, parseBeatmap, parseScore, scaleTotalScore, toCombination, toDifficultyMods };
