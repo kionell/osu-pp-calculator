@@ -4,7 +4,7 @@ import type { GameMode, IBeatmapParsingOptions, IDifficultyAttributes, IScoreSim
 /**
  * Options for score calculation.
  */
-export interface IScoreCalculationOptions extends IBeatmapParsingOptions, IScoreSimulationOptions {
+export interface IScoreCalculationOptions extends IBeatmapParsingOptions, Partial<IScoreSimulationOptions> {
   /**
    * Ruleset ID.
    */
