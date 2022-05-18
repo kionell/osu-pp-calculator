@@ -43,7 +43,8 @@ export function calculatePerformance(options: IPerformanceCalculationOptions): P
     throw new Error('Cannot calculate performance attributes');
   }
 
-  const calculator = ruleset.createPerformanceCalculator(difficulty, scoreInfo);
+  const castedDifficulty = difficulty as DifficultyAttributes;
+  const calculator = ruleset.createPerformanceCalculator(castedDifficulty, scoreInfo);
 
   return calculator.calculateAttributes();
 }

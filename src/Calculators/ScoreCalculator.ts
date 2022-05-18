@@ -9,6 +9,7 @@ import {
   calculateDifficulty,
   calculatePerformance,
   getRulesetById,
+  toDifficultyAttributes,
 } from '@Core';
 
 /**
@@ -26,6 +27,10 @@ export class ScoreCalculator {
    * @returns Calculated score.
    */
   async calculate(options: IScoreCalculationOptions): Promise<ICalculatedScore> {
+    if (this._checkPrecalculated(options)) {
+      return this._processPrecalculated(options);
+    }
+
     const { data: parsed, hash } = await parseBeatmap(options);
 
     const ruleset = options.ruleset
@@ -36,10 +41,10 @@ export class ScoreCalculator {
     const beatmap = ruleset.applyToBeatmapWithMods(parsed, combination);
 
     const difficulty = options.difficulty
-      ?? calculateDifficulty({ beatmap, ruleset });
+      ? toDifficultyAttributes(options.difficulty, ruleset.id)
+      : calculateDifficulty({ beatmap, ruleset });
 
-    const scoreInfo = options.scoreInfo
-      ?? this._scoreSimulator.simulate({ ...options, beatmap });
+    const scoreInfo = options.scoreInfo ?? this._scoreSimulator.simulate(options);
 
     scoreInfo.beatmapHashMD5 = hash;
 
@@ -54,5 +59,40 @@ export class ScoreCalculator {
       difficulty,
       performance,
     };
+  }
+
+  /**
+   * This is the special case in which all precalculated stuff is present.
+   * @param options Score calculation options.
+   * @returns Calculated score.
+   */
+  private _processPrecalculated(options: IScoreCalculationOptions): ICalculatedScore {
+    const ruleset = options.ruleset ?? getRulesetById(options.rulesetId);
+    const difficulty = toDifficultyAttributes(options.difficulty, ruleset.id);
+
+    const scoreInfo = options.scoreInfo ?? this._scoreSimulator.simulate(options);
+
+    const performance = calculatePerformance({
+      difficulty,
+      ruleset,
+      scoreInfo,
+    });
+
+    return {
+      scoreInfo: scoreInfo.toJSON(),
+      difficulty,
+      performance,
+    };
+  }
+
+  /**
+   * Tests these score calculation options for the possibility of skipping beatmap parsing. 
+   * @param options Score calculation options.
+   * @returns If these options enough to skip beatmap parsing.
+   */
+  private _checkPrecalculated(options: IScoreCalculationOptions): boolean {
+    return !!options.attributes
+      && !!(options.ruleset || options.rulesetId)
+      && !!options.difficulty;
   }
 }

@@ -1,10 +1,20 @@
-import { GameMode, IBeatmapParsingOptions } from '@Core';
-import { DifficultyAttributes, IRuleset } from 'osu-classes';
+import type { IBeatmapInfo, IRuleset } from 'osu-classes';
+import type { GameMode, IBeatmapAttributes, IBeatmapParsingOptions, IDifficultyAttributes } from '@Core';
 
 /**
  * Options for beatmap calculation.
  */
 export interface IBeatmapCalculationOptions extends IBeatmapParsingOptions {
+  /**
+   * Precalculated beatmap information.
+   */
+  beatmapInfo?: IBeatmapInfo;
+
+  /**
+   * Beatmap attributes for score simulation.
+   */
+  attributes?: IBeatmapAttributes;
+
   /**
    * Ruleset ID.
    */
@@ -23,7 +33,7 @@ export interface IBeatmapCalculationOptions extends IBeatmapParsingOptions {
   /**
    * Precalculated difficulty attributes.
    */
-  difficulty?: DifficultyAttributes;
+  difficulty?: IDifficultyAttributes;
 
   /**
    * List of accuracy for all game modes except osu!mania.

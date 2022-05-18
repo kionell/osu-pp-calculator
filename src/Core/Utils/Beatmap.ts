@@ -13,51 +13,70 @@ import {
   JuiceTinyDroplet,
 } from 'osu-catch-stable';
 
+import { IBeatmapAttributes } from '../Interfaces';
 import { GameMode } from '../Enums';
 
 /**
- * Converts beatmap to beatmap information.
+ * Converts IBeatmap object to beatmap information.
  * @param beatmap IBeatmap object.
  * @param hash Beatmap MD5 hash.
  * @returns Converted beatmap info.
  */
-export function createBeatmapInfoFromBeatmap(beatmap: IBeatmap, hash?: string): IBeatmapInfo {
-  const rulesetBeatmap = beatmap as RulesetBeatmap;
-
+export function createBeatmapInfo(beatmap?: IBeatmap, hash?: string): IBeatmapInfo {
   return new BeatmapInfo({
-    id: beatmap.metadata.beatmapId,
-    beatmapsetId: beatmap.metadata.beatmapSetId,
-    creator: beatmap.metadata.creator,
-    title: beatmap.metadata.title,
-    artist: beatmap.metadata.artist,
-    version: beatmap.metadata.version,
-    hittable: countObjects(beatmap, HitType.Normal),
-    slidable: countObjects(beatmap, HitType.Slider),
-    spinnable: countObjects(beatmap, HitType.Spinner),
-    holdable: countObjects(beatmap, HitType.Hold),
-    length: beatmap.length / 1000,
-    bpmMin: beatmap.bpmMin,
-    bpmMax: beatmap.bpmMax,
-    bpmMode: beatmap.bpmMode,
-    circleSize: beatmap.difficulty.circleSize,
-    approachRate: beatmap.difficulty.approachRate,
-    overallDifficulty: beatmap.difficulty.overallDifficulty,
-    drainRate: beatmap.difficulty.drainRate,
-    rulesetId: beatmap.mode,
-    mods: rulesetBeatmap.mods ?? null,
-    maxCombo: rulesetBeatmap.maxCombo ?? 0,
-    isConvert: beatmap.originalMode !== beatmap.mode,
+    id: beatmap?.metadata.beatmapId,
+    beatmapsetId: beatmap?.metadata.beatmapSetId,
+    creator: beatmap?.metadata.creator,
+    title: beatmap?.metadata.title,
+    artist: beatmap?.metadata.artist,
+    version: beatmap?.metadata.version,
+    hittable: countObjects(HitType.Normal, beatmap),
+    slidable: countObjects(HitType.Slider, beatmap),
+    spinnable: countObjects(HitType.Spinner, beatmap),
+    holdable: countObjects(HitType.Hold, beatmap),
+    length: (beatmap?.length ?? 0) / 1000,
+    bpmMin: beatmap?.bpmMin,
+    bpmMax: beatmap?.bpmMax,
+    bpmMode: beatmap?.bpmMode,
+    circleSize: beatmap?.difficulty.circleSize,
+    approachRate: beatmap?.difficulty.approachRate,
+    overallDifficulty: beatmap?.difficulty.overallDifficulty,
+    drainRate: beatmap?.difficulty.drainRate,
+    rulesetId: beatmap?.mode,
+    mods: getMods(beatmap),
+    maxCombo: getMaxCombo(beatmap),
+    isConvert: beatmap?.originalMode !== beatmap?.mode,
     md5: hash ?? '',
   });
 }
 
 /**
- * Counts the number of objects of the specific hit type.
+ * Converts IBeatmap object to beatmap attributes.
  * @param beatmap IBeatmap object.
+ * @returns Converted beatmap attributes.
+ */
+export function createBeatmapAttributes(beatmap?: IBeatmap): IBeatmapAttributes {
+  return {
+    beatmapId: beatmap?.metadata.beatmapId,
+    rulesetId: beatmap?.mode,
+    mods: getMods(beatmap)?.toString() ?? 'NM',
+    totalHits: getTotalHits(beatmap),
+    maxCombo: getMaxCombo(beatmap),
+    maxFruits: countFruits(beatmap),
+    maxDroplets: countDroplets(beatmap),
+    maxTinyDroplets: countTinyDroplets(beatmap),
+  };
+}
+
+/**
+ * Counts the number of objects of the specific hit type.
  * @param hitType Hit type to be calculated.
+ * @param beatmap IBeatmap object.
  * @returns Number of objects of this hit type.
  */
-export function countObjects(beatmap: IBeatmap, hitType: HitType): number {
+function countObjects(hitType: HitType, beatmap?: IBeatmap): number {
+  if (!beatmap) return 0;
+
   return beatmap.hitObjects.reduce((sum, obj) => {
     return sum + (obj.hitType & hitType ? 1 : 0);
   }, 0);
@@ -68,8 +87,8 @@ export function countObjects(beatmap: IBeatmap, hitType: HitType): number {
  * @param beatmap IBeatmap object.
  * @returns Number of nested fruits.
  */
-export function countFruits(beatmap: IBeatmap): number {
-  return countNested(beatmap, JuiceFruit);
+function countFruits(beatmap?: IBeatmap): number {
+  return countNested(JuiceFruit, beatmap);
 }
 
 /**
@@ -77,8 +96,8 @@ export function countFruits(beatmap: IBeatmap): number {
  * @param beatmap IBeatmap object.
  * @returns Number of nested droplets.
  */
-export function countDroplets(beatmap: IBeatmap): number {
-  return countNested(beatmap, JuiceDroplet);
+function countDroplets(beatmap?: IBeatmap): number {
+  return countNested(JuiceDroplet, beatmap);
 }
 
 /**
@@ -86,17 +105,17 @@ export function countDroplets(beatmap: IBeatmap): number {
  * @param beatmap IBeatmap object.
  * @returns Number of nested tiny droplets.
  */
-export function countTinyDroplets(beatmap: IBeatmap): number {
-  return countNested(beatmap, JuiceTinyDroplet);
+function countTinyDroplets(beatmap?: IBeatmap): number {
+  return countNested(JuiceTinyDroplet, beatmap);
 }
 
 /**
  * Counts the number of nested objects that are instance of specific class.
- * @param beatmap IBeatmap object.
  * @param Class Class of objects.
+ * @param beatmap IBeatmap object.
  * @returns Number of nested hit objects that are instance of specific class.
  */
-function countNested(beatmap: IBeatmap, Class: new () => any): number {
+function countNested(Class: new () => any, beatmap?: IBeatmap): number {
   const rulesetBeatmap = beatmap as RulesetBeatmap;
 
   return rulesetBeatmap.hitObjects.reduce((sum, obj) => {
@@ -113,41 +132,43 @@ function countNested(beatmap: IBeatmap, Class: new () => any): number {
  * @param beatmap IBeatmap object.
  * @returns Total hits of a beatmap or 0.
  */
-export function getTotalHits(beatmap: IBeatmap): number {
+function getTotalHits(beatmap?: IBeatmap): number {
+  if (!beatmap) return 0;
+
   switch (beatmap.mode) {
     case GameMode.Osu: {
-      const circles = countObjects(beatmap, HitType.Normal);
-      const sliders = countObjects(beatmap, HitType.Slider);
-      const spinners = countObjects(beatmap, HitType.Spinner);
+      const circles = countObjects(HitType.Normal, beatmap);
+      const sliders = countObjects(HitType.Slider, beatmap);
+      const spinners = countObjects(HitType.Spinner, beatmap);
 
       return circles + sliders + spinners;
     }
 
     case GameMode.Taiko: {
-      return countObjects(beatmap, HitType.Normal);
+      return countObjects(HitType.Normal, beatmap);
     }
 
     case GameMode.Fruits: {
-      const tinyDroplets = countNested(beatmap, JuiceTinyDroplet);
-      const droplets = countNested(beatmap, JuiceDroplet) - tinyDroplets;
-      const fruits = countNested(beatmap, JuiceFruit)
-        + countObjects(beatmap, HitType.Normal);
+      const hittable = countObjects(HitType.Normal, beatmap);
+      const tinyDroplets = countNested(JuiceTinyDroplet, beatmap);
+      const droplets = countNested(JuiceDroplet, beatmap) - tinyDroplets;
+      const fruits = countNested(JuiceFruit, beatmap) + hittable;
 
       return fruits + droplets + tinyDroplets;
     }
 
     case GameMode.Mania: {
-      const notes = countObjects(beatmap, HitType.Normal);
-      const holds = countObjects(beatmap, HitType.Hold);
+      const notes = countObjects(HitType.Normal, beatmap);
+      const holds = countObjects(HitType.Hold, beatmap);
 
       return notes + holds;
     }
   }
 
-  const hittable = countObjects(beatmap, HitType.Normal);
-  const slidable = countObjects(beatmap, HitType.Slider);
-  const spinnable = countObjects(beatmap, HitType.Spinner);
-  const holdable = countObjects(beatmap, HitType.Hold);
+  const hittable = countObjects(HitType.Normal, beatmap);
+  const slidable = countObjects(HitType.Slider, beatmap);
+  const spinnable = countObjects(HitType.Spinner, beatmap);
+  const holdable = countObjects(HitType.Hold, beatmap);
 
   return hittable + slidable + spinnable + holdable;
 }
@@ -157,10 +178,8 @@ export function getTotalHits(beatmap: IBeatmap): number {
  * @param beatmap IBeatmap object.
  * @returns Max combo of a beatmap or 0.
  */
-export function getMaxCombo(beatmap: IBeatmap): number {
-  const rulesetBeatmap = beatmap as RulesetBeatmap;
-
-  return rulesetBeatmap.maxCombo ?? 0;
+function getMaxCombo(beatmap?: IBeatmap): number {
+  return (beatmap as RulesetBeatmap)?.maxCombo ?? 0;
 }
 
 /**
@@ -168,8 +187,6 @@ export function getMaxCombo(beatmap: IBeatmap): number {
  * @param beatmap IBeatmap object.
  * @returns Mod combination or null.
  */
-export function getMods(beatmap: IBeatmap): ModCombination | null {
-  const rulesetBeatmap = beatmap as RulesetBeatmap;
-
-  return rulesetBeatmap.mods ?? null;
+function getMods(beatmap?: IBeatmap): ModCombination | null {
+  return (beatmap as RulesetBeatmap)?.mods ?? null;
 }

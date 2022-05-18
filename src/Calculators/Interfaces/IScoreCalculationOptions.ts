@@ -1,11 +1,10 @@
-import { GameMode, IBeatmapParsingOptions, IScoreSimulationOptions } from '@Core';
-import { DifficultyAttributes, IRuleset, IScoreInfo } from 'osu-classes';
+import type { IRuleset, IScoreInfo } from 'osu-classes';
+import type { GameMode, IBeatmapParsingOptions, IDifficultyAttributes, IScoreSimulationOptions } from '@Core';
 
 /**
  * Options for score calculation.
  */
-export interface IScoreCalculationOptions
-  extends IBeatmapParsingOptions, Omit<IScoreSimulationOptions, 'beatmap'> {
+export interface IScoreCalculationOptions extends IBeatmapParsingOptions, IScoreSimulationOptions {
   /**
    * Ruleset ID.
    */
@@ -24,7 +23,7 @@ export interface IScoreCalculationOptions
   /**
    * Precalculated difficulty attributes.
    */
-  difficulty?: DifficultyAttributes;
+  difficulty?: IDifficultyAttributes;
 
   /**
    * Target score.

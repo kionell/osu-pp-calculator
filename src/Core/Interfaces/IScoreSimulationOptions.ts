@@ -1,13 +1,13 @@
-import { IBeatmap } from 'osu-classes';
+import { IBeatmapAttributes } from './IBeatmapAttributes';
 
 /**
  * Options for score simulation.
  */
 export interface IScoreSimulationOptions {
   /**
-   * Target beatmap.
+   * Beatmap attributes for score simulation.
    */
-  beatmap: IBeatmap;
+  attributes: IBeatmapAttributes;
 
   /**
    * Target score misses.

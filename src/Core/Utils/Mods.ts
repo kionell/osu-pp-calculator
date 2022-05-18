@@ -8,7 +8,7 @@ import { getRulesetById } from './Ruleset';
  * @param rulesetId Target ruleset ID.
  * @returns Difficulty mods.
  */
-export function getDifficultyMods(mods?: string | number, rulesetId?: number): ModCombination {
+export function toDifficultyMods(mods?: string | number, rulesetId?: number): ModCombination {
   const ruleset = getRulesetById(rulesetId ?? GameMode.Osu);
   const difficultyCalculator = ruleset.createDifficultyCalculator(new Beatmap());
   const difficultyMods = difficultyCalculator.difficultyMods;
@@ -29,14 +29,13 @@ export function getDifficultyMods(mods?: string | number, rulesetId?: number): M
 }
 
 /**
- * Converts unknown input to stringified mod combination.
+ * Converts unknown input to mod combination.
  * @param mods Original mods.
  * @param rulesetId Target ruleset ID.
- * @returns Stringified mod combination.
+ * @returns Mod combination.
  */
-export function toCombination(mods?: string | number, rulesetId?: number): string {
+export function toCombination(mods?: string | number, rulesetId?: number): ModCombination {
   const ruleset = getRulesetById(rulesetId ?? GameMode.Osu);
-  const combination = ruleset.createModCombination(mods);
 
-  return combination.toString();
+  return ruleset.createModCombination(mods);
 }

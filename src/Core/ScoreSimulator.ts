@@ -1,5 +1,4 @@
 import {
-  type IBeatmap,
   type IScoreInfo,
   ScoreInfo,
   ScoreRank,
@@ -7,17 +6,15 @@ import {
 
 import {
   generateHitStatistics,
-  getMaxCombo,
-  getMods,
-  getTotalHits,
   getValidHitStatistics,
   calculateAccuracy,
   calculateRank,
   scaleTotalScore,
+  toCombination,
 } from './Utils';
 
 import { GameMode } from './Enums';
-import type { IScoreSimulationOptions } from './Interfaces';
+import type { IBeatmapAttributes, IScoreSimulationOptions } from './Interfaces';
 
 /**
  * A score simulator.
@@ -30,15 +27,15 @@ export class ScoreSimulator {
    */
   simulate(options: IScoreSimulationOptions): IScoreInfo {
     const statistics = generateHitStatistics(
-      options.beatmap,
+      options.attributes,
       options.accuracy,
       options.countMiss,
       options.count50,
       options.count100,
     );
 
-    const beatmap = options.beatmap;
-    const beatmapCombo = getMaxCombo(beatmap);
+    const attributes = options.attributes;
+    const beatmapCombo = attributes.maxCombo ?? 0;
     const percentage = options.percentCombo ?? 100;
     const multiplier = Math.max(0, Math.min(percentage, 100)) / 100;
 
@@ -50,12 +47,12 @@ export class ScoreSimulator {
     const maxCombo = Math.max(0, limitedCombo);
 
     const scoreInfo = this._generateScoreInfo({
-      beatmapId: beatmap.metadata.beatmapId,
-      perfect: maxCombo >= beatmapCombo,
+      beatmapId: attributes.beatmapId,
+      rulesetId: attributes.rulesetId,
+      totalHits: attributes.totalHits,
+      mods: toCombination(attributes.mods, attributes.rulesetId),
       totalScore: options.totalScore,
-      rulesetId: beatmap.mode,
-      mods: getMods(options.beatmap),
-      totalHits: getTotalHits(beatmap),
+      perfect: maxCombo >= beatmapCombo,
       statistics,
       maxCombo,
     });
@@ -66,16 +63,16 @@ export class ScoreSimulator {
   /**
    * Simulates a new score with full combo.
    * @param scoreInfo Original score.
-   * @param beatmap Beatmap of the score.
+   * @param attributes Beatmap attributes of this score.
    * @returns Simulated FC score.
    */
-  simulateFC(scoreInfo: IScoreInfo, beatmap: IBeatmap): IScoreInfo {
+  simulateFC(scoreInfo: IScoreInfo, attributes: IBeatmapAttributes): IScoreInfo {
     if (scoreInfo.rulesetId === GameMode.Mania) {
-      return this.simulateMax(beatmap);
+      return this.simulateMax(attributes);
     }
 
     const statistics = getValidHitStatistics(scoreInfo.statistics);
-    const totalHits = getTotalHits(beatmap);
+    const totalHits = attributes.totalHits ?? 0;
 
     switch (scoreInfo.rulesetId) {
       case GameMode.Fruits:
@@ -99,11 +96,13 @@ export class ScoreSimulator {
     statistics.miss = 0;
 
     return this._generateScoreInfo({
-      beatmapId: beatmap.metadata.beatmapId,
+      mods: scoreInfo.mods
+        ?? toCombination(attributes.mods, attributes.rulesetId),
+
+      beatmapId: attributes.beatmapId,
+      rulesetId: attributes.rulesetId,
+      maxCombo: attributes.maxCombo,
       perfect: true,
-      rulesetId: beatmap.mode,
-      maxCombo: getMaxCombo(beatmap),
-      mods: scoreInfo.mods ?? getMods(beatmap),
       statistics,
       totalHits,
     });
@@ -111,24 +110,24 @@ export class ScoreSimulator {
 
   /**
    * Simulates a new score with max possible performance.
-   * @param beatmap Beatmap of the score.
+   * @param attributes Beatmap attributes of this score.
    * @returns Simulated SS score.
    */
-  simulateMax(beatmap: IBeatmap): IScoreInfo {
-    const statistics = generateHitStatistics(beatmap);
-    const totalHits = getTotalHits(beatmap);
+  simulateMax(attributes: IBeatmapAttributes): IScoreInfo {
+    const statistics = generateHitStatistics(attributes);
+    const totalHits = attributes.totalHits ?? 0;
 
     const score = this._generateScoreInfo({
-      beatmapId: beatmap.metadata.beatmapId,
+      beatmapId: attributes.beatmapId,
+      rulesetId: attributes.rulesetId,
+      maxCombo: attributes.maxCombo,
+      mods: toCombination(attributes.mods, attributes.rulesetId),
       perfect: true,
-      rulesetId: beatmap.mode,
-      maxCombo: getMaxCombo(beatmap),
-      mods: getMods(beatmap),
       statistics,
       totalHits,
     });
 
-    if (beatmap.mode === GameMode.Mania) {
+    if (attributes.rulesetId === GameMode.Mania) {
       score.totalScore = 1e6;
     }
 

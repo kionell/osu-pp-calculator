@@ -1,39 +1,26 @@
-import {
-  IHitStatistics,
-  IBeatmap,
-  HitType,
-} from 'osu-classes';
-
-import {
-  countFruits,
-  countDroplets,
-  countTinyDroplets,
-  countObjects,
-  getMaxCombo,
-  getTotalHits,
-} from './Beatmap';
-
+import type { IHitStatistics } from 'osu-classes';
+import type { IBeatmapAttributes } from '../Interfaces';
 import { GameMode } from '../Enums';
 
-export function generateHitStatistics(beatmap: IBeatmap, accuracy = 1, countMiss = 0, count50?: number, count100?: number): Partial<IHitStatistics> {
+export function generateHitStatistics(attributes: IBeatmapAttributes, accuracy = 1, countMiss = 0, count50?: number, count100?: number): Partial<IHitStatistics> {
   if (accuracy > 1) accuracy /= 100;
 
-  switch (beatmap.mode) {
+  switch (attributes.rulesetId) {
     case GameMode.Taiko:
-      return generateTaikoHitStatistics(beatmap, accuracy, countMiss, count100);
+      return generateTaikoHitStatistics(attributes, accuracy, countMiss, count100);
 
     case GameMode.Fruits:
-      return generateCatchHitStatistics(beatmap, accuracy, countMiss, count50, count100);
+      return generateCatchHitStatistics(attributes, accuracy, countMiss, count50, count100);
 
     case GameMode.Mania:
-      return generateManiaHitStatistics(beatmap);
+      return generateManiaHitStatistics(attributes);
   }
 
-  return generateOsuHitStatistics(beatmap, accuracy, countMiss, count50, count100);
+  return generateOsuHitStatistics(attributes, accuracy, countMiss, count50, count100);
 }
 
-function generateOsuHitStatistics(beatmap: IBeatmap, accuracy = 1, countMiss = 0, count50?: number, count100?: number): Partial<IHitStatistics> {
-  const totalHits = getTotalHits(beatmap);
+function generateOsuHitStatistics(attributes: IBeatmapAttributes, accuracy = 1, countMiss = 0, count50?: number, count100?: number): Partial<IHitStatistics> {
+  const totalHits = attributes.totalHits ?? 0;
 
   countMiss = Math.min(Math.max(0, countMiss), totalHits);
   count50 = count50 ? Math.min(Math.max(0, count50), totalHits - countMiss) : 0;
@@ -55,8 +42,8 @@ function generateOsuHitStatistics(beatmap: IBeatmap, accuracy = 1, countMiss = 0
   };
 }
 
-function generateTaikoHitStatistics(beatmap: IBeatmap, accuracy = 1, countMiss = 0, count100?: number): Partial<IHitStatistics> {
-  const totalHits = getTotalHits(beatmap);
+function generateTaikoHitStatistics(attributes: IBeatmapAttributes, accuracy = 1, countMiss = 0, count100?: number): Partial<IHitStatistics> {
+  const totalHits = attributes.totalHits ?? 0;
 
   countMiss = Math.max(0, Math.min(countMiss, totalHits));
 
@@ -80,12 +67,11 @@ function generateTaikoHitStatistics(beatmap: IBeatmap, accuracy = 1, countMiss =
   };
 }
 
-function generateCatchHitStatistics(beatmap: IBeatmap, accuracy = 1, countMiss = 0, count50?: number, count100?: number): Partial<IHitStatistics> {
-  // TODO: There is no way to get this data without parsing beatmap.
-  const maxTinyDroplets = countTinyDroplets(beatmap);
-  const maxDroplets = countDroplets(beatmap) - maxTinyDroplets;
-  const maxFruits = countFruits(beatmap) + countObjects(beatmap, HitType.Normal);
-  const maxCombo = getMaxCombo(beatmap);
+function generateCatchHitStatistics(attributes: IBeatmapAttributes, accuracy = 1, countMiss = 0, count50?: number, count100?: number): Partial<IHitStatistics> {
+  const maxCombo = attributes.maxCombo ?? 0;
+  const maxFruits = attributes.maxFruits ?? 0;
+  const maxDroplets = attributes.maxDroplets ?? 0;
+  const maxTinyDroplets = attributes.maxTinyDroplets ?? 0;
 
   if (typeof count100 === 'number') {
     countMiss += maxDroplets - count100;
@@ -114,9 +100,9 @@ function generateCatchHitStatistics(beatmap: IBeatmap, accuracy = 1, countMiss =
   };
 }
 
-function generateManiaHitStatistics(beatmap: IBeatmap): Partial<IHitStatistics> {
+function generateManiaHitStatistics(attributes: IBeatmapAttributes): Partial<IHitStatistics> {
   return {
-    perfect: getTotalHits(beatmap),
+    perfect: attributes.totalHits ?? 0,
   };
 }
 
