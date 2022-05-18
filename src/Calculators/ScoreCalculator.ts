@@ -10,6 +10,7 @@ import {
   calculatePerformance,
   getRulesetById,
   toDifficultyAttributes,
+  createBeatmapAttributes,
 } from '@Core';
 
 /**
@@ -37,15 +38,15 @@ export class ScoreCalculator {
       ?? getRulesetById(options.rulesetId ?? parsed.mode);
 
     const combination = ruleset.createModCombination(options.mods);
-
     const beatmap = ruleset.applyToBeatmapWithMods(parsed, combination);
+    const attributes = options.attributes ?? createBeatmapAttributes(beatmap);
 
     const difficulty = options.difficulty
       ? toDifficultyAttributes(options.difficulty, ruleset.id)
       : calculateDifficulty({ beatmap, ruleset });
 
     const scoreInfo = options.scoreInfo
-      ?? this._scoreSimulator.simulate(options as Required<IScoreCalculationOptions>);
+      ?? this._scoreSimulator.simulate({ ...options, attributes });
 
     scoreInfo.beatmapHashMD5 = hash;
 
