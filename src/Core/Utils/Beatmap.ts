@@ -56,15 +56,24 @@ export function createBeatmapInfo(beatmap?: IBeatmap, hash?: string): IBeatmapIn
  * @returns Converted beatmap attributes.
  */
 export function createBeatmapAttributes(beatmap?: IBeatmap): IBeatmapAttributes {
+  const hittable = countObjects(HitType.Normal, beatmap);
+  const maxTinyDroplets = countTinyDroplets(beatmap);
+  const maxDroplets = countDroplets(beatmap) - maxTinyDroplets;
+  const maxFruits = countFruits(beatmap) + hittable;
+
+  const totalHits = beatmap?.mode === GameMode.Fruits
+    ? maxFruits + maxDroplets + maxTinyDroplets
+    : getTotalHits(beatmap);
+
   return {
     beatmapId: beatmap?.metadata.beatmapId,
     rulesetId: beatmap?.mode,
     mods: getMods(beatmap)?.toString() ?? 'NM',
-    totalHits: getTotalHits(beatmap),
     maxCombo: getMaxCombo(beatmap),
-    maxFruits: countFruits(beatmap),
-    maxDroplets: countDroplets(beatmap),
-    maxTinyDroplets: countTinyDroplets(beatmap),
+    totalHits,
+    maxFruits,
+    maxDroplets,
+    maxTinyDroplets,
   };
 }
 
@@ -150,9 +159,9 @@ function getTotalHits(beatmap?: IBeatmap): number {
 
     case GameMode.Fruits: {
       const hittable = countObjects(HitType.Normal, beatmap);
-      const tinyDroplets = countNested(JuiceTinyDroplet, beatmap);
-      const droplets = countNested(JuiceDroplet, beatmap) - tinyDroplets;
-      const fruits = countNested(JuiceFruit, beatmap) + hittable;
+      const tinyDroplets = countTinyDroplets(beatmap);
+      const droplets = countDroplets(beatmap) - tinyDroplets;
+      const fruits = countFruits(beatmap) + hittable;
 
       return fruits + droplets + tinyDroplets;
     }
