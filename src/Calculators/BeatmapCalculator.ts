@@ -63,6 +63,7 @@ export class BeatmapCalculator {
 
     return {
       beatmapInfo: beatmapInfo.toJSON(),
+      attributes,
       difficulty,
       performance,
     };
@@ -92,6 +93,7 @@ export class BeatmapCalculator {
 
     return {
       beatmapInfo: beatmapInfo.toJSON(),
+      attributes,
       difficulty,
       performance,
     };

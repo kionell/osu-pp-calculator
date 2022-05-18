@@ -3,6 +3,7 @@ import type {
   DifficultyAttributes,
   PerformanceAttributes,
 } from 'osu-classes';
+import { IBeatmapAttributes } from '../../Core';
 
 /**
  * Calculated beatmap.
@@ -12,6 +13,11 @@ export interface ICalculatedBeatmap {
    * Beatmap information.
    */
   beatmapInfo: IJsonableBeatmapInfo;
+
+  /**
+   * Beatmap missing attributes.
+   */
+  attributes: IBeatmapAttributes;
 
   /**
    * Difficulty attributes of calculated beatmap.
