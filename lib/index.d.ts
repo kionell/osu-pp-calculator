@@ -257,6 +257,13 @@ declare function createBeatmapInfo(beatmap?: IBeatmap, hash?: string): IBeatmapI
 declare function createBeatmapAttributes(beatmap?: IBeatmap): IBeatmapAttributes;
 
 /**
+ * Converts raw difficulty attributes to real difficulty attributes.
+ * @param difficulty Raw difficulty attributes.
+ * @returns Difficulty attributes instance.
+ */
+declare function toDifficultyAttributes(difficulty?: IDifficultyAttributes, rulesetId?: GameMode): DifficultyAttributes;
+
+/**
  * Downloads an osu! file by ID or URL.
  * @param path Path to the file save location.
  * @param options Download options.
@@ -391,7 +398,7 @@ interface ICalculatedScore {
 /**
  * Options for score calculation.
  */
-interface IScoreCalculationOptions extends IBeatmapParsingOptions, IScoreSimulationOptions {
+interface IScoreCalculationOptions extends IBeatmapParsingOptions, Partial<IScoreSimulationOptions> {
   /**
      * Ruleset ID.
      */
@@ -491,4 +498,4 @@ declare class ScoreCalculator {
   private _checkPrecalculated;
 }
 
-export { BeatmapCalculator, GameMode, IBeatmapAttributes, IBeatmapCalculationOptions, IBeatmapParsingOptions, ICalculatedBeatmap, ICalculatedScore, IDifficultyAttributes, IDifficultyCalculationOptions, IPerformanceCalculationOptions, IScoreCalculationOptions, IScoreParsingOptions, IScoreSimulationOptions, ScoreCalculator, ScoreSimulator, calculateAccuracy, calculateDifficulty, calculatePerformance, calculateRank, createBeatmapAttributes, createBeatmapInfo, downloadFile, generateHitStatistics, getRulesetById, getRulesetIdByName, getValidHitStatistics, parseBeatmap, parseScore, scaleTotalScore, toCombination, toDifficultyMods };
+export { BeatmapCalculator, GameMode, IBeatmapAttributes, IBeatmapCalculationOptions, IBeatmapParsingOptions, ICalculatedBeatmap, ICalculatedScore, IDifficultyAttributes, IDifficultyCalculationOptions, IPerformanceCalculationOptions, IScoreCalculationOptions, IScoreParsingOptions, IScoreSimulationOptions, ScoreCalculator, ScoreSimulator, calculateAccuracy, calculateDifficulty, calculatePerformance, calculateRank, createBeatmapAttributes, createBeatmapInfo, downloadFile, generateHitStatistics, getRulesetById, getRulesetIdByName, getValidHitStatistics, parseBeatmap, parseScore, scaleTotalScore, toCombination, toDifficultyAttributes, toDifficultyMods };
