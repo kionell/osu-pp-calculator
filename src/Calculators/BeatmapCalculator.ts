@@ -79,7 +79,7 @@ export class BeatmapCalculator {
       attributes,
     } = options as Required<IBeatmapCalculationOptions>;
 
-    const ruleset = options.ruleset ?? getRulesetById(options.rulesetId);
+    const ruleset = options.ruleset ?? getRulesetById(attributes.rulesetId);
     const difficulty = toDifficultyAttributes(options.difficulty, ruleset.id);
 
     const scores = this._simulateScores(attributes, options);
@@ -103,10 +103,7 @@ export class BeatmapCalculator {
    * @returns If these options enough to skip beatmap parsing.
    */
   private _checkPrecalculated(options: IBeatmapCalculationOptions): boolean {
-    return !!options.beatmapInfo
-      && !!(options.ruleset || options.rulesetId)
-      && !!options.attributes
-      && !!options.difficulty;
+    return !!options.beatmapInfo && !!options.attributes && !!options.difficulty;
   }
 
   /**

@@ -69,7 +69,7 @@ export class ScoreCalculator {
    * @returns Calculated score.
    */
   private _processPrecalculated(options: Required<IScoreCalculationOptions>): ICalculatedScore {
-    const ruleset = options.ruleset ?? getRulesetById(options.rulesetId);
+    const ruleset = options.ruleset ?? getRulesetById(options.attributes.rulesetId);
     const difficulty = toDifficultyAttributes(options.difficulty, ruleset.id);
 
     const scoreInfo = options.scoreInfo ?? this._scoreSimulator.simulate(options);
@@ -93,8 +93,6 @@ export class ScoreCalculator {
    * @returns If these options enough to skip beatmap parsing.
    */
   private _checkPrecalculated(options: IScoreCalculationOptions): boolean {
-    return !!options.attributes
-      && !!(options.ruleset || options.rulesetId)
-      && !!options.difficulty;
+    return !!options.attributes && !!options.difficulty;
   }
 }
