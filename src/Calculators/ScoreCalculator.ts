@@ -28,7 +28,7 @@ export class ScoreCalculator {
    */
   async calculate(options: IScoreCalculationOptions): Promise<ICalculatedScore> {
     if (this._checkPrecalculated(options)) {
-      return this._processPrecalculated(options);
+      return this._processPrecalculated(options as Required<IScoreCalculationOptions>);
     }
 
     const { data: parsed, hash } = await parseBeatmap(options);
@@ -44,7 +44,8 @@ export class ScoreCalculator {
       ? toDifficultyAttributes(options.difficulty, ruleset.id)
       : calculateDifficulty({ beatmap, ruleset });
 
-    const scoreInfo = options.scoreInfo ?? this._scoreSimulator.simulate(options);
+    const scoreInfo = options.scoreInfo
+      ?? this._scoreSimulator.simulate(options as Required<IScoreCalculationOptions>);
 
     scoreInfo.beatmapHashMD5 = hash;
 
@@ -66,7 +67,7 @@ export class ScoreCalculator {
    * @param options Score calculation options.
    * @returns Calculated score.
    */
-  private _processPrecalculated(options: IScoreCalculationOptions): ICalculatedScore {
+  private _processPrecalculated(options: Required<IScoreCalculationOptions>): ICalculatedScore {
     const ruleset = options.ruleset ?? getRulesetById(options.rulesetId);
     const difficulty = toDifficultyAttributes(options.difficulty, ruleset.id);
 
