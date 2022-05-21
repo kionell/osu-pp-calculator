@@ -9,6 +9,7 @@
   "types": "./lib/index.d.ts",
   "scripts": {
     "build": "rollup -c && npm run format",
+    "push": "npm run build && git add -A && git commit -m \"Update build\" && git push",
     "test": "jest --verbose --passWithNoTests",
     "fix": "eslint --fix ./src",
     "format": "eslint --fix ./lib/** --no-ignore",
