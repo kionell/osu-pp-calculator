@@ -1,5 +1,5 @@
 import { IBeatmap, IRuleset, DifficultyAttributes, IScoreInfo, PerformanceAttributes, IScore, IBeatmapInfo, IHitStatistics, ModCombination, ScoreRank, IJsonableBeatmapInfo, IJsonableScoreInfo } from 'osu-classes';
-import { IDownloadEntryOptions, DownloadResult } from 'osu-downloader';
+import { IDownloadEntryOptions, DownloadResult, DownloadStatus } from 'osu-downloader';
 
 /**
  * Beatmap attributes that will be used to simulate scores.
@@ -270,6 +270,12 @@ declare function toDifficultyAttributes(difficulty?: IDifficultyAttributes, rule
  * @returns Download result.
  */
 declare function downloadFile(path?: string, options?: IDownloadEntryOptions): Promise<DownloadResult>;
+/**
+ * Converts download status to a readable string.
+ * @param status Download status.
+ * @returns Readable download status.
+ */
+declare function formatDownloadStatus(status: DownloadStatus): string;
 
 declare function generateHitStatistics(attributes: IBeatmapAttributes, accuracy?: number, countMiss?: number, count50?: number, count100?: number): Partial<IHitStatistics>;
 declare function getValidHitStatistics(original?: Partial<IHitStatistics>): IHitStatistics;
@@ -502,4 +508,4 @@ declare class ScoreCalculator {
   private _checkPrecalculated;
 }
 
-export { BeatmapCalculator, GameMode, IBeatmapAttributes, IBeatmapCalculationOptions, IBeatmapParsingOptions, ICalculatedBeatmap, ICalculatedScore, IDifficultyAttributes, IDifficultyCalculationOptions, IPerformanceCalculationOptions, IScoreCalculationOptions, IScoreParsingOptions, IScoreSimulationOptions, ScoreCalculator, ScoreSimulator, calculateAccuracy, calculateDifficulty, calculatePerformance, calculateRank, createBeatmapAttributes, createBeatmapInfo, downloadFile, generateHitStatistics, getRulesetById, getRulesetIdByName, getValidHitStatistics, parseBeatmap, parseScore, scaleTotalScore, toCombination, toDifficultyAttributes, toDifficultyMods };
+export { BeatmapCalculator, GameMode, IBeatmapAttributes, IBeatmapCalculationOptions, IBeatmapParsingOptions, ICalculatedBeatmap, ICalculatedScore, IDifficultyAttributes, IDifficultyCalculationOptions, IPerformanceCalculationOptions, IScoreCalculationOptions, IScoreParsingOptions, IScoreSimulationOptions, ScoreCalculator, ScoreSimulator, calculateAccuracy, calculateDifficulty, calculatePerformance, calculateRank, createBeatmapAttributes, createBeatmapInfo, downloadFile, formatDownloadStatus, generateHitStatistics, getRulesetById, getRulesetIdByName, getValidHitStatistics, parseBeatmap, parseScore, scaleTotalScore, toCombination, toDifficultyAttributes, toDifficultyMods };
