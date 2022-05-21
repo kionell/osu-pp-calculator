@@ -3,6 +3,7 @@ import {
   DownloadEntry,
   DownloadResult,
   IDownloadEntryOptions,
+  DownloadStatus,
 } from 'osu-downloader';
 
 /**
@@ -18,4 +19,31 @@ export async function downloadFile(path?: string, options?: IDownloadEntryOption
   await downloader.addSingleEntry(entry);
 
   return downloader.downloadSingle();
+}
+
+/**
+ * Converts download status to a readable string.
+ * @param status Download status.
+ * @returns Readable download status.
+ */
+export function formatDownloadStatus(status: DownloadStatus): string {
+  switch (status) {
+    case DownloadStatus.FailedToDownload:
+      return 'Not Found';
+
+    case DownloadStatus.FailedToRead:
+      return 'Failed To Read';
+
+    case DownloadStatus.FailedToWrite:
+      return 'Failed To Write';
+
+    case DownloadStatus.FileExists:
+      return 'Already Exists';
+
+    case DownloadStatus.Downloaded:
+      return 'Downloaded Successfuly';
+
+    case DownloadStatus.Written:
+      return 'Written Successfuly';
+  }
 }

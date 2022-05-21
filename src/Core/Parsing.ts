@@ -9,7 +9,7 @@ import type {
   IScoreParsingOptions,
 } from './Interfaces';
 
-import { downloadFile } from './Utils';
+import { downloadFile, formatDownloadStatus } from './Utils';
 
 type BeatmapParsingResult = {
   data: IBeatmap;
@@ -54,7 +54,9 @@ async function parseBeatmapById(id: string | number, hash?: string, savePath?: s
   });
 
   if (!result.isSuccessful || (!savePath && !result.buffer)) {
-    throw new Error(`${result.fileName} failed to download!`);
+    const status = formatDownloadStatus(result.status);
+
+    throw new Error(`Beatmap with ID "${id}" failed to download with status: "${status}"`);
   }
 
   const data = savePath
@@ -82,7 +84,9 @@ async function parseCustomBeatmap(url: string, hash?: string, savePath?: string)
   });
 
   if (!result.isSuccessful || (!savePath && !result.buffer)) {
-    throw new Error('Custom beatmap failed to download!');
+    const status = formatDownloadStatus(result.status);
+
+    throw new Error(`Custom beatmap failed to download from "${url}" with status: ${status}`);
   }
 
   const data = savePath
