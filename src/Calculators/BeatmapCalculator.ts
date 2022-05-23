@@ -1,14 +1,11 @@
-import type { IScoreInfo } from 'osu-classes';
-
-import type {
-  IBeatmapCalculationOptions,
-  ICalculatedBeatmap,
-} from './Interfaces';
+import { IScoreInfo, StrainSkill } from 'osu-classes';
+import { IBeatmapCalculationOptions, ICalculatedBeatmap } from './Interfaces';
 
 import {
   ScoreSimulator,
   parseBeatmap,
   scaleTotalScore,
+  createDifficultyCalculator,
   createBeatmapInfo,
   createBeatmapAttributes,
   calculateDifficulty,
@@ -18,6 +15,8 @@ import {
   IBeatmapAttributes,
   toCombination,
   toDifficultyAttributes,
+  IBeatmapSkill,
+  IExtendedDifficultyCalculator,
 } from '@Core';
 
 /**
@@ -49,9 +48,13 @@ export class BeatmapCalculator {
     const beatmapInfo = options.beatmapInfo ?? createBeatmapInfo(beatmap, beatmapMD5);
     const attributes = options.attributes ?? createBeatmapAttributes(beatmap);
 
-    const difficulty = options.difficulty
+    const calculator = createDifficultyCalculator(beatmap, ruleset);
+
+    const difficulty = options.difficulty && !options.strains
       ? toDifficultyAttributes(options.difficulty, ruleset.id)
-      : calculateDifficulty({ beatmap, ruleset });
+      : calculateDifficulty({ beatmap, ruleset, calculator });
+
+    const skills = options.strains ? this._getSkillsOutput(calculator) : null;
 
     const scores = this._simulateScores(attributes, options);
 
@@ -64,6 +67,7 @@ export class BeatmapCalculator {
     return {
       beatmapInfo: beatmapInfo.toJSON(),
       attributes,
+      skills,
       difficulty,
       performance,
     };
@@ -93,6 +97,7 @@ export class BeatmapCalculator {
 
     return {
       beatmapInfo: beatmapInfo.toJSON(),
+      skills: null,
       attributes,
       difficulty,
       performance,
@@ -105,7 +110,27 @@ export class BeatmapCalculator {
    * @returns If these options enough to skip beatmap parsing.
    */
   private _checkPrecalculated(options: IBeatmapCalculationOptions): boolean {
-    return !!options.beatmapInfo && !!options.attributes && !!options.difficulty;
+    return !!options.beatmapInfo
+      && !!options.attributes
+      && !!options.difficulty
+      && !options.strains;
+  }
+
+  /**
+   * Transforms skill data to get strain peaks.
+   * @param calculator Extended difficulty calculator.
+   * @returns Skill output data.
+   */
+  private _getSkillsOutput(calculator: IExtendedDifficultyCalculator): IBeatmapSkill[] {
+    const skills = calculator.getSkills();
+    const strainSkills = skills.filter((s) => s instanceof StrainSkill) as StrainSkill[];
+
+    return strainSkills.map((skill) => {
+      return {
+        title: skill.constructor.name,
+        strainPeaks: [...skill.getCurrentStrainPeaks()],
+      };
+    });
   }
 
   /**

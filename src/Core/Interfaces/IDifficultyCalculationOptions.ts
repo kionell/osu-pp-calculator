@@ -1,4 +1,4 @@
-import { IBeatmap, IRuleset } from 'osu-classes';
+import { DifficultyCalculator, IBeatmap, IRuleset } from 'osu-classes';
 
 export interface IDifficultyCalculationOptions {
   /**
@@ -9,7 +9,12 @@ export interface IDifficultyCalculationOptions {
   /**
    * An instance of any ruleset.
    */
-  ruleset: IRuleset;
+  ruleset?: IRuleset;
+
+  /**
+   * Custom difficulty calculator.
+   */
+  calculator?: DifficultyCalculator;
 
   /**
    * Mod combination or bitwise. Default is NM.

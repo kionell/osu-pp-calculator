@@ -20,7 +20,8 @@ export function calculateDifficulty(options: IDifficultyCalculationOptions): Dif
     throw new Error('Cannot calculate difficulty attributes');
   }
 
-  const calculator = ruleset.createDifficultyCalculator(beatmap);
+  const calculator = options.calculator
+    ?? ruleset.createDifficultyCalculator(beatmap);
 
   if (typeof mods !== 'string' && typeof mods !== 'number') {
     return calculator.calculate();

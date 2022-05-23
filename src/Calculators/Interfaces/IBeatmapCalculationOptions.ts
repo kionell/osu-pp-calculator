@@ -36,6 +36,11 @@ export interface IBeatmapCalculationOptions extends IBeatmapParsingOptions {
   difficulty?: IDifficultyAttributes;
 
   /**
+   * Output strain peaks or not.
+   */
+  strains?: boolean;
+
+  /**
    * List of accuracy for all game modes except osu!mania.
    */
   accuracy?: number[];
