@@ -21,7 +21,7 @@
     "md5": "^2.3.0",
     "osu-catch-stable": "^2.1.4",
     "osu-classes": "^0.7.0",
-    "osu-downloader": "^0.4.2",
+    "osu-downloader": "^0.5.0",
     "osu-mania-stable": "^2.1.5",
     "osu-parsers": "^2.1.2",
     "osu-standard-stable": "^2.2.7",
