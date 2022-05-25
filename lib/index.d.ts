@@ -1,4 +1,4 @@
-import { IBeatmap, IRuleset, DifficultyAttributes, IScoreInfo, PerformanceAttributes, IScore, IBeatmapInfo, IHitStatistics, ModCombination, ScoreRank, IJsonableBeatmapInfo, IJsonableScoreInfo } from 'osu-classes';
+import { IBeatmap, IRuleset, DifficultyCalculator, DifficultyAttributes, IScoreInfo, PerformanceAttributes, Skill, IScore, IBeatmapInfo, IHitStatistics, ModCombination, ScoreRank, IJsonableBeatmapInfo, IJsonableScoreInfo } from 'osu-classes';
 import { IDownloadEntryOptions, DownloadResult } from 'osu-downloader';
 
 /**
@@ -67,6 +67,20 @@ interface IBeatmapParsingOptions {
 }
 
 /**
+ * Beatmap skill data.
+ */
+interface IBeatmapSkill {
+  /**
+     * Skill name.
+     */
+  title: string;
+  /**
+     * Strain peaks of this skill.
+     */
+  strainPeaks: number[];
+}
+
+/**
  * Raw difficulty attributes with no methods.
  */
 interface IDifficultyAttributes {
@@ -92,7 +106,11 @@ interface IDifficultyCalculationOptions {
   /**
      * An instance of any ruleset.
      */
-  ruleset: IRuleset;
+  ruleset?: IRuleset;
+  /**
+     * Custom difficulty calculator.
+     */
+  calculator?: DifficultyCalculator;
   /**
      * Mod combination or bitwise. Default is NM.
      */
@@ -193,6 +211,23 @@ declare enum GameMode {
   Fruits = 2,
   Mania = 3
 }
+
+/**
+ * Difficulty calculator that can return skill data.
+ */
+interface IExtendedDifficultyCalculator extends DifficultyCalculator {
+  /**
+     * Get current skill list.
+     */
+  getSkills(): Skill[];
+}
+/**
+ * Factory of extended difficulty calculators.
+ * @param beatmap IBeatmap object.
+ * @param ruleset Ruleset instance.
+ * @returns Instance of extended difficulty calculator.
+ */
+declare function createDifficultyCalculator(beatmap: IBeatmap, ruleset: IRuleset): IExtendedDifficultyCalculator;
 
 declare type BeatmapParsingResult = {
   data: IBeatmap;
@@ -350,6 +385,10 @@ interface IBeatmapCalculationOptions extends IBeatmapParsingOptions {
      */
   difficulty?: IDifficultyAttributes;
   /**
+     * Output strain peaks or not.
+     */
+  strains?: boolean;
+  /**
      * List of accuracy for all game modes except osu!mania.
      */
   accuracy?: number[];
@@ -371,6 +410,10 @@ interface ICalculatedBeatmap {
      * Beatmap missing attributes.
      */
   attributes: IBeatmapAttributes;
+  /**
+     * Beatmap skill data.
+     */
+  skills: IBeatmapSkill[] | null;
   /**
      * Difficulty attributes of calculated beatmap.
      */
@@ -452,6 +495,12 @@ declare class BeatmapCalculator {
      */
   private _checkPrecalculated;
   /**
+     * Transforms skill data to get strain peaks.
+     * @param calculator Extended difficulty calculator.
+     * @returns Skill output data.
+     */
+  private _getSkillsOutput;
+  /**
      * Simulates custom scores by accuracy or total score values.
      * @param attributes Beatmap attributes.
      * @param options Beatmap calculation options.
@@ -502,4 +551,4 @@ declare class ScoreCalculator {
   private _checkPrecalculated;
 }
 
-export { BeatmapCalculator, GameMode, IBeatmapAttributes, IBeatmapCalculationOptions, IBeatmapParsingOptions, ICalculatedBeatmap, ICalculatedScore, IDifficultyAttributes, IDifficultyCalculationOptions, IPerformanceCalculationOptions, IScoreCalculationOptions, IScoreParsingOptions, IScoreSimulationOptions, ScoreCalculator, ScoreSimulator, calculateAccuracy, calculateDifficulty, calculatePerformance, calculateRank, createBeatmapAttributes, createBeatmapInfo, downloadFile, generateHitStatistics, getRulesetById, getRulesetIdByName, getValidHitStatistics, parseBeatmap, parseScore, scaleTotalScore, toCombination, toDifficultyAttributes, toDifficultyMods };
+export { BeatmapCalculator, GameMode, IBeatmapAttributes, IBeatmapCalculationOptions, IBeatmapParsingOptions, IBeatmapSkill, ICalculatedBeatmap, ICalculatedScore, IDifficultyAttributes, IDifficultyCalculationOptions, IExtendedDifficultyCalculator, IPerformanceCalculationOptions, IScoreCalculationOptions, IScoreParsingOptions, IScoreSimulationOptions, ScoreCalculator, ScoreSimulator, calculateAccuracy, calculateDifficulty, calculatePerformance, calculateRank, createBeatmapAttributes, createBeatmapInfo, createDifficultyCalculator, downloadFile, generateHitStatistics, getRulesetById, getRulesetIdByName, getValidHitStatistics, parseBeatmap, parseScore, scaleTotalScore, toCombination, toDifficultyAttributes, toDifficultyMods };
