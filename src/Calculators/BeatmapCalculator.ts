@@ -137,12 +137,10 @@ export class BeatmapCalculator {
       output[1].title = 'Aim (No Sliders)';
     }
 
-    // Rename two osu!taiko stamina skills and swap them.
+    // Rename two osu!taiko stamina skills.
     if (output[2].title === 'Stamina' && output[3].title === 'Stamina') {
       output[2].title = 'Stamina (Left)';
       output[3].title = 'Stamina (Right)';
-
-      [output[2], output[3]] = [output[3], output[2]];
     }
 
     return output;
