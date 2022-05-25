@@ -133,12 +133,12 @@ export class BeatmapCalculator {
     });
 
     // Rename one of two osu!standard aim skills.
-    if (output[0].title === 'Aim' && output[1].title === 'Aim') {
+    if (output[0]?.title === 'Aim' && output[1]?.title === 'Aim') {
       output[1].title = 'Aim (No Sliders)';
     }
 
     // Rename two osu!taiko stamina skills.
-    if (output[2].title === 'Stamina' && output[3].title === 'Stamina') {
+    if (output[2]?.title === 'Stamina' && output[3]?.title === 'Stamina') {
       output[2].title = 'Stamina (Left)';
       output[3].title = 'Stamina (Right)';
     }
