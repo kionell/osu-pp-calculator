@@ -125,12 +125,27 @@ export class BeatmapCalculator {
     const skills = calculator.getSkills();
     const strainSkills = skills.filter((s) => s instanceof StrainSkill) as StrainSkill[];
 
-    return strainSkills.map((skill) => {
+    const output = strainSkills.map((skill) => {
       return {
         title: skill.constructor.name,
         strainPeaks: [...skill.getCurrentStrainPeaks()],
       };
     });
+
+    // Rename one of two osu!standard aim skills.
+    if (output[0].title === 'Aim' && output[1].title === 'Aim') {
+      output[1].title = 'Aim (No Sliders)';
+    }
+
+    // Rename two osu!taiko stamina skills and swap them.
+    if (output[2].title === 'Stamina' && output[3].title === 'Stamina') {
+      output[2].title = 'Stamina (Left)';
+      output[3].title = 'Stamina (Right)';
+
+      [output[2], output[3]] = [output[3], output[2]];
+    }
+
+    return output;
   }
 
   /**
