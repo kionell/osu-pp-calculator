@@ -309,7 +309,7 @@ declare function toDifficultyAttributes(difficulty?: IDifficultyAttributes, rule
  * @param jsonable Raw score info data.
  * @returns Converted score information.
  */
-declare function toScoreInfo(jsonable?: IScoreInfo | IJsonableScoreInfo): IScoreInfo;
+declare function toScoreInfo(data?: IScoreInfo | IJsonableScoreInfo): IScoreInfo;
 
 /**
  * Downloads an osu! file by ID or URL.
