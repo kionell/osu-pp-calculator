@@ -32,7 +32,7 @@ export class ScoreCalculator {
    */
   async calculate(options: IScoreCalculationOptions): Promise<ICalculatedScore> {
     if (this._checkPrecalculated(options)) {
-      return this._processPrecalculated(options as Required<IScoreCalculationOptions>);
+      return await this._processPrecalculated(options as Required<IScoreCalculationOptions>);
     }
 
     const { data: parsed, hash } = await parseBeatmap(options);
@@ -67,22 +67,18 @@ export class ScoreCalculator {
     };
   }
 
-  private async _processReplayFile(options: IScoreCalculationOptions): Promise<IScoreInfo | null> {
-    if (!options.replayURL) return null;
-
-    const score = await parseScore(options);
-
-    return score.data.info;
-  }
-
   /**
    * This is the special case in which all precalculated stuff is present.
    * @param options Score calculation options.
    * @returns Calculated score.
    */
-  private _processPrecalculated(options: Required<IScoreCalculationOptions>): ICalculatedScore {
+  private async _processPrecalculated(options: Required<IScoreCalculationOptions>): Promise<ICalculatedScore> {
     const ruleset = options.ruleset ?? getRulesetById(options.attributes.rulesetId);
-    const scoreInfo = options.scoreInfo ?? this._scoreSimulator.simulate(options);
+
+    const scoreInfo = options.scoreInfo
+      ?? await this._processReplayFile(options)
+      ?? this._scoreSimulator.simulate(options);
+
     const difficulty = toDifficultyAttributes(options.difficulty, ruleset.id);
 
     if (options.attributes.hash || options.hash) {
@@ -103,11 +99,26 @@ export class ScoreCalculator {
   }
 
   /**
+   * Tries to parse a replay file. 
+   * If exists then returns score information.
+   * Otherwise will return null.
+   * @param options Score calculation options.
+   * @returns Score information or null.
+   */
+  private async _processReplayFile(options: IScoreCalculationOptions): Promise<IScoreInfo | null> {
+    if (!options.replayURL) return null;
+
+    const score = await parseScore(options);
+
+    return score.data.info;
+  }
+
+  /**
    * Tests these score calculation options for the possibility of skipping beatmap parsing. 
    * @param options Score calculation options.
    * @returns If these options enough to skip beatmap parsing.
    */
   private _checkPrecalculated(options: IScoreCalculationOptions): boolean {
-    return !!options.attributes && !!options.difficulty;
+    return !!options.attributes && !!options.difficulty && !!options.scoreInfo;
   }
 }
