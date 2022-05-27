@@ -15,11 +15,36 @@ import {
 
 import { GameMode } from './Enums';
 import type { IBeatmapAttributes, IScoreSimulationOptions } from './Interfaces';
+import { parseScore } from './Parsing';
 
 /**
  * A score simulator.
  */
 export class ScoreSimulator {
+  /**
+   * Simulates a score by a replay file. 
+   * @param replayURL Replay file URL.
+   * @param attributes Beatmap attributes of this score.
+   * @returns Simulated score.
+   */
+  async simulateReplay(replayURL: string, attributes: IBeatmapAttributes): Promise<IScoreInfo> {
+    const score = await parseScore({
+      replayURL,
+    });
+
+    const scoreInfo = score.data.info;
+
+    return this.simulate({
+      accuracy: scoreInfo.accuracy,
+      totalScore: scoreInfo.totalScore,
+      maxCombo: scoreInfo.maxCombo,
+      count100: scoreInfo.count100,
+      count50: scoreInfo.count50,
+      countMiss: scoreInfo.countMiss,
+      attributes,
+    });
+  }
+
   /**
    * Simulates a score by score simulation options.
    * @param options Score simulation options.

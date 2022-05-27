@@ -1,4 +1,4 @@
-import type { IScoreInfo } from 'osu-classes';
+import { IScoreInfo } from 'osu-classes';
 
 import {
   type IScoreCalculationOptions,
@@ -13,7 +13,7 @@ import {
   getRulesetById,
   toDifficultyAttributes,
   createBeatmapAttributes,
-  parseScore,
+  IBeatmapAttributes,
 } from '@Core';
 
 /**
@@ -48,9 +48,7 @@ export class ScoreCalculator {
       ? toDifficultyAttributes(options.difficulty, ruleset.id)
       : calculateDifficulty({ beatmap, ruleset });
 
-    const scoreInfo = options.scoreInfo
-      ?? await this._processReplayFile(options)
-      ?? this._scoreSimulator.simulate({ ...options, attributes });
+    const scoreInfo = await this._getScoreInfo(options, attributes);
 
     scoreInfo.beatmapHashMD5 = hash;
 
@@ -75,9 +73,7 @@ export class ScoreCalculator {
   private async _processPrecalculated(options: Required<IScoreCalculationOptions>): Promise<ICalculatedScore> {
     const ruleset = options.ruleset ?? getRulesetById(options.attributes.rulesetId);
 
-    const scoreInfo = options.scoreInfo
-      ?? await this._processReplayFile(options)
-      ?? this._scoreSimulator.simulate(options);
+    const scoreInfo = await this._getScoreInfo(options, options.attributes);
 
     const difficulty = toDifficultyAttributes(options.difficulty, ruleset.id);
 
@@ -98,19 +94,16 @@ export class ScoreCalculator {
     };
   }
 
-  /**
-   * Tries to parse a replay file. 
-   * If exists then returns score information.
-   * Otherwise will return null.
-   * @param options Score calculation options.
-   * @returns Score information or null.
-   */
-  private async _processReplayFile(options: IScoreCalculationOptions): Promise<IScoreInfo | null> {
-    if (!options.replayURL) return null;
+  private async _getScoreInfo(options: IScoreCalculationOptions, attributes: IBeatmapAttributes): Promise<IScoreInfo> {
+    const { scoreInfo, replayURL } = options;
 
-    const score = await parseScore(options);
+    if (scoreInfo) return scoreInfo;
 
-    return score.data.info;
+    if (replayURL) {
+      return await this._scoreSimulator.simulateReplay(replayURL, attributes);
+    }
+
+    return this._scoreSimulator.simulate({ ...options, attributes });
   }
 
   /**
