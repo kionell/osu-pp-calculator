@@ -1,10 +1,26 @@
 import type { IRuleset, IScoreInfo } from 'osu-classes';
-import type { GameMode, IBeatmapParsingOptions, IDifficultyAttributes, IScoreSimulationOptions } from '@Core';
+
+import type {
+  GameMode,
+  IDifficultyAttributes,
+  IScoreParsingOptions,
+  IScoreSimulationOptions,
+} from '@Core';
 
 /**
  * Options for score calculation.
  */
-export interface IScoreCalculationOptions extends IBeatmapParsingOptions, Partial<IScoreSimulationOptions> {
+export interface IScoreCalculationOptions extends IScoreParsingOptions, Partial<IScoreSimulationOptions> {
+  /**
+   * Beatmap ID of this score.
+   */
+  beatmapId?: number;
+
+  /**
+   * Custom beatmap file URL of this score.
+   */
+  fileURL?: string;
+
   /**
    * Ruleset ID.
    */
