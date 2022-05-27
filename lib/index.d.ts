@@ -52,13 +52,13 @@ interface IBeatmapParsingOptions {
      */
   beatmapId?: string | number;
   /**
-     * Path to the beatmap file save location.
-     */
-  savePath?: string;
-  /**
      * Custom file URL of the target beatmap.
      */
   fileURL?: string;
+  /**
+     * Path to the beatmap file save location.
+     */
+  savePath?: string;
   /**
      * Hash of the target beatmap. Used to validate beatmap files.
      * If wasn't specified then file will not be validated.
@@ -136,13 +136,13 @@ interface IPerformanceCalculationOptions {
 }
 
 /**
- * Options for beatmap parsing.
+ * Options for score parsing.
  */
 interface IScoreParsingOptions {
   /**
-     * Custom file URL of the target replay.
+     * Custom replay file URL.
      */
-  fileURL?: string;
+  replayURL?: string;
   /**
      * Path to the replay file save location.
      */
@@ -445,7 +445,15 @@ interface ICalculatedScore {
 /**
  * Options for score calculation.
  */
-interface IScoreCalculationOptions extends IBeatmapParsingOptions, Partial<IScoreSimulationOptions> {
+interface IScoreCalculationOptions extends IScoreParsingOptions, Partial<IScoreSimulationOptions> {
+  /**
+     * Beatmap ID of this score.
+     */
+  beatmapId?: number;
+  /**
+     * Custom beatmap file URL of this score.
+     */
+  fileURL?: string;
   /**
      * Ruleset ID.
      */
@@ -537,6 +545,7 @@ declare class ScoreCalculator {
      * @returns Calculated score.
      */
   calculate(options: IScoreCalculationOptions): Promise<ICalculatedScore>;
+  private _processReplayFile;
   /**
      * This is the special case in which all precalculated stuff is present.
      * @param options Score calculation options.
