@@ -545,13 +545,20 @@ declare class ScoreCalculator {
      * @returns Calculated score.
      */
   calculate(options: IScoreCalculationOptions): Promise<ICalculatedScore>;
-  private _processReplayFile;
   /**
      * This is the special case in which all precalculated stuff is present.
      * @param options Score calculation options.
      * @returns Calculated score.
      */
   private _processPrecalculated;
+  /**
+     * Tries to parse a replay file.
+     * If exists then returns score information.
+     * Otherwise will return null.
+     * @param options Score calculation options.
+     * @returns Score information or null.
+     */
+  private _processReplayFile;
   /**
      * Tests these score calculation options for the possibility of skipping beatmap parsing.
      * @param options Score calculation options.
