@@ -1,3 +1,5 @@
+import type { IScoreInfo } from 'osu-classes';
+
 import {
   type IScoreCalculationOptions,
   type ICalculatedScore,
@@ -11,6 +13,7 @@ import {
   getRulesetById,
   toDifficultyAttributes,
   createBeatmapAttributes,
+  parseScore,
 } from '@Core';
 
 /**
@@ -46,6 +49,7 @@ export class ScoreCalculator {
       : calculateDifficulty({ beatmap, ruleset });
 
     const scoreInfo = options.scoreInfo
+      ?? await this._processReplayFile(options)
       ?? this._scoreSimulator.simulate({ ...options, attributes });
 
     scoreInfo.beatmapHashMD5 = hash;
@@ -61,6 +65,14 @@ export class ScoreCalculator {
       difficulty,
       performance,
     };
+  }
+
+  private async _processReplayFile(options: IScoreCalculationOptions): Promise<IScoreInfo | null> {
+    if (!options.replayURL) return null;
+
+    const score = await parseScore(options);
+
+    return score.data.info;
   }
 
   /**
