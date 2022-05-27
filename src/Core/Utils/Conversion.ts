@@ -3,9 +3,10 @@ import { StandardDifficultyAttributes } from 'osu-standard-stable';
 import { TaikoDifficultyAttributes } from 'osu-taiko-stable';
 import { CatchDifficultyAttributes } from 'osu-catch-stable';
 import { ManiaDifficultyAttributes } from 'osu-mania-stable';
+import { getRulesetById } from './Ruleset';
+import { toCombination } from './Mods';
 import { IDifficultyAttributes } from '../Interfaces';
 import { GameMode } from '../Enums';
-import { getRulesetById } from './Ruleset';
 
 /**
  * Converts raw difficulty attributes to real difficulty attributes.
@@ -52,7 +53,7 @@ export function toScoreInfo(data?: IScoreInfo | IJsonableScoreInfo): IScoreInfo 
   scoreInfo.date = jsonable?.date;
   scoreInfo.beatmapHashMD5 = jsonable?.beatmapHashMD5;
   scoreInfo.rulesetId = jsonable?.rulesetId;
-  scoreInfo.rawMods = jsonable?.mods;
+  scoreInfo.mods = toCombination(jsonable.mods, jsonable.rulesetId);
   scoreInfo.countGeki = jsonable?.countGeki;
   scoreInfo.count300 = jsonable?.count300;
   scoreInfo.countKatu = jsonable?.countKatu;
