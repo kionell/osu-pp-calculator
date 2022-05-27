@@ -1,11 +1,11 @@
 /**
- * Options for beatmap parsing.
+ * Options for score parsing.
  */
 export interface IScoreParsingOptions {
   /**
-   * Custom file URL of the target replay.
+   * Custom replay file URL.
    */
-  fileURL?: string;
+  replayURL?: string;
 
   /**
    * Path to the replay file save location.
