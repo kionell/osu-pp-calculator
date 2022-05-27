@@ -1,4 +1,4 @@
-import { IBeatmap, IRuleset, DifficultyCalculator, DifficultyAttributes, IScoreInfo, PerformanceAttributes, Skill, IScore, IBeatmapInfo, IHitStatistics, ModCombination, ScoreRank, IJsonableBeatmapInfo, IJsonableScoreInfo } from 'osu-classes';
+import { IBeatmap, IRuleset, DifficultyCalculator, DifficultyAttributes, IScoreInfo, PerformanceAttributes, Skill, IScore, IBeatmapInfo, IJsonableScoreInfo, IHitStatistics, ModCombination, ScoreRank, IJsonableBeatmapInfo } from 'osu-classes';
 import { IDownloadEntryOptions, DownloadResult } from 'osu-downloader';
 
 /**
@@ -304,6 +304,12 @@ declare function createBeatmapAttributes(beatmap?: IBeatmap): IBeatmapAttributes
  * @returns Difficulty attributes instance.
  */
 declare function toDifficultyAttributes(difficulty?: IDifficultyAttributes, rulesetId?: GameMode): DifficultyAttributes;
+/**
+ * Converts score information object to score information instance.
+ * @param jsonable Raw score info data.
+ * @returns Converted score information.
+ */
+declare function toScoreInfo(jsonable?: IScoreInfo | IJsonableScoreInfo): IScoreInfo;
 
 /**
  * Downloads an osu! file by ID or URL.
@@ -370,7 +376,7 @@ interface IBeatmapCalculationOptions extends IBeatmapParsingOptions {
   /**
      * Precalculated beatmap information.
      */
-  beatmapInfo?: IBeatmapInfo;
+  beatmapInfo?: IBeatmapInfo | IJsonableBeatmapInfo;
   /**
      * Beatmap attributes for score simulation.
      */
@@ -480,7 +486,7 @@ interface IScoreCalculationOptions extends IScoreParsingOptions, Partial<IScoreS
   /**
      * Target score.
      */
-  scoreInfo?: IScoreInfo;
+  scoreInfo?: IScoreInfo | IJsonableScoreInfo;
 }
 
 /**
@@ -567,4 +573,4 @@ declare class ScoreCalculator {
   private _checkPrecalculated;
 }
 
-export { BeatmapCalculator, GameMode, IBeatmapAttributes, IBeatmapCalculationOptions, IBeatmapParsingOptions, IBeatmapSkill, ICalculatedBeatmap, ICalculatedScore, IDifficultyAttributes, IDifficultyCalculationOptions, IExtendedDifficultyCalculator, IPerformanceCalculationOptions, IScoreCalculationOptions, IScoreParsingOptions, IScoreSimulationOptions, ScoreCalculator, ScoreSimulator, calculateAccuracy, calculateDifficulty, calculatePerformance, calculateRank, createBeatmapAttributes, createBeatmapInfo, createDifficultyCalculator, downloadFile, generateHitStatistics, getRulesetById, getRulesetIdByName, getValidHitStatistics, parseBeatmap, parseScore, scaleTotalScore, toCombination, toDifficultyAttributes, toDifficultyMods };
+export { BeatmapCalculator, GameMode, IBeatmapAttributes, IBeatmapCalculationOptions, IBeatmapParsingOptions, IBeatmapSkill, ICalculatedBeatmap, ICalculatedScore, IDifficultyAttributes, IDifficultyCalculationOptions, IExtendedDifficultyCalculator, IPerformanceCalculationOptions, IScoreCalculationOptions, IScoreParsingOptions, IScoreSimulationOptions, ScoreCalculator, ScoreSimulator, calculateAccuracy, calculateDifficulty, calculatePerformance, calculateRank, createBeatmapAttributes, createBeatmapInfo, createDifficultyCalculator, downloadFile, generateHitStatistics, getRulesetById, getRulesetIdByName, getValidHitStatistics, parseBeatmap, parseScore, scaleTotalScore, toCombination, toDifficultyAttributes, toDifficultyMods, toScoreInfo };

@@ -1,5 +1,5 @@
 export * from './Beatmap';
-export * from './Difficulty';
+export * from './Conversion';
 export * from './Downloading';
 export * from './HitStatistics';
 export * from './Mods';

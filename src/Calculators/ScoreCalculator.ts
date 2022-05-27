@@ -14,6 +14,7 @@ import {
   toDifficultyAttributes,
   createBeatmapAttributes,
   IBeatmapAttributes,
+  toScoreInfo,
 } from '@Core';
 
 /**
@@ -97,7 +98,7 @@ export class ScoreCalculator {
   private async _getScoreInfo(options: IScoreCalculationOptions, attributes: IBeatmapAttributes): Promise<IScoreInfo> {
     const { scoreInfo, replayURL } = options;
 
-    if (scoreInfo) return scoreInfo;
+    if (scoreInfo) return toScoreInfo(scoreInfo);
 
     if (replayURL) {
       return await this._scoreSimulator.simulateReplay(replayURL, attributes);

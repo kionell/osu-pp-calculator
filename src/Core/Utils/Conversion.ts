@@ -1,4 +1,4 @@
-import { DifficultyAttributes } from 'osu-classes';
+import { DifficultyAttributes, IJsonableScoreInfo, IScoreInfo, ScoreInfo } from 'osu-classes';
 import { StandardDifficultyAttributes } from 'osu-standard-stable';
 import { TaikoDifficultyAttributes } from 'osu-taiko-stable';
 import { CatchDifficultyAttributes } from 'osu-catch-stable';
@@ -24,6 +24,43 @@ export function toDifficultyAttributes(difficulty?: IDifficultyAttributes, rules
   }
 
   return attributes;
+}
+
+/**
+ * Converts score information object to score information instance.
+ * @param jsonable Raw score info data.
+ * @returns Converted score information.
+ */
+export function toScoreInfo(jsonable?: IScoreInfo | IJsonableScoreInfo): IScoreInfo {
+  const scoreInfo = new ScoreInfo();
+
+  if ((jsonable as IScoreInfo)?.rawMods) return scoreInfo;
+
+  const data = jsonable as IJsonableScoreInfo;
+
+  scoreInfo.id = data?.id;
+  scoreInfo.totalScore = data?.totalScore;
+  scoreInfo.pp = data?.pp;
+  scoreInfo.maxCombo = data?.maxCombo;
+  scoreInfo.passed = data?.passed;
+  scoreInfo.perfect = data?.perfect;
+  scoreInfo.rank = data?.rank;
+  scoreInfo.accuracy = data?.accuracy;
+  scoreInfo.username = data?.username;
+  scoreInfo.userId = data?.userId;
+  scoreInfo.beatmapId = data?.beatmapId;
+  scoreInfo.date = data?.date;
+  scoreInfo.beatmapHashMD5 = data?.beatmapHashMD5;
+  scoreInfo.rulesetId = data?.rulesetId;
+  scoreInfo.rawMods = data?.mods;
+  scoreInfo.countGeki = data?.countGeki;
+  scoreInfo.count300 = data?.count300;
+  scoreInfo.countKatu = data?.countKatu;
+  scoreInfo.count100 = data?.count100;
+  scoreInfo.count50 = data?.count50;
+  scoreInfo.countMiss = data?.countMiss;
+
+  return scoreInfo;
 }
 
 function createAttributes(rulesetId?: GameMode, mods?: string | number): DifficultyAttributes {

@@ -1,4 +1,8 @@
-import { DifficultyAttributes, IScoreInfo, IRuleset } from 'osu-classes';
+import {
+  DifficultyAttributes,
+  IRuleset,
+  IScoreInfo,
+} from 'osu-classes';
 
 /**
  * Options for performance calculation of a score.

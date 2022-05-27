@@ -65,7 +65,7 @@ export class BeatmapCalculator {
     }));
 
     return {
-      beatmapInfo: beatmapInfo.toJSON(),
+      beatmapInfo: beatmapInfo?.toJSON() ?? beatmapInfo,
       attributes,
       skills,
       difficulty,
@@ -96,7 +96,7 @@ export class BeatmapCalculator {
     }));
 
     return {
-      beatmapInfo: beatmapInfo.toJSON(),
+      beatmapInfo: beatmapInfo?.toJSON() ?? beatmapInfo,
       skills: null,
       attributes,
       difficulty,

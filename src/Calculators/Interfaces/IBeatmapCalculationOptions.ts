@@ -1,4 +1,4 @@
-import type { IBeatmapInfo, IRuleset } from 'osu-classes';
+import type { IBeatmapInfo, IJsonableBeatmapInfo, IRuleset } from 'osu-classes';
 import type { GameMode, IBeatmapAttributes, IBeatmapParsingOptions, IDifficultyAttributes } from '@Core';
 
 /**
@@ -8,7 +8,7 @@ export interface IBeatmapCalculationOptions extends IBeatmapParsingOptions {
   /**
    * Precalculated beatmap information.
    */
-  beatmapInfo?: IBeatmapInfo;
+  beatmapInfo?: IBeatmapInfo | IJsonableBeatmapInfo;
 
   /**
    * Beatmap attributes for score simulation.

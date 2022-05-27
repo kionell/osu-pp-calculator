@@ -1,4 +1,4 @@
-import type { IRuleset, IScoreInfo } from 'osu-classes';
+import type { IJsonableScoreInfo, IRuleset, IScoreInfo } from 'osu-classes';
 
 import type {
   GameMode,
@@ -44,5 +44,5 @@ export interface IScoreCalculationOptions extends IScoreParsingOptions, Partial<
   /**
    * Target score.
    */
-  scoreInfo?: IScoreInfo;
+  scoreInfo?: IScoreInfo | IJsonableScoreInfo;
 }
