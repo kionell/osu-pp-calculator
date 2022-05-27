@@ -31,34 +31,34 @@ export function toDifficultyAttributes(difficulty?: IDifficultyAttributes, rules
  * @param jsonable Raw score info data.
  * @returns Converted score information.
  */
-export function toScoreInfo(jsonable?: IScoreInfo | IJsonableScoreInfo): IScoreInfo {
+export function toScoreInfo(data?: IScoreInfo | IJsonableScoreInfo): IScoreInfo {
   const scoreInfo = new ScoreInfo();
 
-  if ((jsonable as IScoreInfo)?.rawMods) return scoreInfo;
+  if ((data as IScoreInfo)?.toJSON) return scoreInfo;
 
-  const data = jsonable as IJsonableScoreInfo;
+  const jsonable = data as IJsonableScoreInfo;
 
-  scoreInfo.id = data?.id;
-  scoreInfo.totalScore = data?.totalScore;
-  scoreInfo.pp = data?.pp;
-  scoreInfo.maxCombo = data?.maxCombo;
-  scoreInfo.passed = data?.passed;
-  scoreInfo.perfect = data?.perfect;
-  scoreInfo.rank = data?.rank;
-  scoreInfo.accuracy = data?.accuracy;
-  scoreInfo.username = data?.username;
-  scoreInfo.userId = data?.userId;
-  scoreInfo.beatmapId = data?.beatmapId;
-  scoreInfo.date = data?.date;
-  scoreInfo.beatmapHashMD5 = data?.beatmapHashMD5;
-  scoreInfo.rulesetId = data?.rulesetId;
-  scoreInfo.rawMods = data?.mods;
-  scoreInfo.countGeki = data?.countGeki;
-  scoreInfo.count300 = data?.count300;
-  scoreInfo.countKatu = data?.countKatu;
-  scoreInfo.count100 = data?.count100;
-  scoreInfo.count50 = data?.count50;
-  scoreInfo.countMiss = data?.countMiss;
+  scoreInfo.id = jsonable?.id;
+  scoreInfo.totalScore = jsonable?.totalScore;
+  scoreInfo.pp = jsonable?.pp;
+  scoreInfo.maxCombo = jsonable?.maxCombo;
+  scoreInfo.passed = jsonable?.passed;
+  scoreInfo.perfect = jsonable?.perfect;
+  scoreInfo.rank = jsonable?.rank;
+  scoreInfo.accuracy = jsonable?.accuracy;
+  scoreInfo.username = jsonable?.username;
+  scoreInfo.userId = jsonable?.userId;
+  scoreInfo.beatmapId = jsonable?.beatmapId;
+  scoreInfo.date = jsonable?.date;
+  scoreInfo.beatmapHashMD5 = jsonable?.beatmapHashMD5;
+  scoreInfo.rulesetId = jsonable?.rulesetId;
+  scoreInfo.rawMods = jsonable?.mods;
+  scoreInfo.countGeki = jsonable?.countGeki;
+  scoreInfo.count300 = jsonable?.count300;
+  scoreInfo.countKatu = jsonable?.countKatu;
+  scoreInfo.count100 = jsonable?.count100;
+  scoreInfo.count50 = jsonable?.count50;
+  scoreInfo.countMiss = jsonable?.countMiss;
 
   return scoreInfo;
 }
