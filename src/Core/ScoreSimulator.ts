@@ -33,15 +33,15 @@ export class ScoreSimulator {
     });
 
     const scoreInfo = score.data.info;
+    const beatmapCombo = attributes.maxCombo ?? 0;
 
-    return this.simulate({
-      accuracy: scoreInfo.accuracy,
-      totalScore: scoreInfo.totalScore,
-      maxCombo: scoreInfo.maxCombo,
-      count100: scoreInfo.count100,
-      count50: scoreInfo.count50,
-      countMiss: scoreInfo.countMiss,
-      attributes,
+    return this._generateScoreInfo({
+      ...scoreInfo,
+      beatmapId: attributes.beatmapId,
+      rulesetId: attributes.rulesetId,
+      totalHits: attributes.totalHits,
+      mods: toCombination(attributes.mods, attributes.rulesetId),
+      perfect: scoreInfo.maxCombo >= beatmapCombo,
     });
   }
 
@@ -71,7 +71,7 @@ export class ScoreSimulator {
     const limitedCombo = Math.min(scoreCombo, beatmapCombo - misses);
     const maxCombo = Math.max(0, limitedCombo);
 
-    const scoreInfo = this._generateScoreInfo({
+    return this._generateScoreInfo({
       beatmapId: attributes.beatmapId,
       rulesetId: attributes.rulesetId,
       totalHits: attributes.totalHits,
@@ -81,8 +81,6 @@ export class ScoreSimulator {
       statistics,
       maxCombo,
     });
-
-    return scoreInfo;
   }
 
   /**
