@@ -256,6 +256,13 @@ declare function parseScore(options: IScoreParsingOptions): Promise<ScoreParsing
  */
 declare class ScoreSimulator {
   /**
+     * Simulates a score by a replay file.
+     * @param replayURL Replay file URL.
+     * @param attributes Beatmap attributes of this score.
+     * @returns Simulated score.
+     */
+  simulateReplay(replayURL: string, attributes: IBeatmapAttributes): Promise<IScoreInfo>;
+  /**
      * Simulates a score by score simulation options.
      * @param options Score simulation options.
      * @returns Simulated score.
@@ -551,14 +558,7 @@ declare class ScoreCalculator {
      * @returns Calculated score.
      */
   private _processPrecalculated;
-  /**
-     * Tries to parse a replay file.
-     * If exists then returns score information.
-     * Otherwise will return null.
-     * @param options Score calculation options.
-     * @returns Score information or null.
-     */
-  private _processReplayFile;
+  private _getScoreInfo;
   /**
      * Tests these score calculation options for the possibility of skipping beatmap parsing.
      * @param options Score calculation options.
