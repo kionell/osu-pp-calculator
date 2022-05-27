@@ -119,9 +119,7 @@ export class ScoreSimulator {
     statistics.miss = 0;
 
     return this._generateScoreInfo({
-      mods: scoreInfo.mods
-        ?? toCombination(attributes.mods, attributes.rulesetId),
-
+      mods: scoreInfo.mods ?? toCombination(attributes.mods, attributes.rulesetId),
       beatmapId: attributes.beatmapId,
       rulesetId: attributes.rulesetId,
       maxCombo: attributes.maxCombo,
@@ -158,25 +156,26 @@ export class ScoreSimulator {
   }
 
   private _generateScoreInfo(options: Partial<IScoreInfo>): IScoreInfo {
-    const scoreInfo = new ScoreInfo();
+    const scoreInfo = new ScoreInfo({
+      beatmapId: options?.beatmapId,
+      userId: options?.userId,
+      username: options?.username ?? 'osu!',
+      maxCombo: options?.maxCombo,
+      statistics: getValidHitStatistics(options?.statistics),
+      mods: options?.mods?.clone(),
+      rulesetId: options?.rulesetId,
+      perfect: options?.perfect,
+    });
 
-    scoreInfo.beatmapId = options?.beatmapId ?? 0;
-    scoreInfo.userId = options?.userId ?? 0;
-    scoreInfo.username = options?.username ?? 'osu!';
-    scoreInfo.maxCombo = options?.maxCombo ?? 0;
-    scoreInfo.statistics = getValidHitStatistics(options?.statistics);
-    scoreInfo.mods = options?.mods?.clone() ?? null;
-    scoreInfo.rulesetId = options?.rulesetId ?? GameMode.Osu;
-    scoreInfo.passed = scoreInfo.totalHits >= (options?.totalHits ?? 0);
-    scoreInfo.perfect = options?.perfect ?? false;
-
-    if (scoreInfo.rulesetId === GameMode.Mania) {
-      scoreInfo.totalScore = options?.totalScore
-        ?? scaleTotalScore(1e6, scoreInfo.mods);
+    if (scoreInfo.totalHits >= (options?.totalHits ?? 0)) {
+      scoreInfo.passed = true;
     }
 
-    scoreInfo.accuracy = options.accuracy
-      ?? calculateAccuracy(scoreInfo);
+    if (scoreInfo.rulesetId === GameMode.Mania) {
+      scoreInfo.totalScore = options?.totalScore || scaleTotalScore(1e6, scoreInfo.mods);
+    }
+
+    scoreInfo.accuracy = options.accuracy || calculateAccuracy(scoreInfo);
 
     scoreInfo.rank = ScoreRank[calculateRank(scoreInfo)] as keyof typeof ScoreRank;
 
