@@ -8,14 +8,14 @@ export interface IBeatmapParsingOptions {
   beatmapId?: string | number;
 
   /**
-   * Path to the beatmap file save location.
-   */
-  savePath?: string;
-
-  /**
    * Custom file URL of the target beatmap.
    */
   fileURL?: string;
+
+  /**
+   * Path to the beatmap file save location.
+   */
+  savePath?: string;
 
   /**
    * Hash of the target beatmap. Used to validate beatmap files.
