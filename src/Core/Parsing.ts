@@ -121,10 +121,10 @@ function parseBeatmapData(data: Buffer, hash?: string): BeatmapParsingResult {
  * @returns Parsed score.
  */
 export async function parseScore(options: IScoreParsingOptions): Promise<ScoreParsingResult> {
-  const { fileURL, hash } = options;
+  const { replayURL, hash } = options;
 
-  if (typeof fileURL === 'string') {
-    return parseCustomScore(fileURL, hash);
+  if (typeof replayURL === 'string') {
+    return parseCustomScore(replayURL, hash);
   }
 
   throw new Error('No replay URL was specified!');
