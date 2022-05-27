@@ -119,6 +119,6 @@ export class ScoreCalculator {
    * @returns If these options enough to skip beatmap parsing.
    */
   private _checkPrecalculated(options: IScoreCalculationOptions): boolean {
-    return !!options.attributes && !!options.difficulty && !!options.scoreInfo;
+    return !!options.attributes && !!options.difficulty;
   }
 }
