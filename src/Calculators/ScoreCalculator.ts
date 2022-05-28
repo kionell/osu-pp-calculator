@@ -36,7 +36,7 @@ export class ScoreCalculator {
       return await this._processPrecalculated(options as Required<IScoreCalculationOptions>);
     }
 
-    const { data: parsed, hash } = await parseBeatmap(options);
+    const { data: parsed, hash: beatmapMD5 } = await parseBeatmap(options);
 
     const ruleset = options.ruleset
       ?? getRulesetById(options.rulesetId ?? parsed.mode);
@@ -45,13 +45,20 @@ export class ScoreCalculator {
     const beatmap = ruleset.applyToBeatmapWithMods(parsed, combination);
     const attributes = options.attributes ?? createBeatmapAttributes(beatmap);
 
+    const scoreInfo = await this._getScoreInfo(options, attributes);
+    const scoreBeatmapMD5 = scoreInfo.beatmapHashMD5;
+
+    if (beatmapMD5 && scoreBeatmapMD5 && beatmapMD5 !== scoreBeatmapMD5) {
+      throw new Error('Beatmap & replay missmatch!');
+    }
+
+    if (beatmapMD5 && !scoreBeatmapMD5) {
+      scoreInfo.beatmapHashMD5 = beatmapMD5;
+    }
+
     const difficulty = options.difficulty
       ? toDifficultyAttributes(options.difficulty, ruleset.id)
       : calculateDifficulty({ beatmap, ruleset });
-
-    const scoreInfo = await this._getScoreInfo(options, attributes);
-
-    scoreInfo.beatmapHashMD5 = hash;
 
     const performance = calculatePerformance({
       ruleset: getRulesetById(difficulty.mods.mode),
@@ -76,11 +83,18 @@ export class ScoreCalculator {
 
     const scoreInfo = await this._getScoreInfo(options, options.attributes);
 
-    const difficulty = toDifficultyAttributes(options.difficulty, ruleset.id);
+    const beatmapMD5 = options.attributes?.hash || options.hash;
+    const scoreBeatmapMD5 = scoreInfo.beatmapHashMD5;
 
-    if (options.attributes.hash || options.hash) {
-      scoreInfo.beatmapHashMD5 = options.attributes.hash ?? options.hash;
+    if (beatmapMD5 && scoreBeatmapMD5 && beatmapMD5 !== scoreBeatmapMD5) {
+      throw new Error('Beatmap & replay missmatch!');
     }
+
+    if (beatmapMD5 && !scoreBeatmapMD5) {
+      scoreInfo.beatmapHashMD5 = beatmapMD5;
+    }
+
+    const difficulty = toDifficultyAttributes(options.difficulty, ruleset.id);
 
     const performance = calculatePerformance({
       ruleset,
