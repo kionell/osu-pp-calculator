@@ -1,4 +1,3 @@
-import md5 from 'md5';
 import { readFileSync } from 'fs';
 import { DownloadType } from 'osu-downloader';
 import { BeatmapDecoder, ScoreDecoder } from 'osu-parsers';
@@ -52,15 +51,23 @@ async function parseBeatmapById(id: string | number, hash?: string, savePath?: s
     throw new Error(`Beatmap with ID "${id}" failed to download: "${result.statusText}"`);
   }
 
+  if (hash && hash !== result.md5) {
+    throw new Error('Beatmap MD5 hash mismatch!');
+  }
+
   const data = savePath
     ? readFileSync(result.filePath as string)
     : result.buffer as Buffer;
 
-  const parsed = parseBeatmapData(data, hash);
+  const parsed = parseBeatmapData(data);
 
-  parsed.data.metadata.beatmapId ||= parseInt(id as string);
+  // This is done because very old beatmaps sometimes don't have beatmap ID.
+  parsed.metadata.beatmapId ||= parseInt(id as string);
 
-  return parsed;
+  return {
+    hash: result.md5 as string,
+    data: parsed,
+  };
 }
 
 /**
@@ -80,38 +87,32 @@ async function parseCustomBeatmap(url: string, hash?: string, savePath?: string)
     throw new Error(`Beatmap from "${url}" failed to download: ${result.statusText}`);
   }
 
+  if (hash && hash !== result.md5) {
+    throw new Error('Beatmap MD5 hash mismatch!');
+  }
+
   const data = savePath
     ? readFileSync(result.filePath as string)
     : result.buffer as Buffer;
 
-  return parseBeatmapData(data, hash);
+  return {
+    data: parseBeatmapData(data),
+    hash: result.md5 as string,
+  };
 }
 
 /**
  * Tries to parse beatmap file data.
  * @param data Beatmap file data.
- * @param hash Original hash of the file.
  * @returns Parsed beatmap.
  */
-function parseBeatmapData(data: Buffer, hash?: string): BeatmapParsingResult {
+function parseBeatmapData(data: Buffer): IBeatmap {
   const stringified = data.toString();
-
-  /**
-   * Compare original hash with hash of a file.
-   */
-  const targetHash = md5(stringified);
-
-  if (hash && hash !== targetHash) {
-    throw new Error('Wrong beatmap file!');
-  }
 
   const decoder = new BeatmapDecoder();
   const parseSb = false;
 
-  return {
-    data: decoder.decodeFromString(stringified, parseSb),
-    hash: targetHash,
-  };
+  return decoder.decodeFromString(stringified, parseSb);
 }
 
 /**
@@ -147,30 +148,24 @@ async function parseCustomScore(url: string, hash?: string): Promise<ScoreParsin
     throw new Error('Replay failed to download!');
   }
 
-  return parseScoreData(result.buffer, hash);
+  if (hash && hash !== result.md5) {
+    throw new Error('Replay MD5 hash mismatch!');
+  }
+
+  return {
+    data: await parseScoreData(result.buffer),
+    hash: result.md5 as string,
+  };
 }
 
 /**
  * Tries to parse score file data.
  * @param data Score file data.
- * @param hash Original hash of the file.
  * @returns Parsed score.
  */
-async function parseScoreData(data: Buffer, hash?: string): Promise<ScoreParsingResult> {
-  /**
-   * Compare original hash with hash of a file.
-   */
-  const targetHash = md5(data);
-
-  if (hash && hash !== targetHash) {
-    throw new Error('Wrong beatmap file!');
-  }
-
+async function parseScoreData(data: Buffer): Promise<IScore> {
   const decoder = new ScoreDecoder();
   const parseReplay = false;
 
-  return {
-    data: await decoder.decodeFromBuffer(data, parseReplay),
-    hash: targetHash,
-  };
+  return await decoder.decodeFromBuffer(data, parseReplay);
 }
