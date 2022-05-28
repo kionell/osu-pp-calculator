@@ -157,15 +157,21 @@ export class ScoreSimulator {
 
   private _generateScoreInfo(options: Partial<IScoreInfo>): IScoreInfo {
     const scoreInfo = new ScoreInfo({
+      id: options?.id,
       beatmapId: options?.beatmapId,
       userId: options?.userId,
       username: options?.username ?? 'osu!',
       maxCombo: options?.maxCombo,
       statistics: getValidHitStatistics(options?.statistics),
-      mods: options?.mods?.clone(),
+      rawMods: options?.rawMods,
       rulesetId: options?.rulesetId,
       perfect: options?.perfect,
+      beatmapHashMD5: options?.beatmapHashMD5,
+      date: options?.date,
+      pp: options?.pp,
     });
+
+    if (options?.mods) scoreInfo.mods = options.mods;
 
     if (scoreInfo.totalHits >= (options?.totalHits ?? 0)) {
       scoreInfo.passed = true;
