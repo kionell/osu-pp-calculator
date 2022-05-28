@@ -64,7 +64,7 @@ export class ScoreSimulator {
     const percentage = options.percentCombo ?? 100;
     const multiplier = Math.max(0, Math.min(percentage, 100)) / 100;
 
-    const scoreCombo = options.maxCombo ?? beatmapCombo * multiplier;
+    const scoreCombo = options.maxCombo ?? Math.round(beatmapCombo * multiplier);
     const misses = statistics.miss ?? 0;
 
     // We need to limit max combo with score misses.
