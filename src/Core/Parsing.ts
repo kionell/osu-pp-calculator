@@ -52,7 +52,7 @@ async function parseBeatmapById(id: string | number, hash?: string, savePath?: s
   }
 
   if (hash && hash !== result.md5) {
-    throw new Error('Beatmap MD5 hash mismatch!');
+    throw new Error('Beatmap MD5 hash missmatch!');
   }
 
   const data = savePath
@@ -88,7 +88,7 @@ async function parseCustomBeatmap(url: string, hash?: string, savePath?: string)
   }
 
   if (hash && hash !== result.md5) {
-    throw new Error('Beatmap MD5 hash mismatch!');
+    throw new Error('Beatmap MD5 hash missmatch!');
   }
 
   const data = savePath
@@ -149,7 +149,7 @@ async function parseCustomScore(url: string, hash?: string): Promise<ScoreParsin
   }
 
   if (hash && hash !== result.md5) {
-    throw new Error('Replay MD5 hash mismatch!');
+    throw new Error('Replay MD5 hash missmatch!');
   }
 
   return {
