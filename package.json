@@ -39,7 +39,7 @@
     "osu-downloader": "^0.6.3",
     "osu-mania-stable": "^2.1.7",
     "osu-parsers": "^2.1.3",
-    "osu-standard-stable": "^2.2.9",
+    "osu-standard-stable": "^2.2.10",
     "osu-taiko-stable": "^2.1.7"
   }
 }
