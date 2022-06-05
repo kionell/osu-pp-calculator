@@ -112,13 +112,23 @@ export class ScoreCalculator {
   private async _getScoreInfo(options: IScoreCalculationOptions, attributes: IBeatmapAttributes): Promise<IScoreInfo> {
     const { scoreInfo, replayURL } = options;
 
-    if (scoreInfo) return toScoreInfo(scoreInfo);
+    const getScore = async() => {
+      if (scoreInfo) return toScoreInfo(scoreInfo);
 
-    if (replayURL) {
-      return await this._scoreSimulator.simulateReplay(replayURL, attributes);
+      if (replayURL) {
+        return await this._scoreSimulator.simulateReplay(replayURL, attributes);
+      }
+
+      return this._scoreSimulator.simulate({ ...options, attributes });
+    };
+
+    const score = await getScore();
+
+    if (options.fix) {
+      return this._scoreSimulator.simulateFC(score, attributes);
     }
 
-    return this._scoreSimulator.simulate({ ...options, attributes });
+    return score;
   }
 
   /**
