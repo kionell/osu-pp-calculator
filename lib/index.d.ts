@@ -487,6 +487,10 @@ interface IScoreCalculationOptions extends IScoreParsingOptions, Partial<IScoreS
      * Target score.
      */
   scoreInfo?: IScoreInfo | IJsonableScoreInfo;
+  /**
+     * Should this score be unchoked or not?
+     */
+  fix?: boolean;
 }
 
 /**
