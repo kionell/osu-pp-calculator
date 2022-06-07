@@ -119,6 +119,7 @@ export class ScoreSimulator {
     statistics.miss = 0;
 
     return this._generateScoreInfo({
+      ...scoreInfo,
       mods: scoreInfo.mods ?? toCombination(attributes.mods, attributes.rulesetId),
       beatmapId: attributes.beatmapId,
       rulesetId: attributes.rulesetId,
