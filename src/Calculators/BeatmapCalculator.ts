@@ -168,7 +168,7 @@ export class BeatmapCalculator {
     /**
      * Default accuracy list for simulation.
      */
-    accuracy ??= [ 95, 97, 99, 100 ];
+    accuracy ??= [ 95, 99, 100 ];
 
     return accuracy.map((accuracy) => this._scoreSimulator.simulate({
       attributes,
@@ -189,7 +189,6 @@ export class BeatmapCalculator {
      * Default total score list for simulation.
      */
     totalScores ??= [
-      scaleTotalScore(7e5, mods),
       scaleTotalScore(8e5, mods),
       scaleTotalScore(9e5, mods),
       scaleTotalScore(1e6, mods),
