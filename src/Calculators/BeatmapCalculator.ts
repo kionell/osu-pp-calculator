@@ -161,7 +161,7 @@ export class BeatmapCalculator {
   /**
    * Simulates custom scores by accuracy values.
    * @param attributes Beatmap attributes.
-   * @param options Accuracy values.
+   * @param accuracy Accuracy values.
    * @returns Simulated scores.
    */
   private _simulateOtherScores(attributes: IBeatmapAttributes, accuracy?: number[]): IScoreInfo[] {
