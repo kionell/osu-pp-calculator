@@ -35,11 +35,11 @@
   },
   "dependencies": {
     "osu-catch-stable": "^2.2.2",
-    "osu-classes": "^0.10.0",
+    "osu-classes": "^0.10.1",
     "osu-downloader": "^0.6.3",
     "osu-mania-stable": "^2.1.10",
     "osu-parsers": "^2.3.0",
-    "osu-standard-stable": "^2.3.2",
+    "osu-standard-stable": "^2.3.3",
     "osu-taiko-stable": "^2.1.10"
   }
 }
