@@ -30,12 +30,12 @@ export function toDifficultyMods(mods?: string | number, rulesetId?: number): Mo
 
 /**
  * Converts unknown input to mod combination.
- * @param mods Original mods.
+ * @param input Original input.
  * @param rulesetId Target ruleset ID.
  * @returns Mod combination.
  */
-export function toCombination(mods?: string | number, rulesetId?: number): ModCombination {
+export function toCombination(input?: string | number, rulesetId?: number): ModCombination {
   const ruleset = getRulesetById(rulesetId ?? GameMode.Osu);
 
-  return ruleset.createModCombination(mods);
+  return ruleset.createModCombination(input);
 }
