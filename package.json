@@ -33,7 +33,7 @@
     "rollup-plugin-typescript-paths": "^1.3.1",
     "typescript": "^4.6.4"
   },
-  "dependencies": {
+  "peerDependencies": {
     "osu-catch-stable": "^3.0.2",
     "osu-classes": "^1.0.2",
     "osu-downloader": "^0.6.3",
