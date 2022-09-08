@@ -1,4 +1,4 @@
-import type { IHitStatistics } from 'osu-classes';
+import { IHitStatistics, MathUtils } from 'osu-classes';
 import type { IBeatmapAttributes } from '../Interfaces';
 import { GameMode } from '../Enums';
 
@@ -22,14 +22,14 @@ export function generateHitStatistics(attributes: IBeatmapAttributes, accuracy =
 function generateOsuHitStatistics(attributes: IBeatmapAttributes, accuracy = 1, countMiss = 0, count50?: number, count100?: number): Partial<IHitStatistics> {
   const totalHits = attributes.totalHits ?? 0;
 
-  countMiss = Math.min(Math.max(0, countMiss), totalHits);
-  count50 = count50 ? Math.min(Math.max(0, count50), totalHits - countMiss) : 0;
+  countMiss = MathUtils.clamp(countMiss, 0, totalHits);
+  count50 = count50 ? MathUtils.clamp(count50, 0, totalHits - countMiss) : 0;
 
   if (typeof count100 !== 'number') {
     count100 = Math.round((totalHits - totalHits * accuracy) * 1.5);
   }
   else {
-    count100 = Math.min(Math.max(0, count100), totalHits - count50 - countMiss);
+    count100 = MathUtils.clamp(count100, 0, totalHits - count50 - countMiss);
   }
 
   const count300 = totalHits - count100 - count50 - countMiss;
@@ -45,7 +45,7 @@ function generateOsuHitStatistics(attributes: IBeatmapAttributes, accuracy = 1, 
 function generateTaikoHitStatistics(attributes: IBeatmapAttributes, accuracy = 1, countMiss = 0, count100?: number): Partial<IHitStatistics> {
   const totalHits = attributes.totalHits ?? 0;
 
-  countMiss = Math.max(0, Math.min(countMiss, totalHits));
+  countMiss = MathUtils.clamp(countMiss, 0, totalHits);
 
   let count300;
 
@@ -56,7 +56,7 @@ function generateTaikoHitStatistics(attributes: IBeatmapAttributes, accuracy = 1
     count100 = totalHits - count300 - countMiss;
   }
   else {
-    count100 = Math.min(Math.max(0, count100), totalHits - countMiss);
+    count100 = MathUtils.clamp(count100, 0, totalHits - countMiss);
     count300 = totalHits - count100 - countMiss;
   }
 
@@ -77,11 +77,11 @@ function generateCatchHitStatistics(attributes: IBeatmapAttributes, accuracy = 1
     countMiss += maxDroplets - count100;
   }
 
-  countMiss = Math.max(0, Math.min(countMiss, maxDroplets + maxFruits));
+  countMiss = MathUtils.clamp(countMiss, 0, maxDroplets + maxFruits);
 
   let droplets = count100 ?? Math.max(0, maxDroplets - countMiss);
 
-  droplets = Math.max(0, Math.min(droplets, maxDroplets));
+  droplets = MathUtils.clamp(droplets, 0, maxDroplets);
 
   const fruits = maxFruits - (countMiss - (maxDroplets - droplets));
 
@@ -92,8 +92,8 @@ function generateCatchHitStatistics(attributes: IBeatmapAttributes, accuracy = 1
   const tinyMisses = maxTinyDroplets - tinyDroplets;
 
   return {
-    great: Math.max(0, Math.min(fruits, maxFruits)),
-    largeTickHit: Math.max(0, Math.min(droplets, maxDroplets)),
+    great: MathUtils.clamp(fruits, 0, maxFruits),
+    largeTickHit: MathUtils.clamp(droplets, 0, maxDroplets),
     smallTickHit: tinyDroplets,
     smallTickMiss: tinyMisses,
     miss: countMiss,

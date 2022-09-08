@@ -2,6 +2,7 @@ import {
   type IScoreInfo,
   ScoreInfo,
   ScoreRank,
+  MathUtils,
 } from 'osu-classes';
 
 import {
@@ -62,7 +63,7 @@ export class ScoreSimulator {
     const attributes = options.attributes;
     const beatmapCombo = attributes.maxCombo ?? 0;
     const percentage = options.percentCombo ?? 100;
-    const multiplier = Math.max(0, Math.min(percentage, 100)) / 100;
+    const multiplier = MathUtils.clamp(percentage, 0, 100) / 100;
 
     const scoreCombo = options.maxCombo ?? Math.round(beatmapCombo * multiplier);
     const misses = statistics.miss ?? 0;
