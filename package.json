@@ -26,7 +26,6 @@
     "@typescript-eslint/parser": "^5.22.0",
     "eslint": "^8.14.0",
     "eslint-plugin-import": "^2.26.0",
-    "husky": "^7.0.4",
     "rollup": "^2.71.1",
     "rollup-plugin-dts": "^4.2.1",
     "rollup-plugin-node-externals": "^4.0.0",
@@ -35,7 +34,7 @@
   },
   "peerDependencies": {
     "osu-catch-stable": "^3.0.2",
-    "osu-classes": "^1.0.2",
+    "osu-classes": "^1.1.0",
     "osu-downloader": "^0.6.3",
     "osu-mania-stable": "^3.0.2",
     "osu-parsers": "^3.0.3",
