@@ -20,4 +20,9 @@ export interface IDifficultyCalculationOptions {
    * Mod combination or bitwise. Default is NM.
    */
   mods?: string | number;
+
+  /**
+   * Total hits for gradual beatmap difficulty calculation.
+   */
+  totalHits?: number;
 }

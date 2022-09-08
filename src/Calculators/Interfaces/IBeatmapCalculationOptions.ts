@@ -36,6 +36,13 @@ export interface IBeatmapCalculationOptions extends IBeatmapParsingOptions {
   difficulty?: IDifficultyAttributes;
 
   /**
+   * Total hits for gradual beatmap difficulty calculation.
+   * If it differs from the hit object count of 
+   * a full beatmap then it will force difficulty calculation.
+   */
+  totalHits?: number;
+
+  /**
    * Output strain peaks or not.
    */
   strains?: boolean;

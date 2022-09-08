@@ -14,9 +14,9 @@ import {
   toCombination,
 } from './Utils';
 
+import { parseScore } from './Parsing';
 import { GameMode } from './Enums';
 import type { IBeatmapAttributes, IScoreSimulationOptions } from './Interfaces';
-import { parseScore } from './Parsing';
 
 /**
  * A score simulator.
@@ -175,14 +175,11 @@ export class ScoreSimulator {
 
     if (options?.mods) scoreInfo.mods = options.mods;
 
-    if (scoreInfo.totalHits >= (options?.totalHits ?? 0)) {
-      scoreInfo.passed = true;
-    }
-
     if (scoreInfo.rulesetId === GameMode.Mania) {
       scoreInfo.totalScore = options?.totalScore || scaleTotalScore(1e6, scoreInfo.mods);
     }
 
+    scoreInfo.passed = scoreInfo.totalHits >= (options?.totalHits ?? 0);
     scoreInfo.accuracy = options.accuracy || calculateAccuracy(scoreInfo);
 
     scoreInfo.rank = ScoreRank[calculateRank(scoreInfo)] as keyof typeof ScoreRank;

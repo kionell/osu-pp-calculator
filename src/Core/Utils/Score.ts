@@ -12,25 +12,55 @@ export function calculateAccuracy(scoreInfo: IScoreInfo): number {
   const c300 = scoreInfo.count300;
   const c100 = scoreInfo.count100;
   const c50 = scoreInfo.count50;
-  const total = scoreInfo.totalHits;
+  const total = scoreInfo.totalHits || calculateTotalHits(scoreInfo);
 
   if (total <= 0) return 1;
 
   switch (scoreInfo.rulesetId) {
-    case 0:
+    case GameMode.Osu:
       return Math.max(0, (c50 / 6 + c100 / 3 + c300) / total);
 
-    case 1:
+    case GameMode.Taiko:
       return Math.max(0, (c100 / 2 + c300) / total);
 
-    case 2:
+    case GameMode.Fruits:
       return Math.max(0, (c50 + c100 + c300) / total);
 
-    case 3:
+    case GameMode.Mania:
       return Math.max(0, (c50 / 6 + c100 / 3 + katu / 1.5 + (c300 + geki)) / total);
   }
 
   return 1;
+}
+
+/**
+ * Calculates total hits of a score.
+ * @param scoreInfo Score information.
+ * @returns Calculated total hits.
+ */
+export function calculateTotalHits(scoreInfo: IScoreInfo): number {
+  const geki = scoreInfo.countGeki;
+  const katu = scoreInfo.countKatu;
+  const c300 = scoreInfo.count300;
+  const c100 = scoreInfo.count100;
+  const c50 = scoreInfo.count50;
+  const misses = scoreInfo.countMiss;
+
+  switch (scoreInfo.rulesetId) {
+    case GameMode.Osu:
+      return c300 + c100 + c50 + misses;
+
+    case GameMode.Taiko:
+      return c300 + c100 + c50 + misses;
+
+    case GameMode.Fruits:
+      return c300 + c100 + c50 + misses + katu;
+
+    case GameMode.Mania:
+      return c300 + c100 + c50 + misses + geki + katu;
+  }
+
+  return c300 + c100 + c50 + misses + geki + katu;
 }
 
 /**

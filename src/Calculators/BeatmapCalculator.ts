@@ -47,12 +47,13 @@ export class BeatmapCalculator {
 
     const beatmapInfo = options.beatmapInfo ?? createBeatmapInfo(beatmap, beatmapMD5);
     const attributes = options.attributes ?? createBeatmapAttributes(beatmap);
+    const totalHits = options.totalHits;
 
     const calculator = createDifficultyCalculator(beatmap, ruleset);
 
     const difficulty = options.difficulty && !options.strains
       ? toDifficultyAttributes(options.difficulty, ruleset.id)
-      : calculateDifficulty({ beatmap, ruleset, calculator });
+      : calculateDifficulty({ beatmap, ruleset, calculator, totalHits });
 
     const skills = options.strains ? this._getSkillsOutput(calculator) : null;
 
@@ -110,10 +111,16 @@ export class BeatmapCalculator {
    * @returns If these options enough to skip beatmap parsing.
    */
   private _checkPrecalculated(options: IBeatmapCalculationOptions): boolean {
-    return !!options.beatmapInfo
+    const isValid = !!options.beatmapInfo
       && !!options.attributes
       && !!options.difficulty
       && !options.strains;
+
+    if (options.attributes && typeof options.totalHits === 'number') {
+      return isValid && options.attributes.totalHits === options.totalHits;
+    }
+
+    return isValid;
   }
 
   /**

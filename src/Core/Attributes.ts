@@ -24,12 +24,12 @@ export function calculateDifficulty(options: IDifficultyCalculationOptions): Dif
     ?? ruleset.createDifficultyCalculator(beatmap);
 
   if (typeof mods !== 'string' && typeof mods !== 'number') {
-    return calculator.calculate();
+    return calculator.calculateAt(options.totalHits);
   }
 
   const combination = ruleset.createModCombination(mods);
 
-  return calculator.calculateWithMods(combination);
+  return calculator.calculateWithModsAt(combination, options.totalHits);
 }
 
 /**
