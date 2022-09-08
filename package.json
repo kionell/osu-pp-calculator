@@ -34,12 +34,12 @@
     "typescript": "^4.6.4"
   },
   "dependencies": {
-    "osu-catch-stable": "^2.2.2",
-    "osu-classes": "^0.10.1",
+    "osu-catch-stable": "^3.0.2",
+    "osu-classes": "^1.0.2",
     "osu-downloader": "^0.6.3",
-    "osu-mania-stable": "^2.1.10",
-    "osu-parsers": "^2.3.0",
-    "osu-standard-stable": "^2.3.3",
-    "osu-taiko-stable": "^2.1.10"
+    "osu-mania-stable": "^3.0.2",
+    "osu-parsers": "^3.0.3",
+    "osu-standard-stable": "^3.0.2",
+    "osu-taiko-stable": "^3.0.2"
   }
 }
