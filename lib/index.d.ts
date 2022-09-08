@@ -331,11 +331,11 @@ declare function getValidHitStatistics(original?: Partial<IHitStatistics>): IHit
 declare function toDifficultyMods(mods?: string | number, rulesetId?: number): ModCombination;
 /**
  * Converts unknown input to mod combination.
- * @param mods Original mods.
+ * @param input Original input.
  * @param rulesetId Target ruleset ID.
  * @returns Mod combination.
  */
-declare function toCombination(mods?: string | number, rulesetId?: number): ModCombination;
+declare function toCombination(input?: string | number, rulesetId?: number): ModCombination;
 
 /**
  * Converts ruleset name to ruleset ID.
