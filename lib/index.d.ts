@@ -115,6 +115,10 @@ interface IDifficultyCalculationOptions {
      * Mod combination or bitwise. Default is NM.
      */
   mods?: string | number;
+  /**
+     * Total hits for gradual beatmap difficulty calculation.
+     */
+  totalHits?: number;
 }
 
 /**
@@ -357,6 +361,12 @@ declare function getRulesetById(rulesetId?: number): IRuleset;
  */
 declare function calculateAccuracy(scoreInfo: IScoreInfo): number;
 /**
+ * Calculates total hits of a score.
+ * @param scoreInfo Score information.
+ * @returns Calculated total hits.
+ */
+declare function calculateTotalHits(scoreInfo: IScoreInfo): number;
+/**
  * Scales total score of a play with mod multipliers.
  * @param totalScore Original total score.
  * @returns Scaled total score.
@@ -397,6 +407,12 @@ interface IBeatmapCalculationOptions extends IBeatmapParsingOptions {
      * Precalculated difficulty attributes.
      */
   difficulty?: IDifficultyAttributes;
+  /**
+     * Total hits for gradual beatmap difficulty calculation.
+     * If it differs from the hit object count of
+     * a full beatmap then it will force difficulty calculation.
+     */
+  totalHits?: number;
   /**
      * Output strain peaks or not.
      */
@@ -562,19 +578,8 @@ declare class ScoreCalculator {
      * @returns Calculated score.
      */
   calculate(options: IScoreCalculationOptions): Promise<ICalculatedScore>;
-  /**
-     * This is the special case in which all precalculated stuff is present.
-     * @param options Score calculation options.
-     * @returns Calculated score.
-     */
-  private _processPrecalculated;
-  private _getScoreInfo;
-  /**
-     * Tests these score calculation options for the possibility of skipping beatmap parsing.
-     * @param options Score calculation options.
-     * @returns If these options enough to skip beatmap parsing.
-     */
-  private _checkPrecalculated;
+  private _createScoreInfo;
+  private _parseOrSimulateScoreInfo;
 }
 
-export { BeatmapCalculator, GameMode, IBeatmapAttributes, IBeatmapCalculationOptions, IBeatmapParsingOptions, IBeatmapSkill, ICalculatedBeatmap, ICalculatedScore, IDifficultyAttributes, IDifficultyCalculationOptions, IExtendedDifficultyCalculator, IPerformanceCalculationOptions, IScoreCalculationOptions, IScoreParsingOptions, IScoreSimulationOptions, ScoreCalculator, ScoreSimulator, calculateAccuracy, calculateDifficulty, calculatePerformance, calculateRank, createBeatmapAttributes, createBeatmapInfo, createDifficultyCalculator, downloadFile, generateHitStatistics, getRulesetById, getRulesetIdByName, getValidHitStatistics, parseBeatmap, parseScore, scaleTotalScore, toCombination, toDifficultyAttributes, toDifficultyMods, toScoreInfo };
+export { BeatmapCalculator, GameMode, IBeatmapAttributes, IBeatmapCalculationOptions, IBeatmapParsingOptions, IBeatmapSkill, ICalculatedBeatmap, ICalculatedScore, IDifficultyAttributes, IDifficultyCalculationOptions, IExtendedDifficultyCalculator, IPerformanceCalculationOptions, IScoreCalculationOptions, IScoreParsingOptions, IScoreSimulationOptions, ScoreCalculator, ScoreSimulator, calculateAccuracy, calculateDifficulty, calculatePerformance, calculateRank, calculateTotalHits, createBeatmapAttributes, createBeatmapInfo, createDifficultyCalculator, downloadFile, generateHitStatistics, getRulesetById, getRulesetIdByName, getValidHitStatistics, parseBeatmap, parseScore, scaleTotalScore, toCombination, toDifficultyAttributes, toDifficultyMods, toScoreInfo };
