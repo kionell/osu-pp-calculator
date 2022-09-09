@@ -12,7 +12,7 @@
     "test": "jest --verbose --passWithNoTests",
     "fix": "eslint --fix ./src",
     "format": "eslint --fix ./lib/** --no-ignore",
-    "prepublishOnly": "npm run build && npm run test",
+    "prepublishOnly": "npm run build",
     "docs": "npx typedoc src/index.ts"
   },
   "author": "Kionell",
