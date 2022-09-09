@@ -36,14 +36,13 @@ export class ScoreCalculator {
     let beatmapMD5 = options.hash ?? options.attributes?.hash;
     let rulesetId = options.rulesetId ?? options.attributes?.rulesetId;
     let ruleset = options.ruleset ?? getRulesetById(rulesetId);
-    let scoreInfo = options.scoreInfo ? toScoreInfo(options.scoreInfo) : null;
     let difficulty = options.difficulty && ruleset
       ? toDifficultyAttributes(options.difficulty, ruleset.id)
       : null;
 
-    if (!scoreInfo && attributes) {
-      scoreInfo = await this._createScoreInfo(options, attributes);
-    }
+    let scoreInfo = attributes
+      ? await this._createScoreInfo(options, attributes)
+      : null;
 
     const beatmapTotalHits = attributes?.totalHits ?? 0;
     const scoreTotalHits = scoreInfo?.totalHits ?? 0;
@@ -100,15 +99,21 @@ export class ScoreCalculator {
   ): Promise<IScoreInfo> {
     const scoreInfo = await this._parseOrSimulateScoreInfo(options, attributes);
 
-    if (!options.fix) return scoreInfo;
+    if (options.fix) {
+      return this._scoreSimulator.simulateFC(scoreInfo, attributes);
+    }
 
-    return this._scoreSimulator.simulateFC(scoreInfo, attributes);
+    return scoreInfo;
   }
 
   private async _parseOrSimulateScoreInfo(
     options: IScoreCalculationOptions,
     attributes: IBeatmapAttributes,
   ): Promise<IScoreInfo> {
+    if (options.scoreInfo) {
+      return toScoreInfo(options.scoreInfo);
+    }
+
     if (!options.replayURL) {
       return this._scoreSimulator.simulate({ ...options, attributes });
     }
