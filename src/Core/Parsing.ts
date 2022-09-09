@@ -110,9 +110,9 @@ function parseBeatmapData(data: Buffer): IBeatmap {
   const stringified = data.toString();
 
   const decoder = new BeatmapDecoder();
-  const parseSb = false;
+  const parseStoryboard = false;
 
-  return decoder.decodeFromString(stringified, parseSb);
+  return decoder.decodeFromString(stringified, parseStoryboard);
 }
 
 /**
@@ -122,10 +122,10 @@ function parseBeatmapData(data: Buffer): IBeatmap {
  * @returns Parsed score.
  */
 export async function parseScore(options: IScoreParsingOptions): Promise<ScoreParsingResult> {
-  const { replayURL, hash } = options;
+  const { replayURL, hash, lifeBar } = options;
 
   if (typeof replayURL === 'string') {
-    return parseCustomScore(replayURL, hash);
+    return parseCustomScore(replayURL, hash, lifeBar);
   }
 
   throw new Error('No replay URL was specified!');
@@ -135,9 +135,10 @@ export async function parseScore(options: IScoreParsingOptions): Promise<ScorePa
  * Downloads custom replay file and tries to parse it.
  * @param url Custom replay file URL.
  * @param hash Original hash to validate downloaded file.
+ * @param parseReplay Should replay be parsed or not?
  * @returns Parsed score.
  */
-async function parseCustomScore(url: string, hash?: string): Promise<ScoreParsingResult> {
+async function parseCustomScore(url: string, hash?: string, parseReplay = false): Promise<ScoreParsingResult> {
   const result = await downloadFile('', {
     type: DownloadType.Replay,
     save: false,
@@ -153,7 +154,7 @@ async function parseCustomScore(url: string, hash?: string): Promise<ScoreParsin
   }
 
   return {
-    data: await parseScoreData(result.buffer),
+    data: await parseScoreData(result.buffer, parseReplay),
     hash: result.md5 as string,
   };
 }
@@ -161,11 +162,9 @@ async function parseCustomScore(url: string, hash?: string): Promise<ScoreParsin
 /**
  * Tries to parse score file data.
  * @param data Score file data.
+ * @param parseReplay Should replay be parsed or not?
  * @returns Parsed score.
  */
-async function parseScoreData(data: Buffer): Promise<IScore> {
-  const decoder = new ScoreDecoder();
-  const parseReplay = false;
-
-  return await decoder.decodeFromBuffer(data, parseReplay);
+async function parseScoreData(data: Buffer, parseReplay = false): Promise<IScore> {
+  return await new ScoreDecoder().decodeFromBuffer(data, parseReplay);
 }

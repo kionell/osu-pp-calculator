@@ -8,6 +8,11 @@ export interface IScoreParsingOptions {
   replayURL?: string;
 
   /**
+   * Output replay life bar if replay file is present?
+   */
+  lifeBar?: boolean;
+
+  /**
    * Path to the replay file save location.
    */
   savePath?: string;

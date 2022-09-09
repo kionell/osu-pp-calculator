@@ -1,4 +1,4 @@
-import { IScoreInfo } from 'osu-classes';
+import { IScore, Score } from 'osu-classes';
 
 import {
   type IScoreCalculationOptions,
@@ -15,6 +15,7 @@ import {
   createBeatmapAttributes,
   IBeatmapAttributes,
   toScoreInfo,
+  parseScore,
 } from '@Core';
 
 /**
@@ -40,15 +41,13 @@ export class ScoreCalculator {
       ? toDifficultyAttributes(options.difficulty, ruleset.id)
       : null;
 
-    let scoreInfo = attributes
-      ? await this._createScoreInfo(options, attributes)
-      : null;
+    let score = attributes ? await this._createScore(options, attributes) : null;
 
     const beatmapTotalHits = attributes?.totalHits ?? 0;
-    const scoreTotalHits = scoreInfo?.totalHits ?? 0;
+    const scoreTotalHits = score?.info.totalHits ?? 0;
     const isPartialDifficulty = beatmapTotalHits > scoreTotalHits;
 
-    if (!attributes || !beatmapMD5 || !ruleset || !scoreInfo || !difficulty || isPartialDifficulty) {
+    if (!attributes || !beatmapMD5 || !ruleset || !score || !difficulty || (isPartialDifficulty && !options.fix)) {
       const { data, hash } = await parseBeatmap(options);
 
       beatmapMD5 ??= hash;
@@ -59,7 +58,7 @@ export class ScoreCalculator {
       const beatmap = ruleset.applyToBeatmapWithMods(data, combination);
 
       attributes ??= createBeatmapAttributes(beatmap);
-      scoreInfo ??= await this._createScoreInfo(options, attributes);
+      score ??= await this._createScore(options, attributes);
 
       if (!difficulty || isPartialDifficulty) {
         difficulty = calculateDifficulty({
@@ -70,54 +69,61 @@ export class ScoreCalculator {
       }
     }
 
-    const scoreBeatmapMD5 = scoreInfo.beatmapHashMD5;
+    const scoreBeatmapMD5 = score.info.beatmapHashMD5;
 
     if (beatmapMD5 && scoreBeatmapMD5 && beatmapMD5 !== scoreBeatmapMD5) {
       throw new Error('Beatmap & replay missmatch!');
     }
 
     if (beatmapMD5 && !scoreBeatmapMD5) {
-      scoreInfo.beatmapHashMD5 = beatmapMD5;
+      score.info.beatmapHashMD5 = beatmapMD5;
     }
 
     const performance = calculatePerformance({
-      ruleset,
+      scoreInfo: score.info,
       difficulty,
-      scoreInfo,
+      ruleset,
     });
 
     return {
-      scoreInfo: scoreInfo.toJSON(),
+      scoreInfo: score.info.toJSON(),
+      lifeBar: score.replay?.lifeBar,
       difficulty,
       performance,
     };
   }
 
-  private async _createScoreInfo(
-    options: IScoreCalculationOptions,
-    attributes: IBeatmapAttributes,
-  ): Promise<IScoreInfo> {
-    const scoreInfo = await this._parseOrSimulateScoreInfo(options, attributes);
+  private async _createScore(options: IScoreCalculationOptions, attributes: IBeatmapAttributes): Promise<IScore> {
+    const score = await this._parseOrSimulateScore(options, attributes);
 
     if (options.fix) {
-      return this._scoreSimulator.simulateFC(scoreInfo, attributes);
+      score.info = this._scoreSimulator.simulateFC(score.info, attributes);
     }
 
-    return scoreInfo;
+    return score;
   }
 
-  private async _parseOrSimulateScoreInfo(
-    options: IScoreCalculationOptions,
-    attributes: IBeatmapAttributes,
-  ): Promise<IScoreInfo> {
-    if (options.scoreInfo) {
-      return toScoreInfo(options.scoreInfo);
+  private async _parseOrSimulateScore(options: IScoreCalculationOptions, attributes: IBeatmapAttributes): Promise<IScore> {
+    const { scoreInfo, replayURL } = options;
+
+    if (scoreInfo) {
+      const info = toScoreInfo(scoreInfo);
+      const replay = null;
+
+      return new Score(info, replay);
     }
 
-    if (!options.replayURL) {
-      return this._scoreSimulator.simulate({ ...options, attributes });
+    if (!replayURL) {
+      const info = this._scoreSimulator.simulate({ ...options, attributes });
+      const replay = null;
+
+      return new Score(info, replay);
     }
 
-    return this._scoreSimulator.simulateReplay(options.replayURL, attributes);
+    const { data: score } = await parseScore(options);
+
+    score.info = await this._scoreSimulator.completeReplay(score, attributes);
+
+    return score;
   }
 }

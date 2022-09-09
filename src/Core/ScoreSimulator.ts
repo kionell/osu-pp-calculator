@@ -3,6 +3,7 @@ import {
   ScoreInfo,
   ScoreRank,
   MathUtils,
+  IScore,
 } from 'osu-classes';
 
 import {
@@ -14,7 +15,6 @@ import {
   toCombination,
 } from './Utils';
 
-import { parseScore } from './Parsing';
 import { GameMode } from './Enums';
 import type { IBeatmapAttributes, IScoreSimulationOptions } from './Interfaces';
 
@@ -23,17 +23,13 @@ import type { IBeatmapAttributes, IScoreSimulationOptions } from './Interfaces';
  */
 export class ScoreSimulator {
   /**
-   * Simulates a score by a replay file. 
-   * @param replayURL Replay file URL.
+   * Adds missing properties to a score parsed from a replay file. 
+   * @param score Parsed score from the replay file.
    * @param attributes Beatmap attributes of this score.
-   * @returns Simulated score.
+   * @returns Completed score info.
    */
-  async simulateReplay(replayURL: string, attributes: IBeatmapAttributes): Promise<IScoreInfo> {
-    const score = await parseScore({
-      replayURL,
-    });
-
-    const scoreInfo = score.data.info;
+  async completeReplay(score: IScore, attributes: IBeatmapAttributes): Promise<IScoreInfo> {
+    const scoreInfo = score.info;
     const beatmapCombo = attributes.maxCombo ?? 0;
 
     return this._generateScoreInfo({
@@ -51,7 +47,7 @@ export class ScoreSimulator {
    * @param options Score simulation options.
    * @returns Simulated score.
    */
-  simulate(options: IScoreSimulationOptions): IScoreInfo {
+  simulate(options: IScoreSimulationOptions): ScoreInfo {
     const statistics = generateHitStatistics(
       options.attributes,
       options.accuracy,
@@ -90,7 +86,7 @@ export class ScoreSimulator {
    * @param attributes Beatmap attributes of this score.
    * @returns Simulated FC score.
    */
-  simulateFC(scoreInfo: IScoreInfo, attributes: IBeatmapAttributes): IScoreInfo {
+  simulateFC(scoreInfo: IScoreInfo, attributes: IBeatmapAttributes): ScoreInfo {
     if (scoreInfo.rulesetId === GameMode.Mania) {
       return this.simulateMax(attributes);
     }
@@ -136,7 +132,7 @@ export class ScoreSimulator {
    * @param attributes Beatmap attributes of this score.
    * @returns Simulated SS score.
    */
-  simulateMax(attributes: IBeatmapAttributes): IScoreInfo {
+  simulateMax(attributes: IBeatmapAttributes): ScoreInfo {
     const statistics = generateHitStatistics(attributes);
     const totalHits = attributes.totalHits ?? 0;
 
@@ -157,7 +153,7 @@ export class ScoreSimulator {
     return score;
   }
 
-  private _generateScoreInfo(options: Partial<IScoreInfo>): IScoreInfo {
+  private _generateScoreInfo(options: Partial<IScoreInfo>): ScoreInfo {
     const scoreInfo = new ScoreInfo({
       id: options?.id,
       beatmapId: options?.beatmapId,

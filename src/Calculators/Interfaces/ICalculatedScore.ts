@@ -2,6 +2,7 @@ import {
   IJsonableScoreInfo,
   DifficultyAttributes,
   PerformanceAttributes,
+  ILifeBarFrame,
 } from 'osu-classes';
 
 /**
@@ -22,4 +23,9 @@ export interface ICalculatedScore {
    * List of performance attributes of calculated beatmap.
    */
   performance: PerformanceAttributes;
+
+  /**
+   * Replay life bar.
+   */
+  lifeBar?: ILifeBarFrame[];
 }

@@ -32,7 +32,7 @@ export function toDifficultyAttributes(difficulty?: IDifficultyAttributes, rules
  * @param jsonable Raw score info data.
  * @returns Converted score information.
  */
-export function toScoreInfo(data?: IScoreInfo | IJsonableScoreInfo): IScoreInfo {
+export function toScoreInfo(data?: IScoreInfo | IJsonableScoreInfo): ScoreInfo {
   const scoreInfo = new ScoreInfo();
 
   if ((data as IScoreInfo)?.toJSON) return scoreInfo;
