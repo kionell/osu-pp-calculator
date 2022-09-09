@@ -1,4 +1,4 @@
-import { IBeatmap, IRuleset, DifficultyCalculator, DifficultyAttributes, IScoreInfo, PerformanceAttributes, Skill, IScore, IBeatmapInfo, IJsonableScoreInfo, IHitStatistics, ModCombination, ScoreRank, IJsonableBeatmapInfo } from 'osu-classes';
+import { IBeatmap, IRuleset, DifficultyCalculator, DifficultyAttributes, IScoreInfo, PerformanceAttributes, Skill, IScore, ScoreInfo, IBeatmapInfo, IJsonableScoreInfo, IHitStatistics, ModCombination, ScoreRank, IJsonableBeatmapInfo, ILifeBarFrame } from 'osu-classes';
 import { IDownloadEntryOptions, DownloadResult } from 'osu-downloader';
 
 /**
@@ -148,6 +148,10 @@ interface IScoreParsingOptions {
      */
   replayURL?: string;
   /**
+     * Output replay life bar if replay file is present?
+     */
+  lifeBar?: boolean;
+  /**
      * Path to the replay file save location.
      */
   savePath?: string;
@@ -260,31 +264,31 @@ declare function parseScore(options: IScoreParsingOptions): Promise<ScoreParsing
  */
 declare class ScoreSimulator {
   /**
-     * Simulates a score by a replay file.
-     * @param replayURL Replay file URL.
+     * Adds missing properties to a score parsed from a replay file.
+     * @param score Parsed score from the replay file.
      * @param attributes Beatmap attributes of this score.
-     * @returns Simulated score.
+     * @returns Completed score info.
      */
-  simulateReplay(replayURL: string, attributes: IBeatmapAttributes): Promise<IScoreInfo>;
+  completeReplay(score: IScore, attributes: IBeatmapAttributes): Promise<IScoreInfo>;
   /**
      * Simulates a score by score simulation options.
      * @param options Score simulation options.
      * @returns Simulated score.
      */
-  simulate(options: IScoreSimulationOptions): IScoreInfo;
+  simulate(options: IScoreSimulationOptions): ScoreInfo;
   /**
      * Simulates a new score with full combo.
      * @param scoreInfo Original score.
      * @param attributes Beatmap attributes of this score.
      * @returns Simulated FC score.
      */
-  simulateFC(scoreInfo: IScoreInfo, attributes: IBeatmapAttributes): IScoreInfo;
+  simulateFC(scoreInfo: IScoreInfo, attributes: IBeatmapAttributes): ScoreInfo;
   /**
      * Simulates a new score with max possible performance.
      * @param attributes Beatmap attributes of this score.
      * @returns Simulated SS score.
      */
-  simulateMax(attributes: IBeatmapAttributes): IScoreInfo;
+  simulateMax(attributes: IBeatmapAttributes): ScoreInfo;
   private _generateScoreInfo;
 }
 
@@ -313,7 +317,7 @@ declare function toDifficultyAttributes(difficulty?: IDifficultyAttributes, rule
  * @param jsonable Raw score info data.
  * @returns Converted score information.
  */
-declare function toScoreInfo(data?: IScoreInfo | IJsonableScoreInfo): IScoreInfo;
+declare function toScoreInfo(data?: IScoreInfo | IJsonableScoreInfo): ScoreInfo;
 
 /**
  * Downloads an osu! file by ID or URL.
@@ -469,6 +473,10 @@ interface ICalculatedScore {
      * List of performance attributes of calculated beatmap.
      */
   performance: PerformanceAttributes;
+  /**
+     * Replay life bar.
+     */
+  lifeBar?: ILifeBarFrame[];
 }
 
 /**
@@ -578,8 +586,8 @@ declare class ScoreCalculator {
      * @returns Calculated score.
      */
   calculate(options: IScoreCalculationOptions): Promise<ICalculatedScore>;
-  private _createScoreInfo;
-  private _parseOrSimulateScoreInfo;
+  private _createScore;
+  private _parseOrSimulateScore;
 }
 
 export { BeatmapCalculator, GameMode, IBeatmapAttributes, IBeatmapCalculationOptions, IBeatmapParsingOptions, IBeatmapSkill, ICalculatedBeatmap, ICalculatedScore, IDifficultyAttributes, IDifficultyCalculationOptions, IExtendedDifficultyCalculator, IPerformanceCalculationOptions, IScoreCalculationOptions, IScoreParsingOptions, IScoreSimulationOptions, ScoreCalculator, ScoreSimulator, calculateAccuracy, calculateDifficulty, calculatePerformance, calculateRank, calculateTotalHits, createBeatmapAttributes, createBeatmapInfo, createDifficultyCalculator, downloadFile, generateHitStatistics, getRulesetById, getRulesetIdByName, getValidHitStatistics, parseBeatmap, parseScore, scaleTotalScore, toCombination, toDifficultyAttributes, toDifficultyMods, toScoreInfo };
