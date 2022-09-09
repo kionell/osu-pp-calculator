@@ -9,11 +9,11 @@
   "types": "./lib/index.d.ts",
   "scripts": {
     "build": "rollup -c && npm run format",
-    "push": "npm run build && git add -A && git commit -m \"Update build\" && git push",
     "test": "jest --verbose --passWithNoTests",
     "fix": "eslint --fix ./src",
     "format": "eslint --fix ./lib/** --no-ignore",
-    "prepublishOnly": "npm run build && npm run test"
+    "prepublishOnly": "npm run build && npm run test",
+    "docs": "npx typedoc src/index.ts"
   },
   "author": "Kionell",
   "license": "MIT",
@@ -30,6 +30,8 @@
     "rollup-plugin-dts": "^4.2.1",
     "rollup-plugin-node-externals": "^4.0.0",
     "rollup-plugin-typescript-paths": "^1.3.1",
+    "typedoc": "^0.22.6",
+    "typedoc-plugin-missing-exports": "^1.0.0",
     "typescript": "^4.6.4"
   },
   "peerDependencies": {
