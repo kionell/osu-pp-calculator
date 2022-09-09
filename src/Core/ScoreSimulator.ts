@@ -118,6 +118,7 @@ export class ScoreSimulator {
     return this._generateScoreInfo({
       ...scoreInfo,
       mods: scoreInfo.mods ?? toCombination(attributes.mods, attributes.rulesetId),
+      accuracy: calculateAccuracy(scoreInfo),
       beatmapId: attributes.beatmapId,
       rulesetId: attributes.rulesetId,
       maxCombo: attributes.maxCombo,
@@ -141,6 +142,7 @@ export class ScoreSimulator {
       rulesetId: attributes.rulesetId,
       maxCombo: attributes.maxCombo,
       mods: toCombination(attributes.mods, attributes.rulesetId),
+      accuracy: 1,
       perfect: true,
       statistics,
       totalHits,
