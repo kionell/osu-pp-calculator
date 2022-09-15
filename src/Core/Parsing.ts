@@ -23,11 +23,11 @@ type ScoreParsingResult = {
 export async function parseBeatmap(options: IBeatmapParsingOptions): Promise<BeatmapParsingResult> {
   const { beatmapId, fileURL, hash, savePath } = options;
 
-  if (typeof beatmapId === 'string' || typeof beatmapId === 'number') {
+  if (beatmapId && parseInt(beatmapId as string)) {
     return parseBeatmapById(beatmapId, hash, savePath);
   }
 
-  if (typeof fileURL === 'string') {
+  if (fileURL) {
     return parseCustomBeatmap(fileURL, hash, savePath);
   }
 
