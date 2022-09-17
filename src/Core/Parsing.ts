@@ -31,7 +31,7 @@ export async function parseBeatmap(options: IBeatmapParsingOptions): Promise<Bea
     return parseCustomBeatmap(fileURL, hash, savePath);
   }
 
-  throw new Error('No beatmap ID or beatmap URL was specified!');
+  throw new Error('No beatmap ID or file URL was found!');
 }
 
 /**
@@ -52,7 +52,7 @@ async function parseBeatmapById(id: string | number, hash?: string, savePath?: s
   }
 
   if (hash && hash !== result.md5) {
-    throw new Error('Beatmap MD5 hash missmatch!');
+    throw new Error('Beatmap MD5 checksum missmatch!');
   }
 
   const data = savePath
@@ -88,7 +88,7 @@ async function parseCustomBeatmap(url: string, hash?: string, savePath?: string)
   }
 
   if (hash && hash !== result.md5) {
-    throw new Error('Beatmap MD5 hash missmatch!');
+    throw new Error('Beatmap MD5 checksum missmatch!');
   }
 
   const data = savePath
@@ -150,7 +150,7 @@ async function parseCustomScore(url: string, hash?: string, parseReplay = false)
   }
 
   if (hash && hash !== result.md5) {
-    throw new Error('Replay MD5 hash missmatch!');
+    throw new Error('Replay MD5 checksum missmatch!');
   }
 
   return {
