@@ -41,12 +41,16 @@ export class BeatmapCalculator {
 
     const { data: parsed, hash: beatmapMD5 } = await parseBeatmap(options);
 
-    applyCustomStats(parsed, options);
-
     const ruleset = options.ruleset ?? getRulesetById(options.rulesetId ?? parsed.mode);
 
     const combination = ruleset.createModCombination(options.mods);
     const beatmap = ruleset.applyToBeatmapWithMods(parsed, combination);
+
+    /**
+     * Apply custom beatmap stats after applying ruleset & mods
+     * to ignore clock rate mods (DT, NC, HT...).
+     */
+    applyCustomStats(beatmap, options);
 
     const beatmapInfo = options.beatmapInfo ?? createBeatmapInfo(beatmap, beatmapMD5);
     const attributes = options.attributes ?? createBeatmapAttributes(beatmap);
