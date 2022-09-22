@@ -1,4 +1,4 @@
-import { readFileSync } from 'fs';
+import { readFile } from 'fs/promises';
 import { DownloadType } from 'osu-downloader';
 import { BeatmapDecoder, ScoreDecoder } from 'osu-parsers';
 import type { IBeatmap, IScore } from 'osu-classes';
@@ -56,7 +56,7 @@ async function parseBeatmapById(id: string | number, hash?: string, savePath?: s
   }
 
   const data = savePath
-    ? readFileSync(result.filePath as string)
+    ? await readFile(result.filePath as string)
     : result.buffer as Buffer;
 
   const parsed = parseBeatmapData(data);
@@ -92,7 +92,7 @@ async function parseCustomBeatmap(url: string, hash?: string, savePath?: string)
   }
 
   const data = savePath
-    ? readFileSync(result.filePath as string)
+    ? await readFile(result.filePath as string)
     : result.buffer as Buffer;
 
   return {
