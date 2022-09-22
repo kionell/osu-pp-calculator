@@ -1,4 +1,5 @@
 export * from './IBeatmapAttributes';
+export * from './IBeatmapCustomStats';
 export * from './IBeatmapParsingOptions';
 export * from './IBeatmapSkill';
 export * from './IDifficultyAttributes';

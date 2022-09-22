@@ -17,6 +17,7 @@ import {
   toDifficultyAttributes,
   IBeatmapSkill,
   IExtendedDifficultyCalculator,
+  applyCustomStats,
 } from '@Core';
 
 /**
@@ -39,6 +40,8 @@ export class BeatmapCalculator {
     }
 
     const { data: parsed, hash: beatmapMD5 } = await parseBeatmap(options);
+
+    applyCustomStats(parsed, options);
 
     const ruleset = options.ruleset ?? getRulesetById(options.rulesetId ?? parsed.mode);
 

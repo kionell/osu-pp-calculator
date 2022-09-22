@@ -2,6 +2,7 @@ import type { IJsonableScoreInfo, IRuleset, IScoreInfo } from 'osu-classes';
 
 import type {
   GameMode,
+  IBeatmapCustomStats,
   IDifficultyAttributes,
   IScoreParsingOptions,
   IScoreSimulationOptions,
@@ -10,7 +11,8 @@ import type {
 /**
  * Options for score calculation.
  */
-export interface IScoreCalculationOptions extends IScoreParsingOptions, Partial<IScoreSimulationOptions> {
+export interface IScoreCalculationOptions
+  extends IScoreParsingOptions, Partial<IScoreSimulationOptions>, IBeatmapCustomStats {
   /**
    * Beatmap ID of this score.
    */

@@ -5,6 +5,7 @@ import {
   IBeatmap,
   HitType,
   ModCombination,
+  MathUtils,
 } from 'osu-classes';
 
 import {
@@ -13,7 +14,7 @@ import {
   JuiceTinyDroplet,
 } from 'osu-catch-stable';
 
-import { IBeatmapAttributes } from '../Interfaces';
+import { IBeatmapAttributes, IBeatmapCustomStats } from '../Interfaces';
 import { GameMode } from '../Enums';
 
 /**
@@ -75,6 +76,45 @@ export function createBeatmapAttributes(beatmap?: IBeatmap): IBeatmapAttributes 
     maxDroplets,
     maxTinyDroplets,
   };
+}
+
+/**
+ * Overwrites difficulty stats of a beatmap with custom difficulty stats.
+ * @param beatmap A beatmap.
+ * @param stats Custom difficulty stats.
+ */
+export function applyCustomStats(beatmap: IBeatmap, stats: IBeatmapCustomStats): void {
+  const { approachRate, overallDifficulty, circleSize, clockRate } = stats;
+
+  const clampStats = (value: number): number => {
+    const MIN_LIMIT = 0; // Min limit of Difficulty Adjust mod.
+    const MAX_LIMIT = 11; // Max limit of Difficulty Adjust mod.
+
+    return MathUtils.clamp(value, MIN_LIMIT, MAX_LIMIT);
+  };
+
+  const clampRate = (value: number): number => {
+    const MIN_LIMIT = 0.5; // Min limit of Half Time mod.
+    const MAX_LIMIT = 2.0; // Max limit of Double Time mod.
+
+    return MathUtils.clamp(value, MIN_LIMIT, MAX_LIMIT);
+  };
+
+  if (typeof approachRate === 'number') {
+    beatmap.difficulty.approachRate = clampStats(approachRate);
+  }
+
+  if (typeof overallDifficulty === 'number') {
+    beatmap.difficulty.overallDifficulty = clampStats(overallDifficulty);
+  }
+
+  if (typeof circleSize === 'number') {
+    beatmap.difficulty.circleSize = clampStats(circleSize);
+  }
+
+  if (typeof clockRate === 'number') {
+    beatmap.difficulty.clockRate = clampRate(clockRate);
+  }
 }
 
 /**

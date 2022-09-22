@@ -1,5 +1,5 @@
 /**
- * Beatmap attributes that will be used to simulate scores.
+ * Missing beatmap attributes that are required to simulate scores.
  */
 export interface IBeatmapAttributes {
   /**

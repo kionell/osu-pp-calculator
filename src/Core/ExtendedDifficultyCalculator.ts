@@ -1,8 +1,8 @@
 import { DifficultyCalculator, IBeatmap, IRuleset, Skill } from 'osu-classes';
-import { StandardDifficultyAttributes, StandardDifficultyCalculator, StandardModCombination } from 'osu-standard-stable';
-import { TaikoDifficultyAttributes, TaikoDifficultyCalculator, TaikoModCombination } from 'osu-taiko-stable';
-import { CatchDifficultyAttributes, CatchDifficultyCalculator, CatchModCombination } from 'osu-catch-stable';
-import { ManiaDifficultyAttributes, ManiaDifficultyCalculator, ManiaModCombination } from 'osu-mania-stable';
+import { StandardDifficultyCalculator, StandardModCombination } from 'osu-standard-stable';
+import { TaikoDifficultyCalculator, TaikoModCombination } from 'osu-taiko-stable';
+import { CatchDifficultyCalculator, CatchModCombination } from 'osu-catch-stable';
+import { ManiaDifficultyCalculator, ManiaModCombination } from 'osu-mania-stable';
 import { GameMode } from './Enums';
 
 /**
@@ -28,10 +28,10 @@ class ExtendedStandardDifficultyCalculator extends StandardDifficultyCalculator 
     return this._skills;
   }
 
-  protected _createDifficultyAttributes(beatmap: IBeatmap, mods: StandardModCombination, skills: Skill[]): StandardDifficultyAttributes {
+  protected _createDifficultyAttributes(beatmap: IBeatmap, mods: StandardModCombination, skills: Skill[], clockRate: number) {
     this._skills = skills;
 
-    return super._createDifficultyAttributes(beatmap, mods, skills);
+    return super._createDifficultyAttributes(beatmap, mods, skills, clockRate);
   }
 }
 
@@ -48,10 +48,10 @@ class ExtendedTaikoDifficultyCalculator extends TaikoDifficultyCalculator implem
     return this._skills;
   }
 
-  protected _createDifficultyAttributes(beatmap: IBeatmap, mods: TaikoModCombination, skills: Skill[]): TaikoDifficultyAttributes {
+  protected _createDifficultyAttributes(beatmap: IBeatmap, mods: TaikoModCombination, skills: Skill[], clockRate: number) {
     this._skills = skills;
 
-    return super._createDifficultyAttributes(beatmap, mods, skills);
+    return super._createDifficultyAttributes(beatmap, mods, skills, clockRate);
   }
 }
 
@@ -68,10 +68,10 @@ class ExtendedCatchDifficultyCalculator extends CatchDifficultyCalculator implem
     return this._skills;
   }
 
-  protected _createDifficultyAttributes(beatmap: IBeatmap, mods: CatchModCombination, skills: Skill[]): CatchDifficultyAttributes {
+  protected _createDifficultyAttributes(beatmap: IBeatmap, mods: CatchModCombination, skills: Skill[], clockRate: number) {
     this._skills = skills;
 
-    return super._createDifficultyAttributes(beatmap, mods, skills);
+    return super._createDifficultyAttributes(beatmap, mods, skills, clockRate);
   }
 }
 
@@ -88,10 +88,10 @@ class ExtendedManiaDifficultyCalculator extends ManiaDifficultyCalculator implem
     return this._skills;
   }
 
-  protected _createDifficultyAttributes(beatmap: IBeatmap, mods: ManiaModCombination, skills: Skill[]): ManiaDifficultyAttributes {
+  protected _createDifficultyAttributes(beatmap: IBeatmap, mods: ManiaModCombination, skills: Skill[], clockRate: number) {
     this._skills = skills;
 
-    return super._createDifficultyAttributes(beatmap, mods, skills);
+    return super._createDifficultyAttributes(beatmap, mods, skills, clockRate);
   }
 }
 
