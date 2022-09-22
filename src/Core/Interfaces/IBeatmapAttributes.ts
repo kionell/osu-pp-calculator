@@ -23,6 +23,11 @@ export interface IBeatmapAttributes {
   mods?: string | number;
 
   /**
+   * Beatmap clock rate.
+   */
+  clockRate?: number;
+
+  /**
    * Beatmap total hits.
    */
   totalHits?: number;

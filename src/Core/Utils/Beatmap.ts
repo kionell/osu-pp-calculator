@@ -71,6 +71,7 @@ export function createBeatmapAttributes(beatmap?: IBeatmap): IBeatmapAttributes 
     rulesetId: beatmap?.mode,
     mods: getMods(beatmap)?.toString() ?? 'NM',
     maxCombo: getMaxCombo(beatmap),
+    clockRate: beatmap?.difficulty.clockRate ?? 1,
     totalHits,
     maxFruits,
     maxDroplets,
