@@ -17,6 +17,7 @@ import {
   toScoreInfo,
   parseScore,
   applyCustomStats,
+  applyCustomCircleSize,
 } from '@Core';
 
 /**
@@ -50,6 +51,12 @@ export class ScoreCalculator {
 
     if (!attributes || !beatmapMD5 || !ruleset || !score || !difficulty || (isPartialDifficulty && !options.fix)) {
       const { data, hash } = await parseBeatmap(options);
+
+      /**
+       * Apply custom circle size before applying ruleset & mods.
+       * Circle size actually affects the conversion process.
+       */
+      applyCustomCircleSize(data, options);
 
       beatmapMD5 ??= hash;
       rulesetId ??= data.mode;

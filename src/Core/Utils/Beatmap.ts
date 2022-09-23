@@ -79,27 +79,45 @@ export function createBeatmapAttributes(beatmap?: IBeatmap): IBeatmapAttributes 
   };
 }
 
+function clampStats(value: number): number {
+  /**
+   * This values are taken from osu!lazer's Difficulty Adjust mod.
+   * I don't think it makes sense to change them as 
+   * AR & OD formulas start to give weird values on >13.33.
+   */
+  const MIN_LIMIT = 0;
+  const MAX_LIMIT = 11;
+
+  return MathUtils.clamp(value, MIN_LIMIT, MAX_LIMIT);
+}
+
+const clampRate = (value: number): number => {
+  const MIN_LIMIT = 0.25;
+  const MAX_LIMIT = 3.0;
+
+  return MathUtils.clamp(value, MIN_LIMIT, MAX_LIMIT);
+};
+
+/**
+ * Overwrites circle size of a beatmap with custom one.
+ * @param beatmap A beatmap.
+ * @param stats Custom difficulty stats.
+ */
+export function applyCustomCircleSize(beatmap: IBeatmap, stats: IBeatmapCustomStats): void {
+  const { circleSize } = stats;
+
+  if (typeof circleSize === 'number') {
+    beatmap.difficulty.circleSize = clampStats(circleSize);
+  }
+}
+
 /**
  * Overwrites difficulty stats of a beatmap with custom difficulty stats.
  * @param beatmap A beatmap.
  * @param stats Custom difficulty stats.
  */
 export function applyCustomStats(beatmap: IBeatmap, stats: IBeatmapCustomStats): void {
-  const { approachRate, overallDifficulty, circleSize, clockRate } = stats;
-
-  const clampStats = (value: number): number => {
-    const MIN_LIMIT = 0; // Min limit of Difficulty Adjust mod.
-    const MAX_LIMIT = 11; // Max limit of Difficulty Adjust mod.
-
-    return MathUtils.clamp(value, MIN_LIMIT, MAX_LIMIT);
-  };
-
-  const clampRate = (value: number): number => {
-    const MIN_LIMIT = 0.5; // Min limit of Half Time mod.
-    const MAX_LIMIT = 2.0; // Max limit of Double Time mod.
-
-    return MathUtils.clamp(value, MIN_LIMIT, MAX_LIMIT);
-  };
+  const { approachRate, overallDifficulty, clockRate } = stats;
 
   if (typeof approachRate === 'number') {
     beatmap.difficulty.approachRate = clampStats(approachRate);
@@ -107,10 +125,6 @@ export function applyCustomStats(beatmap: IBeatmap, stats: IBeatmapCustomStats):
 
   if (typeof overallDifficulty === 'number') {
     beatmap.difficulty.overallDifficulty = clampStats(overallDifficulty);
-  }
-
-  if (typeof circleSize === 'number') {
-    beatmap.difficulty.circleSize = clampStats(circleSize);
   }
 
   if (typeof clockRate === 'number') {
