@@ -143,8 +143,7 @@ export function applyCustomStats(beatmap: IBeatmap, stats: IBeatmapCustomStats):
   if (typeof clockRate === 'number') {
     beatmap.difficulty.clockRate = clampRate(clockRate);
   }
-
-  if (typeof bpm === 'number') {
+  else if (typeof bpm === 'number') {
     // Clock rate set by BPM value may exceed the actual limit of clock rate.
     beatmap.difficulty.clockRate = clampBPM(bpm) / beatmap.bpmMode;
   }
