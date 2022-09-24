@@ -21,4 +21,9 @@ export interface IBeatmapCustomStats {
    * Custom clock rate for the target beatmap.
    */
   clockRate?: number;
+
+  /**
+   * Custom BPM for the target beatmap (will overwrite actual clock rate).
+   */
+  bpm?: number;
 }

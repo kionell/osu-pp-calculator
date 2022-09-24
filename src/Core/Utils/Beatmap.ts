@@ -92,8 +92,21 @@ function clampStats(value: number): number {
 }
 
 const clampRate = (value: number): number => {
+  /**
+   * This values are taken from osu!lazer's DT & HT mods.
+   */
   const MIN_LIMIT = 0.25;
   const MAX_LIMIT = 3.0;
+
+  return MathUtils.clamp(value, MIN_LIMIT, MAX_LIMIT);
+};
+
+const clampBPM = (value: number): number => {
+  /**
+   * This values are taken from osu!lazer's beatmap BPM formula.
+   */
+  const MIN_LIMIT = 60;
+  const MAX_LIMIT = 10000;
 
   return MathUtils.clamp(value, MIN_LIMIT, MAX_LIMIT);
 };
@@ -117,7 +130,7 @@ export function applyCustomCircleSize(beatmap: IBeatmap, stats: IBeatmapCustomSt
  * @param stats Custom difficulty stats.
  */
 export function applyCustomStats(beatmap: IBeatmap, stats: IBeatmapCustomStats): void {
-  const { approachRate, overallDifficulty, clockRate } = stats;
+  const { approachRate, overallDifficulty, clockRate, bpm } = stats;
 
   if (typeof approachRate === 'number') {
     beatmap.difficulty.approachRate = clampStats(approachRate);
@@ -129,6 +142,11 @@ export function applyCustomStats(beatmap: IBeatmap, stats: IBeatmapCustomStats):
 
   if (typeof clockRate === 'number') {
     beatmap.difficulty.clockRate = clampRate(clockRate);
+  }
+
+  if (typeof bpm === 'number') {
+    // Clock rate set by BPM value may exceed the actual limit of clock rate.
+    beatmap.difficulty.clockRate = clampBPM(bpm) / beatmap.bpmMode;
   }
 }
 
