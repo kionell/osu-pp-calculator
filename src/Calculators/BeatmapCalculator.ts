@@ -19,7 +19,7 @@ import {
   IExtendedDifficultyCalculator,
   applyCustomStats,
   applyCustomCircleSize,
-} from '@Core';
+} from '../Core';
 
 /**
  * A beatmap calculator.

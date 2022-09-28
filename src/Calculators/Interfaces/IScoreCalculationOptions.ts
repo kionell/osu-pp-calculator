@@ -6,7 +6,7 @@ import type {
   IDifficultyAttributes,
   IScoreParsingOptions,
   IScoreSimulationOptions,
-} from '@Core';
+} from '../../Core';
 
 /**
  * Options for score calculation.

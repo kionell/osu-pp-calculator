@@ -4,7 +4,7 @@ import type {
   PerformanceAttributes,
 } from 'osu-classes';
 
-import { IBeatmapAttributes, IBeatmapSkill } from '@Core';
+import { IBeatmapAttributes, IBeatmapSkill } from '../../Core';
 
 /**
  * Calculated beatmap.

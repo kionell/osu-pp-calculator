@@ -18,7 +18,7 @@ import {
   parseScore,
   applyCustomStats,
   applyCustomCircleSize,
-} from '@Core';
+} from '../Core';
 
 /**
  * A score calculator.

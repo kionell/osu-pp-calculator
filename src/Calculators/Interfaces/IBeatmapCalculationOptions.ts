@@ -10,7 +10,7 @@ import type {
   IBeatmapCustomStats,
   IBeatmapParsingOptions,
   IDifficultyAttributes,
-} from '@Core';
+} from '../../Core';
 
 /**
  * Options for beatmap calculation.
