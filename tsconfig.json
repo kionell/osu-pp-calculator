@@ -11,10 +11,7 @@
     "declaration": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "baseUrl": "./",
-    "paths": {
-      "@Core": ["src/Core"],
-    }
+    "baseUrl": "./"
   },
   "include": [
     "./src"
