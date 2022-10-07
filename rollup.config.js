@@ -19,6 +19,7 @@ export default [
       {
         file: './lib/index.cjs',
         format: 'cjs',
+        sourcemap: false,
       },
     ],
   },
@@ -55,6 +56,7 @@ export default [
     output: {
       file: './lib/index.d.ts',
       format: 'es',
+      sourcemap: false,
     },
   },
 ]
