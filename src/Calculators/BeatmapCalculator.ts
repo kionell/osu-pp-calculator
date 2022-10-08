@@ -1,4 +1,5 @@
-import { IScoreInfo, StrainSkill } from 'osu-classes';
+import { IScoreInfo, Skill, StrainSkill } from 'osu-classes';
+import { Peaks } from 'osu-taiko-stable';
 import { IBeatmapCalculationOptions, ICalculatedBeatmap } from './Interfaces';
 
 import {
@@ -143,22 +144,38 @@ export class BeatmapCalculator {
    * @returns Skill output data.
    */
   private _getSkillsOutput(calculator: IExtendedDifficultyCalculator): IBeatmapSkill[] {
-    const skills = calculator.getSkills();
-    const strainSkills = skills.filter((s) => s instanceof StrainSkill) as StrainSkill[];
+    const getStrainSkillOutput = (skills: Skill[]) => {
+      const strainSkills = skills.filter((s) => s instanceof StrainSkill) as StrainSkill[];
 
-    const output = strainSkills.map((skill) => {
-      return {
-        title: skill.constructor.name,
-        strainPeaks: [...skill.getCurrentStrainPeaks()],
-      };
-    });
+      return strainSkills.map((skill) => {
+        return {
+          title: skill.constructor.name,
+          strainPeaks: [...skill.getCurrentStrainPeaks()],
+        };
+      });
+    };
 
-    // Rename one of two osu!standard aim skills.
-    if (output[0]?.title === 'Aim' && output[1]?.title === 'Aim') {
-      output[1].title = 'Aim (No Sliders)';
+    const mainSkills = calculator.getSkills();
+
+    // Get inner skill data from osu!taiko peaks skill.
+    if (mainSkills.length > 0 && mainSkills[0] instanceof Peaks) {
+      const peakSkill = mainSkills[0] as Peaks;
+
+      return getStrainSkillOutput([
+        peakSkill.rhythm,
+        peakSkill.colour,
+        peakSkill.stamina,
+      ]);
     }
 
-    return output;
+    const skillOutput = getStrainSkillOutput(mainSkills);
+
+    // Rename one of two osu!standard aim skills.
+    if (skillOutput[0]?.title === 'Aim' && skillOutput[1]?.title === 'Aim') {
+      skillOutput[1].title = 'Aim (No Sliders)';
+    }
+
+    return skillOutput;
   }
 
   /**
