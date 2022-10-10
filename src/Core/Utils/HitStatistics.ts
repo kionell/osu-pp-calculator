@@ -30,12 +30,11 @@ export function generateHitStatistics(options: IHitStatisticsInput): Partial<IHi
 function generateOsuHitStatistics(options: IHitStatisticsInput): Partial<IHitStatistics> {
   const attributes = options.attributes;
   const accuracy = getAccuracy(options);
+  const totalHits = attributes.totalHits ?? 0;
 
   let count50 = options.count50;
   let count100 = options.count100;
   let countMiss = options.countMiss ?? 0;
-
-  const totalHits = attributes.totalHits ?? 0;
 
   countMiss = MathUtils.clamp(countMiss, 0, totalHits);
   count50 = count50 ? MathUtils.clamp(count50, 0, totalHits - countMiss) : 0;
@@ -60,11 +59,10 @@ function generateOsuHitStatistics(options: IHitStatisticsInput): Partial<IHitSta
 function generateTaikoHitStatistics(options: IHitStatisticsInput): Partial<IHitStatistics> {
   const attributes = options.attributes;
   const accuracy = getAccuracy(options);
+  const totalHits = attributes.totalHits ?? 0;
 
   let count100 = options.count100;
   let countMiss = options.countMiss ?? 0;
-
-  const totalHits = attributes.totalHits ?? 0;
 
   countMiss = MathUtils.clamp(countMiss, 0, totalHits);
 
@@ -129,33 +127,54 @@ function generateCatchHitStatistics(options: IHitStatisticsInput): Partial<IHitS
 }
 
 function generateManiaHitStatistics(options: IHitStatisticsInput): Partial<IHitStatistics> {
-  const attributes = options.attributes;
+  // Accuracy = (n50 / 6 + n100 / 3 + katu / 1.5 + (n300 + geki)) / total
 
-  let count300 = options.count300;
-  let countKatu = options.countKatu; // Goods (200)
-  let count100 = options.count100;
+  const attributes = options.attributes;
+  const accuracy = getAccuracy(options);
+  const totalHits = attributes.totalHits ?? 0;
+
+  let count300 = options.count300 ?? 0;
+  let countKatu = options.countKatu ?? 0; // Goods (200)
+  let count100 = options.count100 ?? 0;
   let count50 = options.count50;
   let countMiss = options.countMiss ?? 0;
-
-  const totalHits = attributes.totalHits ?? 0;
 
   countMiss = MathUtils.clamp(countMiss, 0, totalHits);
 
   let currentCounts = countMiss;
 
-  count50 = count50 ? MathUtils.clamp(count50, 0, totalHits - currentCounts) : 0;
+  if (typeof count50 === 'number' || typeof options.accuracy !== 'number') {
+    count50 = count50 ? MathUtils.clamp(count50, 0, totalHits - currentCounts) : 0;
+  }
+  else {
+    /**
+     * Acc = 0.98, Total = 1000
+     * 
+     * n50 / 6 + n100 / 3 + katu / 1.5 + n300 + geki = Acc * Total = 980
+     * n50 + n100 + katu + n300 + geki = 1000
+     * 
+     * 5 * n50 / 6 + 2 * n100 / 3 + katu / 3 = 20
+     * 
+     * n50 = 1.2 * (20 - 2 * n100 / 3 - katu / 3)
+     * 
+     * n50 = 24 - 0.8 * n100 - 0.4 * katu
+     */
+    count50 = (totalHits - totalHits * accuracy) * 1.2;
+
+    count50 = Math.round(count50 - 0.8 * count100 - 0.4 * countKatu);
+  }
 
   currentCounts += count50;
 
-  count100 = count100 ? MathUtils.clamp(count100, 0, totalHits - currentCounts) : 0;
+  count100 = MathUtils.clamp(count100, 0, totalHits - currentCounts);
 
   currentCounts += count100;
 
-  countKatu = countKatu ? MathUtils.clamp(countKatu, 0, totalHits - currentCounts) : 0;
+  countKatu = MathUtils.clamp(countKatu, 0, totalHits - currentCounts);
 
   currentCounts += countKatu;
 
-  count300 = count300 ? MathUtils.clamp(count300, 0, totalHits - currentCounts) : 0;
+  count300 = MathUtils.clamp(count300, 0, totalHits - currentCounts);
 
   currentCounts += count300;
 

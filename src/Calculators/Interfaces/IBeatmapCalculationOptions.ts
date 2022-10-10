@@ -62,9 +62,4 @@ export interface IBeatmapCalculationOptions extends IBeatmapParsingOptions, IBea
    * List of accuracy for all game modes except osu!mania.
    */
   accuracy?: number[];
-
-  /**
-   * List of total scores for osu!mania game mode.
-   */
-  totalScores?: number[];
 }

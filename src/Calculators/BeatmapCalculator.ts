@@ -5,16 +5,13 @@ import { IBeatmapCalculationOptions, ICalculatedBeatmap } from './Interfaces';
 import {
   ScoreSimulator,
   parseBeatmap,
-  scaleTotalScore,
   createDifficultyCalculator,
   createBeatmapInfo,
   createBeatmapAttributes,
   calculateDifficulty,
   calculatePerformance,
   getRulesetById,
-  GameMode,
   IBeatmapAttributes,
-  toCombination,
   toDifficultyAttributes,
   IBeatmapSkill,
   IExtendedDifficultyCalculator,
@@ -72,7 +69,7 @@ export class BeatmapCalculator {
 
     const skills = options.strains ? this._getSkillsOutput(calculator) : null;
 
-    const scores = this._simulateScores(attributes, options);
+    const scores = this._simulateScores(attributes, options.accuracy);
 
     const performance = scores.map((scoreInfo) => calculatePerformance({
       difficulty,
@@ -103,7 +100,7 @@ export class BeatmapCalculator {
     const ruleset = options.ruleset ?? getRulesetById(attributes.rulesetId);
     const difficulty = toDifficultyAttributes(options.difficulty, ruleset.id);
 
-    const scores = this._simulateScores(attributes, options);
+    const scores = this._simulateScores(attributes, options.accuracy);
 
     const performance = scores.map((scoreInfo) => calculatePerformance({
       difficulty,
@@ -179,24 +176,12 @@ export class BeatmapCalculator {
   }
 
   /**
-   * Simulates custom scores by accuracy or total score values.
-   * @param attributes Beatmap attributes.
-   * @param options Beatmap calculation options.
-   * @returns Simulated scores.
-   */
-  private _simulateScores(attributes: IBeatmapAttributes, options: IBeatmapCalculationOptions): IScoreInfo[] {
-    return attributes.rulesetId === GameMode.Mania
-      ? this._simulateManiaScores(attributes, options.totalScores)
-      : this._simulateOtherScores(attributes, options.accuracy);
-  }
-
-  /**
    * Simulates custom scores by accuracy values.
    * @param attributes Beatmap attributes.
    * @param accuracy Accuracy values.
    * @returns Simulated scores.
    */
-  private _simulateOtherScores(attributes: IBeatmapAttributes, accuracy?: number[]): IScoreInfo[] {
+  private _simulateScores(attributes: IBeatmapAttributes, accuracy?: number[]): IScoreInfo[] {
     /**
      * Default accuracy list for simulation.
      */
@@ -205,30 +190,6 @@ export class BeatmapCalculator {
     return accuracy.map((accuracy) => this._scoreSimulator.simulate({
       attributes,
       accuracy,
-    }));
-  }
-
-  /**
-   * Simulates custom osu!mania scores by total score values.
-   * @param attributes Beatmap attributes.
-   * @param totalScores Total score values.
-   * @returns Simulated osu!mania scores.
-   */
-  private _simulateManiaScores(attributes: IBeatmapAttributes, totalScores?: number[]): IScoreInfo[] {
-    const mods = toCombination(attributes.mods, attributes.rulesetId);
-
-    /**
-     * Default total score list for simulation.
-     */
-    totalScores ??= [
-      scaleTotalScore(8e5, mods),
-      scaleTotalScore(9e5, mods),
-      scaleTotalScore(1e6, mods),
-    ];
-
-    return totalScores.map((totalScore) => this._scoreSimulator.simulate({
-      attributes,
-      totalScore,
     }));
   }
 }
