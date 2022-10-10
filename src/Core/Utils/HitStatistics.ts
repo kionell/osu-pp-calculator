@@ -2,24 +2,39 @@ import { IHitStatistics, MathUtils } from 'osu-classes';
 import type { IBeatmapAttributes } from '../Interfaces';
 import { GameMode } from '../Enums';
 
-export function generateHitStatistics(attributes: IBeatmapAttributes, accuracy = 1, countMiss = 0, count50?: number, count100?: number): Partial<IHitStatistics> {
-  if (accuracy > 1) accuracy /= 100;
-
-  switch (attributes.rulesetId) {
-    case GameMode.Taiko:
-      return generateTaikoHitStatistics(attributes, accuracy, countMiss, count100);
-
-    case GameMode.Fruits:
-      return generateCatchHitStatistics(attributes, accuracy, countMiss, count50, count100);
-
-    case GameMode.Mania:
-      return generateManiaHitStatistics(attributes);
-  }
-
-  return generateOsuHitStatistics(attributes, accuracy, countMiss, count50, count100);
+interface IHitStatisticsInput {
+  attributes: IBeatmapAttributes;
+  accuracy?: number;
+  countMiss?: number;
+  count50?: number;
+  count100?: number;
+  count300?: number;
+  countKatu?: number;
 }
 
-function generateOsuHitStatistics(attributes: IBeatmapAttributes, accuracy = 1, countMiss = 0, count50?: number, count100?: number): Partial<IHitStatistics> {
+export function generateHitStatistics(options: IHitStatisticsInput): Partial<IHitStatistics> {
+  switch (options.attributes.rulesetId) {
+    case GameMode.Taiko:
+      return generateTaikoHitStatistics(options);
+
+    case GameMode.Fruits:
+      return generateCatchHitStatistics(options);
+
+    case GameMode.Mania:
+      return generateManiaHitStatistics(options);
+  }
+
+  return generateOsuHitStatistics(options);
+}
+
+function generateOsuHitStatistics(options: IHitStatisticsInput): Partial<IHitStatistics> {
+  const attributes = options.attributes;
+  const accuracy = getAccuracy(options);
+
+  let count50 = options.count50;
+  let count100 = options.count100;
+  let countMiss = options.countMiss ?? 0;
+
   const totalHits = attributes.totalHits ?? 0;
 
   countMiss = MathUtils.clamp(countMiss, 0, totalHits);
@@ -37,12 +52,18 @@ function generateOsuHitStatistics(attributes: IBeatmapAttributes, accuracy = 1, 
   return {
     great: count300,
     ok: count100,
-    meh: count50 ?? 0,
+    meh: count50,
     miss: countMiss,
   };
 }
 
-function generateTaikoHitStatistics(attributes: IBeatmapAttributes, accuracy = 1, countMiss = 0, count100?: number): Partial<IHitStatistics> {
+function generateTaikoHitStatistics(options: IHitStatisticsInput): Partial<IHitStatistics> {
+  const attributes = options.attributes;
+  const accuracy = getAccuracy(options);
+
+  let count100 = options.count100;
+  let countMiss = options.countMiss ?? 0;
+
   const totalHits = attributes.totalHits ?? 0;
 
   countMiss = MathUtils.clamp(countMiss, 0, totalHits);
@@ -67,7 +88,14 @@ function generateTaikoHitStatistics(attributes: IBeatmapAttributes, accuracy = 1
   };
 }
 
-function generateCatchHitStatistics(attributes: IBeatmapAttributes, accuracy = 1, countMiss = 0, count50?: number, count100?: number): Partial<IHitStatistics> {
+function generateCatchHitStatistics(options: IHitStatisticsInput): Partial<IHitStatistics> {
+  const attributes = options.attributes;
+  const accuracy = getAccuracy(options);
+  const count50 = options.count50;
+  const count100 = options.count100;
+
+  let countMiss = options.countMiss ?? 0;
+
   const maxCombo = attributes.maxCombo ?? 0;
   const maxFruits = attributes.maxFruits ?? 0;
   const maxDroplets = attributes.maxDroplets ?? 0;
@@ -100,10 +128,55 @@ function generateCatchHitStatistics(attributes: IBeatmapAttributes, accuracy = 1
   };
 }
 
-function generateManiaHitStatistics(attributes: IBeatmapAttributes): Partial<IHitStatistics> {
+function generateManiaHitStatistics(options: IHitStatisticsInput): Partial<IHitStatistics> {
+  const attributes = options.attributes;
+
+  let count300 = options.count300;
+  let countKatu = options.countKatu; // Goods (200)
+  let count100 = options.count100;
+  let count50 = options.count50;
+  let countMiss = options.countMiss ?? 0;
+
+  const totalHits = attributes.totalHits ?? 0;
+
+  countMiss = MathUtils.clamp(countMiss, 0, totalHits);
+
+  let currentCounts = countMiss;
+
+  count50 = count50 ? MathUtils.clamp(count50, 0, totalHits - currentCounts) : 0;
+
+  currentCounts += count50;
+
+  count100 = count100 ? MathUtils.clamp(count100, 0, totalHits - currentCounts) : 0;
+
+  currentCounts += count100;
+
+  countKatu = countKatu ? MathUtils.clamp(countKatu, 0, totalHits - currentCounts) : 0;
+
+  currentCounts += countKatu;
+
+  count300 = count300 ? MathUtils.clamp(count300, 0, totalHits - currentCounts) : 0;
+
+  currentCounts += count300;
+
+  const countGeki = totalHits - count300 - countKatu - count100 - count50 - countMiss;
+
   return {
-    perfect: attributes.totalHits ?? 0,
+    perfect: countGeki,
+    great: count300,
+    good: countKatu,
+    ok: count100,
+    meh: count50,
+    miss: countMiss,
   };
+}
+
+function getAccuracy(options: IHitStatisticsInput): number {
+  if (typeof options.accuracy !== 'number') return 1;
+
+  if (options.accuracy > 1) return options.accuracy / 100;
+
+  return options.accuracy;
 }
 
 export function getValidHitStatistics(original?: Partial<IHitStatistics>): IHitStatistics {

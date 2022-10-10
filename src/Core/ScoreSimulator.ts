@@ -48,13 +48,7 @@ export class ScoreSimulator {
    * @returns Simulated score.
    */
   simulate(options: IScoreSimulationOptions): ScoreInfo {
-    const statistics = generateHitStatistics(
-      options.attributes,
-      options.accuracy,
-      options.countMiss,
-      options.count50,
-      options.count100,
-    );
+    const statistics = generateHitStatistics(options);
 
     const attributes = options.attributes;
     const beatmapCombo = attributes.maxCombo ?? 0;
@@ -133,7 +127,7 @@ export class ScoreSimulator {
    * @returns Simulated SS score.
    */
   simulateMax(attributes: IBeatmapAttributes): ScoreInfo {
-    const statistics = generateHitStatistics(attributes);
+    const statistics = generateHitStatistics({ attributes });
     const totalHits = attributes.totalHits ?? 0;
 
     const score = this._generateScoreInfo({
