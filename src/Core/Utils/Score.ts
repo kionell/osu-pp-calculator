@@ -1,4 +1,4 @@
-import { IScoreInfo, ModCombination, ModType, ScoreRank } from 'osu-classes';
+import { IScoreInfo, ScoreRank } from 'osu-classes';
 import { GameMode } from '../Enums';
 
 /**
@@ -61,19 +61,6 @@ export function calculateTotalHits(scoreInfo: IScoreInfo): number {
   }
 
   return c300 + c100 + c50 + misses + geki + katu;
-}
-
-/**
- * Scales total score of a play with mod multipliers.
- * @param totalScore Original total score.
- * @returns Scaled total score.
- */
-export function scaleTotalScore(totalScore: number, mods?: ModCombination | null): number {
-  const difficultyReduction = mods?.all
-    .filter((m) => m.type === ModType.DifficultyReduction) ?? [];
-
-  return difficultyReduction
-    .reduce((score, mod) => score * mod.multiplier, totalScore);
 }
 
 /**

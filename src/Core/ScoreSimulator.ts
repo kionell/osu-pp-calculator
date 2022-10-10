@@ -11,7 +11,6 @@ import {
   getValidHitStatistics,
   calculateAccuracy,
   calculateRank,
-  scaleTotalScore,
   toCombination,
 } from './Utils';
 
@@ -140,10 +139,6 @@ export class ScoreSimulator {
       totalHits,
     });
 
-    if (attributes.rulesetId === GameMode.Mania) {
-      score.totalScore = 1e6;
-    }
-
     return score;
   }
 
@@ -164,10 +159,6 @@ export class ScoreSimulator {
     });
 
     if (options?.mods) scoreInfo.mods = options.mods;
-
-    if (scoreInfo.rulesetId === GameMode.Mania) {
-      scoreInfo.totalScore = options?.totalScore || scaleTotalScore(1e6, scoreInfo.mods);
-    }
 
     scoreInfo.passed = scoreInfo.totalHits >= (options?.totalHits ?? 0);
     scoreInfo.accuracy = calculateAccuracy(scoreInfo);
