@@ -5,7 +5,6 @@ import {
   IBeatmap,
   HitType,
   ModCombination,
-  MathUtils,
 } from 'osu-classes';
 
 import {
@@ -14,7 +13,7 @@ import {
   JuiceTinyDroplet,
 } from 'osu-catch-stable';
 
-import { IBeatmapAttributes, IBeatmapCustomStats } from '../Interfaces';
+import { IBeatmapAttributes } from '../Interfaces';
 import { GameMode } from '../Enums';
 
 /**
@@ -77,76 +76,6 @@ export function createBeatmapAttributes(beatmap?: IBeatmap): IBeatmapAttributes 
     maxDroplets,
     maxTinyDroplets,
   };
-}
-
-function clampStats(value: number): number {
-  /**
-   * This values are taken from osu!lazer's Difficulty Adjust mod.
-   * I don't think it makes sense to change them as 
-   * AR & OD formulas start to give weird values on >13.33.
-   */
-  const MIN_LIMIT = 0;
-  const MAX_LIMIT = 11;
-
-  return MathUtils.clamp(value, MIN_LIMIT, MAX_LIMIT);
-}
-
-const clampRate = (value: number): number => {
-  /**
-   * This values are taken from osu!lazer's DT & HT mods.
-   */
-  const MIN_LIMIT = 0.25;
-  const MAX_LIMIT = 3.0;
-
-  return MathUtils.clamp(value, MIN_LIMIT, MAX_LIMIT);
-};
-
-const clampBPM = (value: number): number => {
-  /**
-   * This values are taken from osu!lazer's beatmap BPM formula.
-   */
-  const MIN_LIMIT = 60;
-  const MAX_LIMIT = 10000;
-
-  return MathUtils.clamp(value, MIN_LIMIT, MAX_LIMIT);
-};
-
-/**
- * Overwrites circle size of a beatmap with custom one.
- * @param beatmap A beatmap.
- * @param stats Custom difficulty stats.
- */
-export function applyCustomCircleSize(beatmap: IBeatmap, stats: IBeatmapCustomStats): void {
-  const { circleSize } = stats;
-
-  if (typeof circleSize === 'number') {
-    beatmap.difficulty.circleSize = clampStats(circleSize);
-  }
-}
-
-/**
- * Overwrites difficulty stats of a beatmap with custom difficulty stats.
- * @param beatmap A beatmap.
- * @param stats Custom difficulty stats.
- */
-export function applyCustomStats(beatmap: IBeatmap, stats: IBeatmapCustomStats): void {
-  const { approachRate, overallDifficulty, clockRate, bpm } = stats;
-
-  if (typeof approachRate === 'number') {
-    beatmap.difficulty.approachRate = clampStats(approachRate);
-  }
-
-  if (typeof overallDifficulty === 'number') {
-    beatmap.difficulty.overallDifficulty = clampStats(overallDifficulty);
-  }
-
-  if (typeof clockRate === 'number') {
-    beatmap.difficulty.clockRate = clampRate(clockRate);
-  }
-  else if (typeof bpm === 'number') {
-    // Clock rate set by BPM value may exceed the actual limit of clock rate.
-    beatmap.difficulty.clockRate = clampBPM(bpm) / beatmap.bpmMode;
-  }
 }
 
 /**

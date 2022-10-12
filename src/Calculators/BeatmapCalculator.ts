@@ -40,15 +40,16 @@ export class BeatmapCalculator {
 
     const { data: parsed, hash: beatmapMD5 } = await parseBeatmap(options);
 
+    const ruleset = options.ruleset ?? getRulesetById(options.rulesetId ?? parsed.mode);
+
+    const combination = ruleset.createModCombination(options.mods);
+
     /**
      * Apply custom circle size before applying ruleset & mods.
      * Circle size actually affects the conversion process.
      */
-    applyCustomCircleSize(parsed, options);
+    applyCustomCircleSize(parsed, combination, options);
 
-    const ruleset = options.ruleset ?? getRulesetById(options.rulesetId ?? parsed.mode);
-
-    const combination = ruleset.createModCombination(options.mods);
     const beatmap = ruleset.applyToBeatmapWithMods(parsed, combination);
 
     /**

@@ -5,3 +5,4 @@ export * from './HitStatistics';
 export * from './Mods';
 export * from './Ruleset';
 export * from './Score';
+export * from './Stats';

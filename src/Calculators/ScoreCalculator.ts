@@ -52,17 +52,18 @@ export class ScoreCalculator {
     if (!attributes || !beatmapMD5 || !ruleset || !score || !difficulty || (isPartialDifficulty && !options.fix)) {
       const { data, hash } = await parseBeatmap(options);
 
+      const combination = ruleset.createModCombination(options.mods);
+
       /**
        * Apply custom circle size before applying ruleset & mods.
        * Circle size actually affects the conversion process.
        */
-      applyCustomCircleSize(data, options);
+      applyCustomCircleSize(data, combination, options);
 
       beatmapMD5 ??= hash;
       rulesetId ??= data.mode;
       ruleset ??= getRulesetById(rulesetId);
 
-      const combination = ruleset.createModCombination(options.mods);
       const beatmap = ruleset.applyToBeatmapWithMods(data, combination);
 
       /**
