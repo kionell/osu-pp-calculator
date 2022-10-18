@@ -127,8 +127,6 @@ function generateCatchHitStatistics(options: IHitStatisticsInput): Partial<IHitS
 }
 
 function generateManiaHitStatistics(options: IHitStatisticsInput): Partial<IHitStatistics> {
-  // Accuracy = (n50 / 6 + n100 / 3 + katu / 1.5 + (n300 + geki)) / total
-
   const attributes = options.attributes;
   const accuracy = getAccuracy(options);
   const totalHits = attributes.totalHits ?? 0;
@@ -141,42 +139,36 @@ function generateManiaHitStatistics(options: IHitStatisticsInput): Partial<IHitS
 
   countMiss = MathUtils.clamp(countMiss, 0, totalHits);
 
+  /**
+   * Populate score with mehs to make this approximation more precise.
+   * This value can be negative on impossible misscount.
+   * 
+   * total = ((1/6) * meh + (1/3) * ok + (2/3) * good + great + perfect) / acc
+   * total = miss + meh + ok + good + great + perfect
+   * 
+   * miss + (5/6) * meh + (2/3) * ok + (1/3) * good = total - acc * total
+   * meh = 1.2 * (total - acc * total) - 1.2 * miss - 0.8 * ok - 0.4 * good
+   */
+  count50 ??= Math.round(
+    1.2 * (totalHits - totalHits * accuracy) - 0.8 * count100 - 0.4 * countKatu - 1.2 * countMiss,
+  );
+
+  /**
+   * We need to clamp for all values because performance calculator's 
+   * custom accuracy formula is not invariant to negative counts.
+   */
   let currentCounts = countMiss;
 
-  if (typeof count50 === 'number' || typeof options.accuracy !== 'number') {
-    count50 = count50 ? MathUtils.clamp(count50, 0, totalHits - currentCounts) : 0;
-  }
-  else {
-    /**
-     * Acc = 0.98, Total = 1000
-     * 
-     * n50 / 6 + n100 / 3 + katu / 1.5 + n300 + geki = Acc * Total = 980
-     * n50 + n100 + katu + n300 + geki = 1000
-     * 
-     * 5 * n50 / 6 + 2 * n100 / 3 + katu / 3 = 20
-     * 
-     * n50 = 1.2 * (20 - 2 * n100 / 3 - katu / 3)
-     * 
-     * n50 = 24 - 0.8 * n100 - 0.4 * katu
-     */
-    count50 = (totalHits - totalHits * accuracy) * 1.2;
-
-    count50 = Math.round(count50 - 0.8 * count100 - 0.4 * countKatu);
-  }
-
+  count50 = MathUtils.clamp(count50, 0, totalHits - currentCounts);
   currentCounts += count50;
 
   count100 = MathUtils.clamp(count100, 0, totalHits - currentCounts);
-
   currentCounts += count100;
 
   countKatu = MathUtils.clamp(countKatu, 0, totalHits - currentCounts);
-
   currentCounts += countKatu;
 
   count300 = MathUtils.clamp(count300, 0, totalHits - currentCounts);
-
-  currentCounts += count300;
 
   const countGeki = totalHits - count300 - countKatu - count100 - count50 - countMiss;
 
