@@ -22,7 +22,8 @@ export interface IBeatmapCalculationOptions extends IBeatmapParsingOptions, IBea
   beatmapInfo?: IBeatmapInfo | IJsonableBeatmapInfo;
 
   /**
-   * Beatmap attributes for score simulation.
+   * Missing beatmap attributes that are required to simulate scores.
+   * This is used only for osu!catch which requires the number of fruits and droplets.
    */
   attributes?: IBeatmapAttributes;
 
