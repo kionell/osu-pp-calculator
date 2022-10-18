@@ -62,6 +62,11 @@ export class BeatmapCalculator {
     const attributes = options.attributes ?? createBeatmapAttributes(beatmap);
     const totalHits = options.totalHits;
 
+    /**
+     * Overwrite total hits in attributes.
+     */
+    attributes.totalHits = totalHits ?? attributes.totalHits;
+
     const calculator = createDifficultyCalculator(beatmap, ruleset);
 
     const difficulty = options.difficulty && !options.strains
