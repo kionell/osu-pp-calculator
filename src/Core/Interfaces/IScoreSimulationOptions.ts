@@ -35,7 +35,7 @@ export interface IScoreSimulationOptions {
   countKatu?: number;
 
   /**
-   * Target score geki hits.
+   * Target score geki hits (not used right now).
    */
   countGeki?: number;
 

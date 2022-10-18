@@ -14,6 +14,7 @@ export interface IScoreParsingOptions {
 
   /**
    * Path to the replay file save location.
+   * @default "./cache"
    */
   savePath?: string;
 

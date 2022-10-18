@@ -19,11 +19,13 @@ export interface IBeatmapAttributes {
 
   /**
    * Mod combination or bitwise.
+   * @default "NM"
    */
   mods?: string | number;
 
   /**
    * Beatmap clock rate.
+   * @default 1
    */
   clockRate?: number;
 

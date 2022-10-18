@@ -14,6 +14,7 @@ export interface IBeatmapParsingOptions {
 
   /**
    * Path to the beatmap file save location.
+   * @default "./cache"
    */
   savePath?: string;
 
