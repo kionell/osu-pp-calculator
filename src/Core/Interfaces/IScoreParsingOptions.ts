@@ -20,7 +20,7 @@ export interface IScoreParsingOptions {
   savePath?: string;
 
   /**
-   * Hash of the target replay. Used to validate beatmap files.
+   * Hash of the target beatmap. Used to validate beatmap files.
    * If wasn't specified then file will not be validated.
    */
   hash?: string;

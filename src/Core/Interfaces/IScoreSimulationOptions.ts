@@ -5,7 +5,7 @@ import { IBeatmapAttributes } from './IBeatmapAttributes';
  */
 export interface IScoreSimulationOptions {
   /**
-   * Beatmap attributes for score simulation.
+   * Missing beatmap attributes for score simulation.
    */
   attributes: IBeatmapAttributes;
 
