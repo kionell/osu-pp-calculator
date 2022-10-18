@@ -1,9 +1,9 @@
 {
   "entryPoints": ["./src/index.ts"],
-  "out": ["docs"],
+  "out": "docs",
   "tsconfig": "./tsconfig.json",
   "excludeExternals": true,
-  "excludeInternal": true,
+  "excludeInternal": false,
   "excludePrivate": true,
   "excludeProtected": true,
   "categorizeByGroup": false,
