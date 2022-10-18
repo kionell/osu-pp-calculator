@@ -35,6 +35,7 @@ export interface IScoreCalculationOptions
 
   /**
    * Mod combination or bitwise.
+   * @default "NM"
    */
   mods?: string | number;
 
@@ -50,6 +51,7 @@ export interface IScoreCalculationOptions
 
   /**
    * Should this score be unchoked or not?
+   * @default false
    */
   fix?: boolean;
 }

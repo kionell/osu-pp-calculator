@@ -9,6 +9,7 @@ export interface IScoreParsingOptions {
 
   /**
    * Output replay life bar if replay file is present?
+   * @default false
    */
   lifeBar?: boolean;
 

@@ -33,7 +33,7 @@ export interface IBeatmapCalculationOptions extends IBeatmapParsingOptions, IBea
   rulesetId?: GameMode;
 
   /**
-   * Custom ruleset instance. 
+   * Custom ruleset instance (for non-supported rulesets).
    */
   ruleset?: IRuleset;
 
@@ -55,12 +55,12 @@ export interface IBeatmapCalculationOptions extends IBeatmapParsingOptions, IBea
   totalHits?: number;
 
   /**
-   * Output strain peaks or not.
+   * Whether to output strain peaks or not.
    */
   strains?: boolean;
 
   /**
-   * List of accuracy for all game modes except osu!mania.
+   * List of accuracy for all game modes.
    */
   accuracy?: number[];
 }

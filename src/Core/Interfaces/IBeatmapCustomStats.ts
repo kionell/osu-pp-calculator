@@ -3,27 +3,28 @@
  */
 export interface IBeatmapCustomStats {
   /**
-   * Custom approach rate for the target beatmap.
+   * Custom approach rate for the target beatmap in range [0-11].
    */
   approachRate?: number;
 
   /**
-   * Custom overall difficulty for the target beatmap.
+   * Custom overall difficulty for the target beatmap in range [0-11].
    */
   overallDifficulty?: number;
 
   /**
-   * Custom circle size for the target beatmap.
+   * Custom circle size for the target beatmap in range [0-11].
    */
   circleSize?: number;
 
   /**
-   * Custom clock rate for the target beatmap.
+   * Custom clock rate for the target beatmap in range [0.25-3].
    */
   clockRate?: number;
 
   /**
-   * Custom BPM for the target beatmap.
+   * Custom BPM for the target beatmap in range [60-10000].
+   * Can exceed clockrate limits.
    */
   bpm?: number;
 
