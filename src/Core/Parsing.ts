@@ -15,6 +15,8 @@ type ScoreParsingResult = {
   hash: string;
 };
 
+const DEFAULT_SAVE_PATH = './cache';
+
 /**
  * Tries to parse beatmap by beatmap ID or custom file URL.
  * @param options Beatmap parsing options.
@@ -48,6 +50,8 @@ async function parseBeatmapById(
   savePath?: string,
   cacheFile = true,
 ): Promise<BeatmapParsingResult> {
+  savePath ??= DEFAULT_SAVE_PATH;
+
   const result = await downloadFile(savePath, {
     save: cacheFile,
     id,
@@ -90,6 +94,8 @@ async function parseCustomBeatmap(
   savePath?: string,
   cacheFile = true,
 ): Promise<BeatmapParsingResult> {
+  savePath ??= DEFAULT_SAVE_PATH;
+
   const result = await downloadFile(savePath, {
     save: cacheFile,
     url,
