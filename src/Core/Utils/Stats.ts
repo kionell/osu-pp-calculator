@@ -110,7 +110,7 @@ function getScaledAR(beatmap: IBeatmap, stats: IBeatmapCustomStats): number {
     }
   }
 
-  return beatmap.difficulty.approachRate;
+  return newApproachRate;
 }
 
 /**
@@ -148,5 +148,5 @@ function getScaledOD(beatmap: IBeatmap, stats: IBeatmapCustomStats): number {
     }
   }
 
-  return beatmap.difficulty.approachRate;
+  return newOverallDifficulty;
 }
