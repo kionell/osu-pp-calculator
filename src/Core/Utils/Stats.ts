@@ -52,7 +52,9 @@ export function applyCustomCircleSize(
    */
   const denominator = mods.has('HR') ? 1.3 : (mods.has('EZ') ? 0.5 : 1);
 
-  beatmap.difficulty.circleSize = clampStats(stats.circleSize / denominator);
+  beatmap.difficulty.circleSize = clampStats(
+    stats.lockStats ? stats.circleSize / denominator : stats.circleSize,
+  );
 }
 
 /**
@@ -86,6 +88,10 @@ function getScaledAR(beatmap: IBeatmap, stats: IBeatmapCustomStats): number {
     return beatmap.difficulty.approachRate;
   }
 
+  if (!stats.lockStats) {
+    return clampStats(stats.approachRate);
+  }
+
   const newApproachRate = clampStats(stats.approachRate);
   const adjustedRate = beatmap.difficulty.clockRate;
 
@@ -116,6 +122,10 @@ function getScaledAR(beatmap: IBeatmap, stats: IBeatmapCustomStats): number {
 function getScaledOD(beatmap: IBeatmap, stats: IBeatmapCustomStats): number {
   if (typeof stats.overallDifficulty !== 'number') {
     return beatmap.difficulty.overallDifficulty;
+  }
+
+  if (!stats.lockStats) {
+    return clampStats(stats.overallDifficulty);
   }
 
   const newOverallDifficulty = clampStats(stats.overallDifficulty);

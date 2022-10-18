@@ -26,4 +26,10 @@ export interface IBeatmapCustomStats {
    * Custom BPM for the target beatmap.
    */
   bpm?: number;
+
+  /**
+   * Prevents scaling of stats from difficulty adjusting mods.
+   * @default false
+   */
+  lockStats?: boolean;
 }
