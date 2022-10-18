@@ -1,1 +1,474 @@
-<!DOCTYPE html><html class="default"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>@kionell/osu-pp-calculator</title><meta name="description" content="Documentation for @kionell/osu-pp-calculator"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script async src="assets/search.js" id="search-script"></script></head><body><script>document.body.classList.add(localStorage.getItem("tsd-theme") || "os")</script><header><div class="tsd-page-toolbar"><div class="container"><div class="table-wrap"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget search no-caption">Search</label><input type="text" id="tsd-search-field"/></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">@kionell/osu-pp-calculator</a></div><div class="table-cell" id="tsd-widgets"><div id="tsd-filter"><a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a><div class="tsd-filter-group"><div class="tsd-select" id="tsd-filter-visibility"><span class="tsd-select-label">All</span><ul class="tsd-select-list"><li data-value="public">Public</li><li data-value="protected">Public/Protected</li><li data-value="private" class="selected">All</li></ul></div> <input type="checkbox" id="tsd-filter-inherited" checked/><label class="tsd-widget" for="tsd-filter-inherited">Inherited</label></div></div><a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a></div></div></div></div><div class="tsd-page-title"><div class="container"><h1>@kionell/osu-pp-calculator </h1></div></div></header><div class="container container-main"><div class="row"><div class="col-8 col-content"><div class="tsd-panel tsd-typography"></div></div><div class="col-4 col-menu menu-sticky-wrap menu-highlight"><nav class="tsd-navigation primary"><ul><li class="current"><a href="modules.html">Modules</a></li><li class=" tsd-kind-module"><a href="modules/_internal_.html">&lt;internal&gt;</a></li></ul></nav></div></div></div><footer class=""><div class="container"><h2>Legend</h2><div class="tsd-legend-group"><ul class="tsd-legend"><li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li><li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li><li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li><li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li></ul></div><h2>Settings</h2><p>Theme <select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></p></div></footer><div class="overlay"></div><script src="assets/main.js"></script></body></html>
+<!DOCTYPE html><html class="default"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>@kionell/osu-pp-calculator</title><meta name="description" content="Documentation for @kionell/osu-pp-calculator"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script async src="assets/search.js" id="search-script"></script></head><body><script>document.body.classList.add(localStorage.getItem("tsd-theme") || "os")</script><header><div class="tsd-page-toolbar"><div class="container"><div class="table-wrap"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget search no-caption">Search</label><input type="text" id="tsd-search-field"/></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">@kionell/osu-pp-calculator</a></div><div class="table-cell" id="tsd-widgets"><div id="tsd-filter"><a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a><div class="tsd-filter-group"><div class="tsd-select" id="tsd-filter-visibility"><span class="tsd-select-label">All</span><ul class="tsd-select-list"><li data-value="public">Public</li><li data-value="protected">Public/Protected</li><li data-value="private" class="selected">All</li></ul></div> <input type="checkbox" id="tsd-filter-inherited" checked/><label class="tsd-widget" for="tsd-filter-inherited">Inherited</label></div></div><a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a></div></div></div></div><div class="tsd-page-title"><div class="container"><h1>@kionell/osu-pp-calculator </h1></div></div></header><div class="container container-main"><div class="row"><div class="col-8 col-content"><div class="tsd-panel tsd-typography">
+<a href="#osu-pp-calculator" id="osu-pp-calculator" style="color: inherit; text-decoration: none;">
+  <h1>osu-pp-calculator</h1>
+</a>
+<p><a href="https://www.codefactor.io/repository/github/kionell/osu-pp-calculator"><img src="https://img.shields.io/codefactor/grade/github/kionell/osu-pp-calculator" alt="CodeFactor"></a>
+<a href="https://github.com/kionell/osu-pp-calculator/blob/master/LICENSE"><img src="https://img.shields.io/github/license/kionell/osu-pp-calculator" alt="License"></a>
+<a href="https://www.npmjs.com/package/@kionell/osu-pp-calculator"><img src="https://img.shields.io/npm/v/@kionell/osu-pp-calculator" alt="Package"></a></p>
+<p>This is an advanced pp-calculator for the game called osu! that can be used to calculate beatmaps and scores.</p>
+<ul>
+<li>Written in TypeScript.</li>
+<li>Based on the osu!lazer source code.</li>
+<li>Supports converted beatmaps.</li>
+<li>Supports unsubmitted beatmaps via custom file URL.</li>
+<li>Allows to calculation with custom clockrate and stats.</li>
+<li>Outputs strains for beatmaps and lifebar values for replays.</li>
+<li>Can be used to simulate scores or calculate them from replay files via replay URL.</li>
+<li>Uses latest difficulty and performance changes (as of October 2022).</li>
+</ul>
+
+<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
+  <h2>Installation</h2>
+</a>
+<p>Add a new dependency to your project via npm:</p>
+<pre><code class="language-bash"><span class="hl-0">npm install osu-pp-calculator</span>
+</code></pre>
+
+<a href="#dependencies" id="dependencies" style="color: inherit; text-decoration: none;">
+  <h2>Dependencies</h2>
+</a>
+<ul>
+<li><a href="https://github.com/kionell/osu-classes.git">osu-classes</a> - Basic package for developing all osu! projects.</li>
+<li><a href="https://github.com/kionell/osu-parsers.git">osu-parsers</a> - Used for beatmap &amp; replay parsing.</li>
+<li><a href="https://github.com/kionell/osu-downloader.git">osu-downloader</a> - Advanced osu! downloader for beatmaps and replays with file validation.</li>
+<li><a href="https://github.com/kionell/osu-standard-stable.git">osu-standard-stable</a> - Used for difficulty &amp; performance calculation of the osu!standard beatmaps and scores.</li>
+<li><a href="https://github.com/kionell/osu-taiko-stable.git">osu-taiko-stable</a> - Used for difficulty &amp; performance calculation of the osu!taiko beatmaps and scores.</li>
+<li><a href="https://github.com/kionell/osu-catch-stable.git">osu-catch-stable</a> - Used for difficulty &amp; performance calculation of the osu!catch beatmaps and scores.</li>
+<li><a href="https://github.com/kionell/osu-mania-stable.git">osu-mania-stable</a> - Used for difficulty &amp; performance calculation of the osu!mania beatmaps and scores.</li>
+</ul>
+
+<a href="#beatmap-calculation" id="beatmap-calculation" style="color: inherit; text-decoration: none;">
+  <h2>Beatmap calculation</h2>
+</a>
+<p>Beatmaps can be calculated from beatmap ID or custom beatmap file URL. All files are downloaded automatically and cached by default. You can change path to the cache or disable caching at all. The more precalculated data you have the less you need to calculate using this calculator. In case if you pass precalculated difficulty attributes and beatmap information, this calculator will try to skip beatmap parsing and calculate performance attributes immediately. This will not work if you try to output beatmap strains tho. For beatmap strains you need to parse beatmap and calculate its difficulty.</p>
+
+<a href="#beatmap-calculation-options" id="beatmap-calculation-options" style="color: inherit; text-decoration: none;">
+  <h3>Beatmap calculation options</h3>
+</a>
+<table>
+<thead>
+<tr>
+<th align="center">Name</th>
+<th align="center">Description</th>
+<th align="center">Type</th>
+<th align="center">Optional</th>
+<th align="center">Default value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">beatmapInfo</td>
+<td align="center">Precalculated beatmap information.</td>
+<td align="center"><a href="https://kionell.github.io/osu-classes/interfaces/IBeatmapInfo.html">IBeatmapInfo</a> | <a href="https://kionell.github.io/osu-classes/interfaces/IJsonableBeatmapInfo.html">IJsonableBeatmapInfo</a></td>
+<td align="center">Yes</td>
+<td align="center">-</td>
+</tr>
+<tr>
+<td align="center">attributes</td>
+<td align="center">Missing beatmap attributes that are required to simulate scores. This is used only for osu!catch which requires the number of fruits and droplets.</td>
+<td align="center"><a href="https://kionell.github.io/osu-pp-calculator/interfaces/IBeatmapAttributes.html">IBeatmapAttributes</a></td>
+<td align="center">Yes</td>
+<td align="center">-</td>
+</tr>
+<tr>
+<td align="center">rulesetId</td>
+<td align="center">Ruleset ID</td>
+<td align="center">number</td>
+<td align="center">Yes</td>
+<td align="center">Beatmap ruleset</td>
+</tr>
+<tr>
+<td align="center">ruleset</td>
+<td align="center">Custom ruleset instance (for non-supported rulesets)</td>
+<td align="center"><a href="https://kionell.github.io/osu-classes/interfaces/IRuleset.html">IRuleset</a></td>
+<td align="center">Yes</td>
+<td align="center">Beatmap ruleset</td>
+</tr>
+<tr>
+<td align="center">mods</td>
+<td align="center">Mod combination or bitwise.</td>
+<td align="center">string | number</td>
+<td align="center">Yes</td>
+<td align="center">NM</td>
+</tr>
+<tr>
+<td align="center">difficulty</td>
+<td align="center">Precalculated difficulty attributes.</td>
+<td align="center"><a href="https://kionell.github.io/osu-pp-calculator/interfaces/IDifficultyAttributes.html">IDifficultyAttributes</a></td>
+<td align="center">Yes</td>
+<td align="center">-</td>
+</tr>
+<tr>
+<td align="center">totalHits</td>
+<td align="center">Total hits for gradual beatmap difficulty calculation. If it differs from the hit object count of a full beatmap then it will force difficulty calculation.</td>
+<td align="center">number</td>
+<td align="center">Yes</td>
+<td align="center">Beatmap total hits</td>
+</tr>
+<tr>
+<td align="center">strains</td>
+<td align="center">Whether to output strain peaks or not.</td>
+<td align="center">boolean</td>
+<td align="center">Yes</td>
+<td align="center">false</td>
+</tr>
+<tr>
+<td align="center">accuracy</td>
+<td align="center">List of accuracy for all game modes except osu!mania.</td>
+<td align="center">number[]</td>
+<td align="center">Yes</td>
+<td align="center">[95, 98, 100]</td>
+</tr>
+<tr>
+<td align="center">beatmapId</td>
+<td align="center">ID of the target beatmap.</td>
+<td align="center">number</td>
+<td align="center">Yes</td>
+<td align="center">-</td>
+</tr>
+<tr>
+<td align="center">fileURL</td>
+<td align="center">Custom file URL of the target beatmap.</td>
+<td align="center">string</td>
+<td align="center">Yes</td>
+<td align="center">-</td>
+</tr>
+<tr>
+<td align="center">savePath</td>
+<td align="center">Path to the beatmap file save location.</td>
+<td align="center">string</td>
+<td align="center">Yes</td>
+<td align="center">&quot;./cache&quot;</td>
+</tr>
+<tr>
+<td align="center">cacheFiles</td>
+<td align="center">Should files be cached on a disk after calculation?</td>
+<td align="center">boolean</td>
+<td align="center">Yes</td>
+<td align="center">true</td>
+</tr>
+<tr>
+<td align="center">hash</td>
+<td align="center">Hash of the target beatmap. Used to validate beatmap files. If wasn&#39;t specified then file will not be validated.</td>
+<td align="center">string</td>
+<td align="center">Yes</td>
+<td align="center">-</td>
+</tr>
+<tr>
+<td align="center">approachRate</td>
+<td align="center">Custom approach rate for the target beatmap in range [0-11].</td>
+<td align="center">number</td>
+<td align="center">Yes</td>
+<td align="center">Beatmap AR</td>
+</tr>
+<tr>
+<td align="center">overallDifficulty</td>
+<td align="center">Custom overall difficulty for the target beatmap in range [0-11].</td>
+<td align="center">number</td>
+<td align="center">Yes</td>
+<td align="center">Beatmap OD</td>
+</tr>
+<tr>
+<td align="center">circleSize</td>
+<td align="center">Custom circle size for the target beatmap in range [0-11].</td>
+<td align="center">number</td>
+<td align="center">Yes</td>
+<td align="center">Beatmap CS</td>
+</tr>
+<tr>
+<td align="center">clockRate</td>
+<td align="center">Custom clock rate for the target beatmap in range [0.25-3].</td>
+<td align="center">number</td>
+<td align="center">Yes</td>
+<td align="center">Beatmap clockrate</td>
+</tr>
+<tr>
+<td align="center">bpm</td>
+<td align="center">Custom BPM for the target beatmap in range [60-10000]. Can exceed clockrate limits.</td>
+<td align="center">number</td>
+<td align="center">Yes</td>
+<td align="center">Beatmap BPM</td>
+</tr>
+<tr>
+<td align="center">lockStats</td>
+<td align="center">Prevents scaling of stats from difficulty adjusting mods.</td>
+<td align="center">boolean</td>
+<td align="center">Yes</td>
+<td align="center">false</td>
+</tr>
+</tbody></table>
+
+<a href="#how-to-use-beatmap-calculator" id="how-to-use-beatmap-calculator" style="color: inherit; text-decoration: none;">
+  <h3>How to use beatmap calculator</h3>
+</a>
+<pre><code class="language-js"><span class="hl-1">import</span><span class="hl-0"> { </span><span class="hl-2">BeatmapCalculator</span><span class="hl-0"> } </span><span class="hl-1">from</span><span class="hl-0"> </span><span class="hl-3">&#39;osu-pp-calculator&#39;</span><br/><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">beatmapCalculator</span><span class="hl-0"> = </span><span class="hl-4">new</span><span class="hl-0"> </span><span class="hl-6">BeatmapCalculator</span><span class="hl-0">();</span><br/><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">result</span><span class="hl-0"> = </span><span class="hl-1">await</span><span class="hl-0"> </span><span class="hl-2">beatmapCalculator</span><span class="hl-0">.</span><span class="hl-6">calculate</span><span class="hl-0">({</span><br/><span class="hl-0">  </span><span class="hl-2">beatmapId:</span><span class="hl-0"> </span><span class="hl-7">1695382</span><span class="hl-0">,     </span><span class="hl-8">// Calculate beatmap with ID 1695382</span><br/><span class="hl-0">  </span><span class="hl-2">mods:</span><span class="hl-0"> </span><span class="hl-3">&#39;HDDT&#39;</span><span class="hl-0">,           </span><span class="hl-8">// Calculate beatmap with HDDT mods.</span><br/><span class="hl-0">  </span><span class="hl-2">rulesetId:</span><span class="hl-0"> </span><span class="hl-7">3</span><span class="hl-0">,           </span><span class="hl-8">// Convert this beatmap to the osu!mania ruleset.</span><br/><span class="hl-0">  </span><span class="hl-2">accuracy:</span><span class="hl-0"> [</span><span class="hl-7">90</span><span class="hl-0">, </span><span class="hl-7">92</span><span class="hl-0">, </span><span class="hl-7">99</span><span class="hl-0">], </span><span class="hl-8">// Calculate performance for 90%, 92% and 99% accuracy.</span><br/><span class="hl-0">  </span><span class="hl-2">strains:</span><span class="hl-0"> </span><span class="hl-4">true</span><span class="hl-0">,          </span><span class="hl-8">// Output strain values (can be used for building strain graph).</span><br/><span class="hl-0">  </span><span class="hl-2">approachRate:</span><span class="hl-0"> </span><span class="hl-7">5</span><span class="hl-0">,        </span><span class="hl-8">// Set initial approach rate of the beatmap to 5 (not working for rulesets without AR).</span><br/><span class="hl-0">  </span><span class="hl-2">overallDifficulty:</span><span class="hl-0"> </span><span class="hl-7">6</span><span class="hl-0">,   </span><span class="hl-8">// Set initial overall difficulty of the beatmap to 6 (not working for rulesets without OD).</span><br/><span class="hl-0">  </span><span class="hl-2">clockRate:</span><span class="hl-0"> </span><span class="hl-7">2.2</span><span class="hl-0">,         </span><span class="hl-8">// Set clock rate of the beatmap to 2.2</span><br/><span class="hl-0">  </span><span class="hl-2">lockStats:</span><span class="hl-0"> </span><span class="hl-4">true</span><span class="hl-0">,        </span><span class="hl-8">// Don&#39;t scale stats with clock rate.</span><br/><span class="hl-0">  </span><span class="hl-2">totalHits:</span><span class="hl-0"> </span><span class="hl-7">200</span><span class="hl-0">,         </span><span class="hl-8">// Calculate only first 200 objects of the beatmap. </span><br/><span class="hl-0">});</span>
+</code></pre>
+
+<a href="#stringified-beatmap-calculation-output" id="stringified-beatmap-calculation-output" style="color: inherit; text-decoration: none;">
+  <h3>Stringified beatmap calculation output</h3>
+</a>
+<pre><code class="language-json"><span class="hl-0">{</span><br/><span class="hl-0">  </span><span class="hl-9">&quot;beatmapInfo&quot;</span><span class="hl-0">: {</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;id&quot;</span><span class="hl-0">: </span><span class="hl-7">1695382</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;beatmapsetId&quot;</span><span class="hl-0">: </span><span class="hl-7">807850</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;creatorId&quot;</span><span class="hl-0">: </span><span class="hl-7">0</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;creator&quot;</span><span class="hl-0">: </span><span class="hl-3">&quot;Nevo&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;favourites&quot;</span><span class="hl-0">: </span><span class="hl-7">0</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;passcount&quot;</span><span class="hl-0">: </span><span class="hl-7">0</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;playcount&quot;</span><span class="hl-0">: </span><span class="hl-7">0</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;status&quot;</span><span class="hl-0">: </span><span class="hl-7">-2</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;title&quot;</span><span class="hl-0">: </span><span class="hl-3">&quot;Mou Ii kai?&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;artist&quot;</span><span class="hl-0">: </span><span class="hl-3">&quot;THE ORAL CIGARETTES&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;version&quot;</span><span class="hl-0">: </span><span class="hl-3">&quot;Rain&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;hittable&quot;</span><span class="hl-0">: </span><span class="hl-7">822</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;slidable&quot;</span><span class="hl-0">: </span><span class="hl-7">0</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;spinnable&quot;</span><span class="hl-0">: </span><span class="hl-7">0</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;holdable&quot;</span><span class="hl-0">: </span><span class="hl-7">187</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;length&quot;</span><span class="hl-0">: </span><span class="hl-7">38.1390909090909</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;bpmMin&quot;</span><span class="hl-0">: </span><span class="hl-7">422.40000000000003</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;bpmMax&quot;</span><span class="hl-0">: </span><span class="hl-7">422.40000000000003</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;bpmMode&quot;</span><span class="hl-0">: </span><span class="hl-7">422.40000000000003</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;circleSize&quot;</span><span class="hl-0">: </span><span class="hl-7">7</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;approachRate&quot;</span><span class="hl-0">: </span><span class="hl-7">9.600000381469727</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;overallDifficulty&quot;</span><span class="hl-0">: </span><span class="hl-7">9.600000381469727</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;drainRate&quot;</span><span class="hl-0">: </span><span class="hl-7">6</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;starRating&quot;</span><span class="hl-0">: </span><span class="hl-7">0</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;maxCombo&quot;</span><span class="hl-0">: </span><span class="hl-7">1239</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;isConvert&quot;</span><span class="hl-0">: </span><span class="hl-4">true</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;deletedAt&quot;</span><span class="hl-0">: </span><span class="hl-4">null</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;updatedAt&quot;</span><span class="hl-0">: </span><span class="hl-4">null</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;md5&quot;</span><span class="hl-0">: </span><span class="hl-3">&quot;a9e199c11e6e980a5b8e7fab577a61ca&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;mods&quot;</span><span class="hl-0">: </span><span class="hl-3">&quot;HDDT&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;rulesetId&quot;</span><span class="hl-0">: </span><span class="hl-7">3</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;totalHits&quot;</span><span class="hl-0">: </span><span class="hl-7">1009</span><br/><span class="hl-0">  },</span><br/><span class="hl-0">  </span><span class="hl-9">&quot;attributes&quot;</span><span class="hl-0">: {</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;beatmapId&quot;</span><span class="hl-0">: </span><span class="hl-7">1695382</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;rulesetId&quot;</span><span class="hl-0">: </span><span class="hl-7">3</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;mods&quot;</span><span class="hl-0">: </span><span class="hl-3">&quot;HDDT&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;maxCombo&quot;</span><span class="hl-0">: </span><span class="hl-7">1239</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;clockRate&quot;</span><span class="hl-0">: </span><span class="hl-7">2.2</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;totalHits&quot;</span><span class="hl-0">: </span><span class="hl-7">200</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;maxFruits&quot;</span><span class="hl-0">: </span><span class="hl-7">822</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;maxDroplets&quot;</span><span class="hl-0">: </span><span class="hl-7">0</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;maxTinyDroplets&quot;</span><span class="hl-0">: </span><span class="hl-7">0</span><br/><span class="hl-0">  },</span><br/><span class="hl-0">  </span><span class="hl-9">&quot;skills&quot;</span><span class="hl-0">: [</span><br/><span class="hl-0">    {</span><br/><span class="hl-0">      </span><span class="hl-9">&quot;title&quot;</span><span class="hl-0">: </span><span class="hl-3">&quot;Strain&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">      </span><span class="hl-9">&quot;strainPeaks&quot;</span><span class="hl-0">: [</span><br/><span class="hl-0">        </span><span class="hl-7">11.923872846058632</span><span class="hl-0">,</span><br/><span class="hl-0">        </span><span class="hl-7">20.094559378244572</span><span class="hl-0">,</span><br/><span class="hl-0">        </span><span class="hl-7">23.24491065116399</span><span class="hl-0">,</span><br/><span class="hl-0">        </span><span class="hl-7">28.359139012121112</span><span class="hl-0">,</span><br/><span class="hl-0">        </span><span class="hl-7">28.49445324083708</span><span class="hl-0">,</span><br/><span class="hl-0">        </span><span class="hl-7">28.48941376652405</span><span class="hl-0">,</span><br/><span class="hl-0">        </span><span class="hl-7">29.623584184490362</span><span class="hl-0">,</span><br/><span class="hl-0">        </span><span class="hl-7">31.29989996954709</span><span class="hl-0">,</span><br/><span class="hl-0">        </span><span class="hl-7">29.776584828405223</span><span class="hl-0">,</span><br/><span class="hl-0">        </span><span class="hl-7">26.18698395475034</span><span class="hl-0">,</span><br/><span class="hl-0">        </span><span class="hl-7">29.60093228910057</span><span class="hl-0">,</span><br/><span class="hl-0">        </span><span class="hl-7">29.551000264044337</span><span class="hl-0">,</span><br/><span class="hl-0">        </span><span class="hl-7">26.733776644631135</span><span class="hl-0">,</span><br/><span class="hl-0">        </span><span class="hl-7">22.653368641459263</span><span class="hl-0">,</span><br/><span class="hl-0">        </span><span class="hl-7">23.047484620797093</span><span class="hl-0">,</span><br/><span class="hl-0">        </span><span class="hl-7">28.256876431500995</span><span class="hl-0">,</span><br/><span class="hl-0">        </span><span class="hl-7">27.85502827688512</span><span class="hl-0">,</span><br/><span class="hl-0">        </span><span class="hl-7">26.90389416382286</span><span class="hl-0">,</span><br/><span class="hl-0">        </span><span class="hl-7">30.654131532118168</span><span class="hl-0">,</span><br/><span class="hl-0">        </span><span class="hl-7">30.502875550841555</span><span class="hl-0">,</span><br/><span class="hl-0">        </span><span class="hl-7">30.582869639525093</span><br/><span class="hl-0">      ]</span><br/><span class="hl-0">    }</span><br/><span class="hl-0">  ],</span><br/><span class="hl-0">  </span><span class="hl-9">&quot;difficulty&quot;</span><span class="hl-0">: {</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;maxCombo&quot;</span><span class="hl-0">: </span><span class="hl-7">0</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;mods&quot;</span><span class="hl-0">: </span><span class="hl-3">&quot;HDDT&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;starRating&quot;</span><span class="hl-0">: </span><span class="hl-7">4.622018505963288</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;greatHitWindow&quot;</span><span class="hl-0">: </span><span class="hl-7">34</span><br/><span class="hl-0">  },</span><br/><span class="hl-0">  </span><span class="hl-9">&quot;performance&quot;</span><span class="hl-0">: [</span><br/><span class="hl-0">    {</span><br/><span class="hl-0">      </span><span class="hl-9">&quot;mods&quot;</span><span class="hl-0">: </span><span class="hl-3">&quot;HDDT&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">      </span><span class="hl-9">&quot;totalPerformance&quot;</span><span class="hl-0">: </span><span class="hl-7">108.00834887422428</span><span class="hl-0">,</span><br/><span class="hl-0">      </span><span class="hl-9">&quot;difficultyPerformance&quot;</span><span class="hl-0">: </span><span class="hl-7">13.501043609278035</span><br/><span class="hl-0">    },</span><br/><span class="hl-0">    {</span><br/><span class="hl-0">      </span><span class="hl-9">&quot;mods&quot;</span><span class="hl-0">: </span><span class="hl-3">&quot;HDDT&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">      </span><span class="hl-9">&quot;totalPerformance&quot;</span><span class="hl-0">: </span><span class="hl-7">131.07975251033213</span><span class="hl-0">,</span><br/><span class="hl-0">      </span><span class="hl-9">&quot;difficultyPerformance&quot;</span><span class="hl-0">: </span><span class="hl-7">16.384969063791516</span><br/><span class="hl-0">    },</span><br/><span class="hl-0">    {</span><br/><span class="hl-0">      </span><span class="hl-9">&quot;mods&quot;</span><span class="hl-0">: </span><span class="hl-3">&quot;HDDT&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">      </span><span class="hl-9">&quot;totalPerformance&quot;</span><span class="hl-0">: </span><span class="hl-7">209.52252487309954</span><span class="hl-0">,</span><br/><span class="hl-0">      </span><span class="hl-9">&quot;difficultyPerformance&quot;</span><span class="hl-0">: </span><span class="hl-7">26.190315609137443</span><br/><span class="hl-0">    }</span><br/><span class="hl-0">  ]</span><br/><span class="hl-0">}</span>
+</code></pre>
+
+<a href="#score-calculation" id="score-calculation" style="color: inherit; text-decoration: none;">
+  <h2>Score calculation</h2>
+</a>
+<p>You can use almost all options from beatmap calculator for score calculator as well. Score calculator can accept custom <a href="https://kionell.github.io/osu-classes/interfaces/IScoreInfo.html">IScoreInfo</a> objects and replay file URLs. It is also possible to simulate FC scores by using &quot;fix&quot; option.</p>
+
+<a href="#score-calculation-options" id="score-calculation-options" style="color: inherit; text-decoration: none;">
+  <h3>Score calculation options</h3>
+</a>
+<table>
+<thead>
+<tr>
+<th align="center">Name</th>
+<th align="center">Description</th>
+<th align="center">Type</th>
+<th align="center">Optional</th>
+<th align="center">Default value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">beatmapId</td>
+<td align="center">ID of the target beatmap.</td>
+<td align="center">number</td>
+<td align="center">Yes</td>
+<td align="center">-</td>
+</tr>
+<tr>
+<td align="center">fileURL</td>
+<td align="center">Custom file URL of the target beatmap.</td>
+<td align="center">string</td>
+<td align="center">Yes</td>
+<td align="center">-</td>
+</tr>
+<tr>
+<td align="center">rulesetId</td>
+<td align="center">Ruleset ID</td>
+<td align="center">number</td>
+<td align="center">Yes</td>
+<td align="center">Beatmap ruleset</td>
+</tr>
+<tr>
+<td align="center">ruleset</td>
+<td align="center">Custom ruleset instance (for non-supported rulesets)</td>
+<td align="center"><a href="https://kionell.github.io/osu-classes/interfaces/IRuleset.html">IRuleset</a></td>
+<td align="center">Yes</td>
+<td align="center">Beatmap ruleset</td>
+</tr>
+<tr>
+<td align="center">beatmapInfo</td>
+<td align="center">Precalculated beatmap information.</td>
+<td align="center"><a href="https://kionell.github.io/osu-classes/interfaces/IBeatmapInfo.html">IBeatmapInfo</a> | <a href="https://kionell.github.io/osu-classes/interfaces/IJsonableBeatmapInfo.html">IJsonableBeatmapInfo</a></td>
+<td align="center">Yes</td>
+<td align="center">-</td>
+</tr>
+<tr>
+<td align="center">mods</td>
+<td align="center">Mod combination or bitwise.</td>
+<td align="center">string | number</td>
+<td align="center">Yes</td>
+<td align="center">NM</td>
+</tr>
+<tr>
+<td align="center">difficulty</td>
+<td align="center">Precalculated difficulty attributes.</td>
+<td align="center"><a href="https://kionell.github.io/osu-pp-calculator/interfaces/IDifficultyAttributes.html">IDifficultyAttributes</a></td>
+<td align="center">Yes</td>
+<td align="center">-</td>
+</tr>
+<tr>
+<td align="center">scoreInfo</td>
+<td align="center">Target score.</td>
+<td align="center"><a href="https://kionell.github.io/osu-classes/interfaces/IScoreInfo.html">IScoreInfo</a> | <a href="https://kionell.github.io/osu-classes/interfaces/IJsonableScoreInfo.html">IJsonableScoreInfo</a></td>
+<td align="center">Yes</td>
+<td align="center">-</td>
+</tr>
+<tr>
+<td align="center">fix</td>
+<td align="center">Should this score be unchoked or not?</td>
+<td align="center">boolean</td>
+<td align="center">Yes</td>
+<td align="center">false</td>
+</tr>
+<tr>
+<td align="center">replayURL</td>
+<td align="center">Custom replay file URL.</td>
+<td align="center">string</td>
+<td align="center">Yes</td>
+<td align="center">-</td>
+</tr>
+<tr>
+<td align="center">lifeBar</td>
+<td align="center">Output replay life bar if replay file is present?</td>
+<td align="center">boolean</td>
+<td align="center">Yes</td>
+<td align="center">false</td>
+</tr>
+<tr>
+<td align="center">savePath</td>
+<td align="center">Path to the replay file save location.</td>
+<td align="center">string</td>
+<td align="center">Yes</td>
+<td align="center">&quot;./cache&quot;</td>
+</tr>
+<tr>
+<td align="center">hash</td>
+<td align="center">Hash of the target beatmap. Used to validate beatmap files. If wasn&#39;t specified then file will not be validated.</td>
+<td align="center">string</td>
+<td align="center">Yes</td>
+<td align="center">-</td>
+</tr>
+<tr>
+<td align="center">attributes</td>
+<td align="center">Missing beatmap attributes for score simulation.</td>
+<td align="center"><a href="https://kionell.github.io/osu-classes/interfaces/IBeatmapInfo.html">IBeatmapInfo</a> | <a href="https://kionell.github.io/osu-classes/interfaces/IJsonableBeatmapInfo.html">IJsonableBeatmapInfo</a></td>
+<td align="center">Yes</td>
+<td align="center">-</td>
+</tr>
+<tr>
+<td align="center">countMiss</td>
+<td align="center">Target score misses.</td>
+<td align="center">number</td>
+<td align="center">Yes</td>
+<td align="center">0</td>
+</tr>
+<tr>
+<td align="center">count50</td>
+<td align="center">Target score 50&#39;s.</td>
+<td align="center">number</td>
+<td align="center">Yes</td>
+<td align="center">Simulated by acc</td>
+</tr>
+<tr>
+<td align="center">count100</td>
+<td align="center">Target score 100&#39;s.</td>
+<td align="center">number</td>
+<td align="center">Yes</td>
+<td align="center">Simulated by acc</td>
+</tr>
+<tr>
+<td align="center">count300</td>
+<td align="center">Target score 300&#39;s.</td>
+<td align="center">number</td>
+<td align="center">Yes</td>
+<td align="center">Simulated by acc</td>
+</tr>
+<tr>
+<td align="center">countKatu</td>
+<td align="center">Target score katu hits.</td>
+<td align="center">number</td>
+<td align="center">Yes</td>
+<td align="center">Simulated by acc</td>
+</tr>
+<tr>
+<td align="center">countGeki</td>
+<td align="center">Target score geki hits (not used right now).</td>
+<td align="center">number</td>
+<td align="center">Yes</td>
+<td align="center">Simulated by acc</td>
+</tr>
+<tr>
+<td align="center">accuracy</td>
+<td align="center">Target score accuracy.</td>
+<td align="center">number</td>
+<td align="center">Yes</td>
+<td align="center">100</td>
+</tr>
+<tr>
+<td align="center">totalScore</td>
+<td align="center">Target total score.</td>
+<td align="center">number</td>
+<td align="center">Yes</td>
+<td align="center">0</td>
+</tr>
+<tr>
+<td align="center">maxCombo</td>
+<td align="center">Target max combo of a score.</td>
+<td align="center">number</td>
+<td align="center">Yes</td>
+<td align="center">Beatmap max combo</td>
+</tr>
+<tr>
+<td align="center">percentCombo</td>
+<td align="center">Target percent of max combo of a score.</td>
+<td align="center">number</td>
+<td align="center">Yes</td>
+<td align="center">100</td>
+</tr>
+<tr>
+<td align="center">approachRate</td>
+<td align="center">Custom approach rate for the target beatmap.</td>
+<td align="center">number</td>
+<td align="center">Yes</td>
+<td align="center">Beatmap AR</td>
+</tr>
+<tr>
+<td align="center">overallDifficulty</td>
+<td align="center">Custom overall difficulty for the target beatmap.</td>
+<td align="center">number</td>
+<td align="center">Yes</td>
+<td align="center">Beatmap OD</td>
+</tr>
+<tr>
+<td align="center">circleSize</td>
+<td align="center">Custom circle size for the target beatmap.</td>
+<td align="center">number</td>
+<td align="center">Yes</td>
+<td align="center">Beatmap CS</td>
+</tr>
+<tr>
+<td align="center">clockRate</td>
+<td align="center">Custom clock rate for the target beatmap.</td>
+<td align="center">number</td>
+<td align="center">Yes</td>
+<td align="center">Beatmap clockrate</td>
+</tr>
+<tr>
+<td align="center">bpm</td>
+<td align="center">Custom BPM for the target beatmap in range [60-10000].</td>
+<td align="center">number</td>
+<td align="center">Yes</td>
+<td align="center">Beatmap BPM</td>
+</tr>
+<tr>
+<td align="center">lockStats</td>
+<td align="center">Prevents scaling of stats from difficulty adjusting mods.</td>
+<td align="center">boolean</td>
+<td align="center">Yes</td>
+<td align="center">false</td>
+</tr>
+</tbody></table>
+
+<a href="#example-of-score-calculation" id="example-of-score-calculation" style="color: inherit; text-decoration: none;">
+  <h3>Example of score calculation</h3>
+</a>
+<pre><code class="language-js"><span class="hl-1">import</span><span class="hl-0"> { </span><span class="hl-2">ScoreCalculator</span><span class="hl-0"> } </span><span class="hl-1">from</span><span class="hl-0"> </span><span class="hl-3">&#39;osu-pp-calculator&#39;</span><br/><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">scoreCalculator</span><span class="hl-0"> = </span><span class="hl-4">new</span><span class="hl-0"> </span><span class="hl-6">ScoreCalculator</span><span class="hl-0">();</span><br/><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">result</span><span class="hl-0"> = </span><span class="hl-1">await</span><span class="hl-0"> </span><span class="hl-2">scoreCalculator</span><span class="hl-0">.</span><span class="hl-6">calculate</span><span class="hl-0">({</span><br/><span class="hl-0">  </span><span class="hl-2">beatmapId:</span><span class="hl-0"> </span><span class="hl-7">1695382</span><span class="hl-0">,     </span><span class="hl-8">// Calculate beatmap with ID 1695382</span><br/><span class="hl-0">  </span><span class="hl-2">mods:</span><span class="hl-0"> </span><span class="hl-3">&#39;HDDT&#39;</span><span class="hl-0">,           </span><span class="hl-8">// Calculate beatmap with HDDT mods.</span><br/><span class="hl-0">  </span><span class="hl-2">rulesetId:</span><span class="hl-0"> </span><span class="hl-7">1</span><span class="hl-0">,           </span><span class="hl-8">// Convert this beatmap to the osu!taiko ruleset.</span><br/><span class="hl-0">  </span><span class="hl-2">accuracy:</span><span class="hl-0"> </span><span class="hl-7">85</span><span class="hl-0">,           </span><span class="hl-8">// Simulate score with 85% accuracy. Score simulator will try to approximate accuracy even with specified counts. </span><br/><span class="hl-0">  </span><span class="hl-2">count100:</span><span class="hl-0"> </span><span class="hl-7">10</span><span class="hl-0">,           </span><span class="hl-8">// Simulate score with 10 goods.</span><br/><span class="hl-0">  </span><span class="hl-2">lifeBar:</span><span class="hl-0"> </span><span class="hl-4">true</span><span class="hl-0">,          </span><span class="hl-8">// Output life bar of the replay (if present).</span><br/><span class="hl-0">  </span><span class="hl-2">approachRate:</span><span class="hl-0"> </span><span class="hl-7">5</span><span class="hl-0">,        </span><span class="hl-8">// Set initial approach rate of the beatmap to 5.</span><br/><span class="hl-0">  </span><span class="hl-2">overallDifficulty:</span><span class="hl-0"> </span><span class="hl-7">6</span><span class="hl-0">,   </span><span class="hl-8">// Set initial overall difficulty of the beatmap to 6.</span><br/><span class="hl-0">  </span><span class="hl-2">clockRate:</span><span class="hl-0"> </span><span class="hl-7">2.2</span><span class="hl-0">,         </span><span class="hl-8">// Set clock rate of the beatmap to 2.2</span><br/><span class="hl-0">  </span><span class="hl-2">lockStats:</span><span class="hl-0"> </span><span class="hl-4">true</span><span class="hl-0">,        </span><span class="hl-8">// Don&#39;t scale stats with clock rate.</span><br/><span class="hl-0">});</span>
+</code></pre>
+
+<a href="#example-of-replay-calculation" id="example-of-replay-calculation" style="color: inherit; text-decoration: none;">
+  <h3>Example of replay calculation</h3>
+</a>
+<pre><code class="language-js"><span class="hl-1">import</span><span class="hl-0"> { </span><span class="hl-2">ScoreCalculator</span><span class="hl-0"> } </span><span class="hl-1">from</span><span class="hl-0"> </span><span class="hl-3">&#39;osu-pp-calculator&#39;</span><br/><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">scoreCalculator</span><span class="hl-0"> = </span><span class="hl-4">new</span><span class="hl-0"> </span><span class="hl-6">ScoreCalculator</span><span class="hl-0">();</span><br/><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">result</span><span class="hl-0"> = </span><span class="hl-1">await</span><span class="hl-0"> </span><span class="hl-2">scoreCalculator</span><span class="hl-0">.</span><span class="hl-6">calculate</span><span class="hl-0">({</span><br/><span class="hl-0">  </span><span class="hl-2">beatmapId:</span><span class="hl-0"> </span><span class="hl-7">1695382</span><span class="hl-0">,     </span><span class="hl-8">// Calculate beatmap with ID 1695382</span><br/><span class="hl-0">  </span><span class="hl-2">replayURL:</span><span class="hl-0"> </span><span class="hl-3">&quot;...&quot;</span><span class="hl-0">,       </span><span class="hl-8">// URL to the replay file (.osr). It will compare beatmap and replay by MD5.</span><br/><span class="hl-0">  </span><span class="hl-2">fix:</span><span class="hl-0"> </span><span class="hl-4">true</span><span class="hl-0">,              </span><span class="hl-8">// Fix chokes on the target score.</span><br/><span class="hl-0">});</span>
+</code></pre>
+
+<a href="#stringified-score-calculation-output" id="stringified-score-calculation-output" style="color: inherit; text-decoration: none;">
+  <h3>Stringified score calculation output</h3>
+</a>
+<pre><code class="language-json"><span class="hl-0">{</span><br/><span class="hl-0">  </span><span class="hl-9">&quot;scoreInfo&quot;</span><span class="hl-0">: {</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;totalScore&quot;</span><span class="hl-0">: </span><span class="hl-7">0</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;maxCombo&quot;</span><span class="hl-0">: </span><span class="hl-7">672</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;passed&quot;</span><span class="hl-0">: </span><span class="hl-4">true</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;perfect&quot;</span><span class="hl-0">: </span><span class="hl-4">true</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;rank&quot;</span><span class="hl-0">: </span><span class="hl-3">&quot;SH&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;accuracy&quot;</span><span class="hl-0">: </span><span class="hl-7">0.9925595238095238</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;username&quot;</span><span class="hl-0">: </span><span class="hl-3">&quot;osu!&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;beatmapId&quot;</span><span class="hl-0">: </span><span class="hl-7">1695382</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;statistics&quot;</span><span class="hl-0">: {</span><br/><span class="hl-0">      </span><span class="hl-9">&quot;perfect&quot;</span><span class="hl-0">: </span><span class="hl-7">0</span><span class="hl-0">,</span><br/><span class="hl-0">      </span><span class="hl-9">&quot;great&quot;</span><span class="hl-0">: </span><span class="hl-7">662</span><span class="hl-0">,</span><br/><span class="hl-0">      </span><span class="hl-9">&quot;good&quot;</span><span class="hl-0">: </span><span class="hl-7">0</span><span class="hl-0">,</span><br/><span class="hl-0">      </span><span class="hl-9">&quot;ok&quot;</span><span class="hl-0">: </span><span class="hl-7">10</span><span class="hl-0">,</span><br/><span class="hl-0">      </span><span class="hl-9">&quot;meh&quot;</span><span class="hl-0">: </span><span class="hl-7">0</span><span class="hl-0">,</span><br/><span class="hl-0">      </span><span class="hl-9">&quot;largeTickHit&quot;</span><span class="hl-0">: </span><span class="hl-7">0</span><span class="hl-0">,</span><br/><span class="hl-0">      </span><span class="hl-9">&quot;smallTickMiss&quot;</span><span class="hl-0">: </span><span class="hl-7">0</span><span class="hl-0">,</span><br/><span class="hl-0">      </span><span class="hl-9">&quot;smallTickHit&quot;</span><span class="hl-0">: </span><span class="hl-7">0</span><span class="hl-0">,</span><br/><span class="hl-0">      </span><span class="hl-9">&quot;miss&quot;</span><span class="hl-0">: </span><span class="hl-7">0</span><span class="hl-0">,</span><br/><span class="hl-0">      </span><span class="hl-9">&quot;largeBonus&quot;</span><span class="hl-0">: </span><span class="hl-7">0</span><span class="hl-0">,</span><br/><span class="hl-0">      </span><span class="hl-9">&quot;largeTickMiss&quot;</span><span class="hl-0">: </span><span class="hl-7">0</span><span class="hl-0">,</span><br/><span class="hl-0">      </span><span class="hl-9">&quot;smallBonus&quot;</span><span class="hl-0">: </span><span class="hl-7">0</span><span class="hl-0">,</span><br/><span class="hl-0">      </span><span class="hl-9">&quot;ignoreHit&quot;</span><span class="hl-0">: </span><span class="hl-7">0</span><span class="hl-0">,</span><br/><span class="hl-0">      </span><span class="hl-9">&quot;ignoreMiss&quot;</span><span class="hl-0">: </span><span class="hl-7">0</span><span class="hl-0">,</span><br/><span class="hl-0">      </span><span class="hl-9">&quot;none&quot;</span><span class="hl-0">: </span><span class="hl-7">0</span><br/><span class="hl-0">    },</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;beatmapHashMD5&quot;</span><span class="hl-0">: </span><span class="hl-3">&quot;a9e199c11e6e980a5b8e7fab577a61ca&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;beatmap&quot;</span><span class="hl-0">: </span><span class="hl-4">null</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;mods&quot;</span><span class="hl-0">: </span><span class="hl-3">&quot;HDDT&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;rulesetId&quot;</span><span class="hl-0">: </span><span class="hl-7">1</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;countGeki&quot;</span><span class="hl-0">: </span><span class="hl-7">0</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;count300&quot;</span><span class="hl-0">: </span><span class="hl-7">662</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;countKatu&quot;</span><span class="hl-0">: </span><span class="hl-7">0</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;count100&quot;</span><span class="hl-0">: </span><span class="hl-7">10</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;count50&quot;</span><span class="hl-0">: </span><span class="hl-7">0</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;countMiss&quot;</span><span class="hl-0">: </span><span class="hl-7">0</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;totalHits&quot;</span><span class="hl-0">: </span><span class="hl-7">672</span><br/><span class="hl-0">  },</span><br/><span class="hl-0">  </span><span class="hl-9">&quot;difficulty&quot;</span><span class="hl-0">: {</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;maxCombo&quot;</span><span class="hl-0">: </span><span class="hl-7">672</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;mods&quot;</span><span class="hl-0">: </span><span class="hl-3">&quot;HDDT&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;starRating&quot;</span><span class="hl-0">: </span><span class="hl-7">8.790758863373132</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;staminaDifficulty&quot;</span><span class="hl-0">: </span><span class="hl-7">8.040083944297882</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;rhythmDifficulty&quot;</span><span class="hl-0">: </span><span class="hl-7">1.3278814870393163</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;colourDifficulty&quot;</span><span class="hl-0">: </span><span class="hl-7">3.211051542494555</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;peakDifficulty&quot;</span><span class="hl-0">: </span><span class="hl-7">8.498489486433925</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;greatHitWindow&quot;</span><span class="hl-0">: </span><span class="hl-7">14.545454545454545</span><br/><span class="hl-0">  },</span><br/><span class="hl-0">  </span><span class="hl-9">&quot;performance&quot;</span><span class="hl-0">: {</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;mods&quot;</span><span class="hl-0">: </span><span class="hl-3">&quot;HDDT&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;totalPerformance&quot;</span><span class="hl-0">: </span><span class="hl-7">927.6127529824629</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;difficultyPerformance&quot;</span><span class="hl-0">: </span><span class="hl-7">578.7134642344957</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;accuracyPerformance&quot;</span><span class="hl-0">: </span><span class="hl-7">226.66086943645078</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-9">&quot;effectiveMissCount&quot;</span><span class="hl-0">: </span><span class="hl-7">0</span><br/><span class="hl-0">  }</span><br/><span class="hl-0">}</span>
+</code></pre>
+
+<a href="#documentation" id="documentation" style="color: inherit; text-decoration: none;">
+  <h2>Documentation</h2>
+</a>
+<p>Auto-generated documentation is available <a href="https://kionell.github.io/osu-pp-calculator/">here</a>.</p>
+
+<a href="#contributing" id="contributing" style="color: inherit; text-decoration: none;">
+  <h2>Contributing</h2>
+</a>
+<p>This project is being developed personally by me on pure enthusiasm. If you want to help with development or fix a problem, then feel free to create a new pull request. For major changes, please open an issue first to discuss what you would like to change.</p>
+
+<a href="#license" id="license" style="color: inherit; text-decoration: none;">
+  <h2>License</h2>
+</a>
+<p>This project is licensed under the MIT License - see the <a href="https://choosealicense.com/licenses/mit/">LICENSE</a> for details.</p>
+</div></div><div class="col-4 col-menu menu-sticky-wrap menu-highlight"><nav class="tsd-navigation primary"><ul><li class="current"><a href="modules.html">Modules</a></li><li class=" tsd-kind-module"><a href="modules/_internal_.html">&lt;internal&gt;</a></li></ul></nav></div></div></div><footer class=""><div class="container"><h2>Legend</h2><div class="tsd-legend-group"><ul class="tsd-legend"><li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li><li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li><li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li><li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li></ul></div><h2>Settings</h2><p>Theme <select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></p></div></footer><div class="overlay"></div><script src="assets/main.js"></script></body></html>
