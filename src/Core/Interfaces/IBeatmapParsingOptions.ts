@@ -19,6 +19,12 @@ export interface IBeatmapParsingOptions {
   savePath?: string;
 
   /**
+   * Should files be cached on a disk after calculation?
+   * @default true
+   */
+  cacheFiles?: boolean;
+
+  /**
    * Hash of the target beatmap. Used to validate beatmap files.
    * If wasn't specified then file will not be validated.
    */

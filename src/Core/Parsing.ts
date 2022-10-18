@@ -21,14 +21,14 @@ type ScoreParsingResult = {
  * @returns Parsed beatmap.
  */
 export async function parseBeatmap(options: IBeatmapParsingOptions): Promise<BeatmapParsingResult> {
-  const { beatmapId, fileURL, hash, savePath } = options;
+  const { beatmapId, fileURL, hash, savePath, cacheFiles } = options;
 
   if (beatmapId && parseInt(beatmapId as string)) {
-    return parseBeatmapById(beatmapId, hash, savePath);
+    return parseBeatmapById(beatmapId, hash, savePath, cacheFiles);
   }
 
   if (fileURL) {
-    return parseCustomBeatmap(fileURL, hash, savePath);
+    return parseCustomBeatmap(fileURL, hash, savePath, cacheFiles);
   }
 
   throw new Error('No beatmap ID or file URL was found!');
@@ -39,11 +39,17 @@ export async function parseBeatmap(options: IBeatmapParsingOptions): Promise<Bea
  * @param id Beatmap ID.
  * @param hash Original hash to validate downloaded file.
  * @param savePath The path where this file should be saved.
+ * @param cacheFile Should beatmap be cached on a disk?
  * @returns Parsed beatmap.
  */
-async function parseBeatmapById(id: string | number, hash?: string, savePath?: string): Promise<BeatmapParsingResult> {
+async function parseBeatmapById(
+  id: string | number,
+  hash?: string,
+  savePath?: string,
+  cacheFile = true,
+): Promise<BeatmapParsingResult> {
   const result = await downloadFile(savePath, {
-    save: typeof savePath === 'string',
+    save: cacheFile,
     id,
   });
 
@@ -75,11 +81,17 @@ async function parseBeatmapById(id: string | number, hash?: string, savePath?: s
  * @param url Custom beatmap file URL.
  * @param hash Original hash to validate downloaded file.
  * @param savePath The path where this file should be saved.
+ * @param cacheFile Should beatmap be cached on a disk?
  * @returns Parsed beatmap.
  */
-async function parseCustomBeatmap(url: string, hash?: string, savePath?: string): Promise<BeatmapParsingResult> {
+async function parseCustomBeatmap(
+  url: string,
+  hash?: string,
+  savePath?: string,
+  cacheFile = true,
+): Promise<BeatmapParsingResult> {
   const result = await downloadFile(savePath, {
-    save: typeof savePath === 'string',
+    save: cacheFile,
     url,
   });
 
@@ -107,12 +119,7 @@ async function parseCustomBeatmap(url: string, hash?: string, savePath?: string)
  * @returns Parsed beatmap.
  */
 function parseBeatmapData(data: Buffer): IBeatmap {
-  const stringified = data.toString();
-
-  const decoder = new BeatmapDecoder();
-  const parseStoryboard = false;
-
-  return decoder.decodeFromString(stringified, parseStoryboard);
+  return new BeatmapDecoder().decodeFromBuffer(data, false);
 }
 
 /**
