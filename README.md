@@ -4,15 +4,15 @@
 [![Package](https://img.shields.io/npm/v/@kionell/osu-pp-calculator)](https://www.npmjs.com/package/@kionell/osu-pp-calculator)
 
 
-This is an advanced pp-calculator for the game called osu! that can be used to calculate beatmaps and scores.
+This is an advanced performance calculator for the game called osu!
 
 - Written in TypeScript.
 - Based on the osu!lazer source code.
 - Supports converted beatmaps.
 - Supports unsubmitted beatmaps via custom file URL.
-- Allows to calculation with custom clockrate and stats.
+- Can calculate beatmaps with custom clockrate and stats.
 - Outputs strains for beatmaps and lifebar values for replays.
-- Can be used to simulate scores or calculate them from replay files via replay URL.
+- Can be used for score simulation and replay calculation via replay URL.
 - Uses latest difficulty and performance changes (as of October 2022).
 
 ## Installation
