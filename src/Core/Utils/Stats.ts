@@ -61,9 +61,14 @@ export function applyCustomCircleSize(
 /**
  * Overwrites difficulty stats of a beatmap with custom difficulty stats.
  * @param beatmap A beatmap.
+ * @param mods Mod combination.
  * @param stats Custom difficulty stats.
  */
-export function applyCustomStats(beatmap: IBeatmap, stats: IBeatmapCustomStats): void {
+export function applyCustomStats(
+  beatmap: IBeatmap,
+  mods: ModCombination,
+  stats: IBeatmapCustomStats,
+): void {
   const { clockRate, bpm } = stats;
 
   if (typeof clockRate === 'number') {
@@ -74,23 +79,30 @@ export function applyCustomStats(beatmap: IBeatmap, stats: IBeatmapCustomStats):
     beatmap.difficulty.clockRate = clampBPM(bpm) / beatmap.bpmMode;
   }
 
-  beatmap.difficulty.approachRate = getScaledAR(beatmap, stats);
-  beatmap.difficulty.overallDifficulty = getScaledOD(beatmap, stats);
+  beatmap.difficulty.approachRate = getScaledAR(beatmap, mods, stats);
+  beatmap.difficulty.overallDifficulty = getScaledOD(beatmap, mods, stats);
 }
 
 /**
  * Scales approach rate to compensate rate adjusting mods.
  * @param beatmap A beatmap.
+ * @param mods Mod combination.
  * @param stats Custom difficulty stats.
  * @returns Scaled approach rate.
  */
-function getScaledAR(beatmap: IBeatmap, stats: IBeatmapCustomStats): number {
+function getScaledAR(
+  beatmap: IBeatmap,
+  mods: ModCombination,
+  stats: IBeatmapCustomStats,
+): number {
   if (typeof stats.approachRate !== 'number') {
     return beatmap.difficulty.approachRate;
   }
 
   if (!stats.lockStats && !stats.lockApproachRate) {
-    return clampStats(stats.approachRate);
+    const multiplier = mods.has('HR') ? 1.4 : (mods.has('EZ') ? 0.5 : 1);
+
+    return clampStats(stats.approachRate) * multiplier;
   }
 
   const newApproachRate = clampStats(stats.approachRate);
@@ -117,16 +129,23 @@ function getScaledAR(beatmap: IBeatmap, stats: IBeatmapCustomStats): number {
 /**
  * Scales overall difficulty to compensate rate adjusting mods.
  * @param beatmap A beatmap.
+ * @param mods Mod combination.
  * @param stats Custom difficulty stats.
  * @returns Scaled overall difficulty.
  */
-function getScaledOD(beatmap: IBeatmap, stats: IBeatmapCustomStats): number {
+function getScaledOD(
+  beatmap: IBeatmap,
+  mods: ModCombination,
+  stats: IBeatmapCustomStats,
+): number {
   if (typeof stats.overallDifficulty !== 'number') {
     return beatmap.difficulty.overallDifficulty;
   }
 
   if (!stats.lockStats && !stats.lockOverallDifficulty) {
-    return clampStats(stats.overallDifficulty);
+    const multiplier = mods.has('HR') ? 1.4 : (mods.has('EZ') ? 0.5 : 1);
+
+    return clampStats(stats.overallDifficulty) * multiplier;
   }
 
   const newOverallDifficulty = clampStats(stats.overallDifficulty);
