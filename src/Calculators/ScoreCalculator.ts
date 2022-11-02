@@ -18,6 +18,7 @@ import {
   parseScore,
   applyCustomStats,
   applyCustomCircleSize,
+  getTotalHits,
 } from '../Core';
 
 /**
@@ -45,14 +46,14 @@ export class ScoreCalculator {
 
     let score = null;
 
+    let beatmapTotalHits = attributes?.totalHits ?? 0;
+    let scoreTotalHits = options?.totalHits ?? attributes?.totalHits ?? 0;
+    let isPartialDifficulty = beatmapTotalHits > scoreTotalHits;
+
     if (attributes) {
       attributes.totalHits = options?.totalHits ?? attributes.totalHits;
       score = await this._createScore(options, attributes);
     }
-
-    const beatmapTotalHits = attributes?.totalHits ?? 0;
-    const scoreTotalHits = score?.info.totalHits ?? 0;
-    const isPartialDifficulty = beatmapTotalHits > scoreTotalHits;
 
     // TODO: This looks really bad and should be rewritten.
     if (!attributes || !beatmapMD5 || !ruleset || !score || !difficulty || (isPartialDifficulty && !options.fix)) {
@@ -78,11 +79,16 @@ export class ScoreCalculator {
        */
       applyCustomStats(beatmap, combination, options);
 
-      attributes ??= createBeatmapAttributes(beatmap);
-
-      attributes.totalHits = options?.totalHits ?? attributes.totalHits;
+      if (!attributes) {
+        attributes = createBeatmapAttributes(beatmap);
+        attributes.totalHits = options?.totalHits ?? attributes.totalHits;
+      }
 
       score ??= await this._createScore(options, attributes);
+
+      beatmapTotalHits = getTotalHits(beatmap) ?? 0;
+      scoreTotalHits = score.info.totalHits ?? 0;
+      isPartialDifficulty = beatmapTotalHits > scoreTotalHits;
 
       if (!difficulty || isPartialDifficulty) {
         difficulty = calculateDifficulty({
@@ -90,6 +96,13 @@ export class ScoreCalculator {
           beatmap,
           ruleset,
         });
+      }
+
+      if (isPartialDifficulty) {
+        score.info.rank = 'F';
+        score.info.passed = false;
+        score.info.perfect = false;
+        score.info.maxCombo = Math.min(score.info.maxCombo, difficulty.maxCombo);
       }
     }
 
