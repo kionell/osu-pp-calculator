@@ -47,6 +47,13 @@ export interface IBeatmapCustomStats {
   bpm?: number;
 
   /**
+   * Total hits for gradual beatmap difficulty calculation.
+   * If it differs from the hit object count of 
+   * a full beatmap then it will force difficulty calculation.
+   */
+  totalHits?: number;
+
+  /**
    * Prevents scaling of stats from difficulty adjusting mods.
    * Use {@link lockApproachRate}, {@link lockOverallDifficulty} or {@link lockCircleSize}
    * @deprecated Since 3.2.0
