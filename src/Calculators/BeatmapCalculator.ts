@@ -56,7 +56,7 @@ export class BeatmapCalculator {
      * Apply custom beatmap stats after applying ruleset & mods
      * to ignore clock rate mods (DT, NC, HT...).
      */
-    applyCustomStats(beatmap, options);
+    applyCustomStats(beatmap, combination, options);
 
     const beatmapInfo = options.beatmapInfo ?? createBeatmapInfo(beatmap, beatmapMD5);
     const attributes = options.attributes ?? createBeatmapAttributes(beatmap);

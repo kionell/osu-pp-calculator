@@ -70,7 +70,7 @@ export class ScoreCalculator {
        * Apply custom beatmap stats after applying ruleset & mods
        * to ignore clock rate mods (DT, NC, HT...).
        */
-      applyCustomStats(beatmap, options);
+      applyCustomStats(beatmap, combination, options);
 
       attributes ??= createBeatmapAttributes(beatmap);
       score ??= await this._createScore(options, attributes);
