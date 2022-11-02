@@ -5,15 +5,15 @@
 <p><a href="https://www.codefactor.io/repository/github/kionell/osu-pp-calculator"><img src="https://img.shields.io/codefactor/grade/github/kionell/osu-pp-calculator" alt="CodeFactor"></a>
 <a href="https://github.com/kionell/osu-pp-calculator/blob/master/LICENSE"><img src="https://img.shields.io/github/license/kionell/osu-pp-calculator" alt="License"></a>
 <a href="https://www.npmjs.com/package/@kionell/osu-pp-calculator"><img src="https://img.shields.io/npm/v/@kionell/osu-pp-calculator" alt="Package"></a></p>
-<p>This is an advanced pp-calculator for the game called osu! that can be used to calculate beatmaps and scores.</p>
+<p>This is an advanced performance calculator for the game called osu!</p>
 <ul>
 <li>Written in TypeScript.</li>
 <li>Based on the osu!lazer source code.</li>
 <li>Supports converted beatmaps.</li>
 <li>Supports unsubmitted beatmaps via custom file URL.</li>
-<li>Allows to calculation with custom clockrate and stats.</li>
+<li>Can calculate beatmaps with custom clockrate and stats.</li>
 <li>Outputs strains for beatmaps and lifebar values for replays.</li>
-<li>Can be used to simulate scores or calculate them from replay files via replay URL.</li>
+<li>Can be used for score simulation and replay calculation via replay URL.</li>
 <li>Uses latest difficulty and performance changes (as of October 2022).</li>
 </ul>
 
@@ -189,8 +189,22 @@
 <td align="center">Beatmap BPM</td>
 </tr>
 <tr>
-<td align="center">lockStats</td>
-<td align="center">Prevents scaling of stats from difficulty adjusting mods.</td>
+<td align="center">lockApproachRate</td>
+<td align="center">Prevents scaling of approach rate from difficulty adjusting mods.</td>
+<td align="center">boolean</td>
+<td align="center">Yes</td>
+<td align="center">false</td>
+</tr>
+<tr>
+<td align="center">lockOverallDifficulty</td>
+<td align="center">Prevents scaling of overall difficulty from difficulty adjusting mods.</td>
+<td align="center">boolean</td>
+<td align="center">Yes</td>
+<td align="center">false</td>
+</tr>
+<tr>
+<td align="center">lockCircleSize</td>
+<td align="center">Prevents scaling of circle size from difficulty adjusting mods.</td>
 <td align="center">boolean</td>
 <td align="center">Yes</td>
 <td align="center">false</td>
@@ -431,8 +445,22 @@
 <td align="center">Beatmap BPM</td>
 </tr>
 <tr>
-<td align="center">lockStats</td>
-<td align="center">Prevents scaling of stats from difficulty adjusting mods.</td>
+<td align="center">lockApproachRate</td>
+<td align="center">Prevents scaling of approach rate from difficulty adjusting mods.</td>
+<td align="center">boolean</td>
+<td align="center">Yes</td>
+<td align="center">false</td>
+</tr>
+<tr>
+<td align="center">lockOverallDifficulty</td>
+<td align="center">Prevents scaling of overall difficulty from difficulty adjusting mods.</td>
+<td align="center">boolean</td>
+<td align="center">Yes</td>
+<td align="center">false</td>
+</tr>
+<tr>
+<td align="center">lockCircleSize</td>
+<td align="center">Prevents scaling of circle size from difficulty adjusting mods.</td>
 <td align="center">boolean</td>
 <td align="center">Yes</td>
 <td align="center">false</td>
