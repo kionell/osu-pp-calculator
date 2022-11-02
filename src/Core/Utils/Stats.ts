@@ -2,14 +2,14 @@ import { IBeatmap, MathUtils, ModCombination } from 'osu-classes';
 import { GameMode } from '../Enums';
 import { IBeatmapCustomStats } from '../Interfaces';
 
-function clampStats(value: number): number {
+function clampStats(value: number, hasDT = false): number {
   /**
    * This values are taken from osu!lazer's Difficulty Adjust mod.
    * I don't think it makes sense to change them as 
    * AR & OD formulas start to give weird values on >13.33.
    */
   const MIN_LIMIT = 0;
-  const MAX_LIMIT = 11;
+  const MAX_LIMIT = hasDT ? 11 : 10;
 
   return MathUtils.clamp(value, MIN_LIMIT, MAX_LIMIT);
 }
@@ -99,13 +99,15 @@ function getScaledAR(
     return beatmap.difficulty.approachRate;
   }
 
+  const hasDT = mods.has('DT') || mods.has('NC');
+
   if (!stats.lockStats && !stats.lockApproachRate) {
     const multiplier = mods.has('HR') ? 1.4 : (mods.has('EZ') ? 0.5 : 1);
 
-    return clampStats(stats.approachRate) * multiplier;
+    return clampStats(stats.approachRate * multiplier, hasDT);
   }
 
-  const newApproachRate = clampStats(stats.approachRate);
+  const newApproachRate = clampStats(stats.approachRate, hasDT);
   const adjustedRate = beatmap.difficulty.clockRate;
 
   switch (beatmap.mode) {
@@ -142,13 +144,15 @@ function getScaledOD(
     return beatmap.difficulty.overallDifficulty;
   }
 
+  const hasDT = mods.has('DT') || mods.has('NC');
+
   if (!stats.lockStats && !stats.lockOverallDifficulty) {
     const multiplier = mods.has('HR') ? 1.4 : (mods.has('EZ') ? 0.5 : 1);
 
-    return clampStats(stats.overallDifficulty) * multiplier;
+    return clampStats(stats.overallDifficulty * multiplier, hasDT);
   }
 
-  const newOverallDifficulty = clampStats(stats.overallDifficulty);
+  const newOverallDifficulty = clampStats(stats.overallDifficulty, hasDT);
   const adjustedRate = beatmap.difficulty.clockRate;
 
   switch (beatmap.mode) {
