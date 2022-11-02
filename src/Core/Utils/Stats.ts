@@ -51,9 +51,10 @@ export function applyCustomCircleSize(
    * This is used to compensate CS scaling from mods.
    */
   const denominator = mods.has('HR') ? 1.3 : (mods.has('EZ') ? 0.5 : 1);
+  const shouldLockCS = stats.lockStats || stats.lockCircleSize;
 
   beatmap.difficulty.circleSize = clampStats(
-    stats.lockStats ? stats.circleSize / denominator : stats.circleSize,
+    shouldLockCS ? stats.circleSize / denominator : stats.circleSize,
   );
 }
 
@@ -88,7 +89,7 @@ function getScaledAR(beatmap: IBeatmap, stats: IBeatmapCustomStats): number {
     return beatmap.difficulty.approachRate;
   }
 
-  if (!stats.lockStats) {
+  if (!stats.lockStats && !stats.lockApproachRate) {
     return clampStats(stats.approachRate);
   }
 
@@ -124,7 +125,7 @@ function getScaledOD(beatmap: IBeatmap, stats: IBeatmapCustomStats): number {
     return beatmap.difficulty.overallDifficulty;
   }
 
-  if (!stats.lockStats) {
+  if (!stats.lockStats && !stats.lockOverallDifficulty) {
     return clampStats(stats.overallDifficulty);
   }
 
