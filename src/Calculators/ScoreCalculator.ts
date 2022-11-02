@@ -43,12 +43,18 @@ export class ScoreCalculator {
       ? toDifficultyAttributes(options.difficulty, ruleset.id)
       : null;
 
-    let score = attributes ? await this._createScore(options, attributes) : null;
+    let score = null;
+
+    if (attributes) {
+      attributes.totalHits = options?.totalHits ?? attributes.totalHits;
+      score = await this._createScore(options, attributes);
+    }
 
     const beatmapTotalHits = attributes?.totalHits ?? 0;
     const scoreTotalHits = score?.info.totalHits ?? 0;
     const isPartialDifficulty = beatmapTotalHits > scoreTotalHits;
 
+    // TODO: This looks really bad and should be rewritten.
     if (!attributes || !beatmapMD5 || !ruleset || !score || !difficulty || (isPartialDifficulty && !options.fix)) {
       const { data, hash } = await parseBeatmap(options);
 
@@ -73,6 +79,9 @@ export class ScoreCalculator {
       applyCustomStats(beatmap, combination, options);
 
       attributes ??= createBeatmapAttributes(beatmap);
+
+      attributes.totalHits = options?.totalHits ?? attributes.totalHits;
+
       score ??= await this._createScore(options, attributes);
 
       if (!difficulty || isPartialDifficulty) {
