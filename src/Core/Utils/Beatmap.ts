@@ -142,7 +142,7 @@ function countNested(Class: new () => any, beatmap?: IBeatmap): number {
  * @param beatmap IBeatmap object.
  * @returns Total hits of a beatmap or 0.
  */
-function getTotalHits(beatmap?: IBeatmap): number {
+export function getTotalHits(beatmap?: IBeatmap): number {
   if (!beatmap) return 0;
 
   switch (beatmap.mode) {
@@ -188,7 +188,7 @@ function getTotalHits(beatmap?: IBeatmap): number {
  * @param beatmap IBeatmap object.
  * @returns Max combo of a beatmap or 0.
  */
-function getMaxCombo(beatmap?: IBeatmap): number {
+export function getMaxCombo(beatmap?: IBeatmap): number {
   return (beatmap as RulesetBeatmap)?.maxCombo ?? 0;
 }
 
@@ -197,6 +197,6 @@ function getMaxCombo(beatmap?: IBeatmap): number {
  * @param beatmap IBeatmap object.
  * @returns Mod combination or null.
  */
-function getMods(beatmap?: IBeatmap): ModCombination | null {
+export function getMods(beatmap?: IBeatmap): ModCombination | null {
   return (beatmap as RulesetBeatmap)?.mods ?? null;
 }
