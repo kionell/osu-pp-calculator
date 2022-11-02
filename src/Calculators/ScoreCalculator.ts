@@ -51,8 +51,10 @@ export class ScoreCalculator {
     let isPartialDifficulty = beatmapTotalHits > scoreTotalHits;
 
     if (attributes) {
-      attributes.totalHits = options?.totalHits ?? attributes.totalHits;
-      score = await this._createScore(options, attributes);
+      score = await this._createScore(options, {
+        ...attributes,
+        totalHits: options?.totalHits ?? attributes.totalHits,
+      });
     }
 
     // TODO: This looks really bad and should be rewritten.
@@ -81,13 +83,16 @@ export class ScoreCalculator {
 
       if (!attributes) {
         attributes = createBeatmapAttributes(beatmap);
-        attributes.totalHits = options?.totalHits ?? attributes.totalHits;
       }
 
-      score ??= await this._createScore(options, attributes);
-
       beatmapTotalHits = getTotalHits(beatmap) ?? 0;
-      scoreTotalHits = score.info.totalHits ?? 0;
+      scoreTotalHits = options?.totalHits ?? attributes.totalHits ?? 0;
+
+      score ??= await this._createScore(options, {
+        ...attributes,
+        totalHits: Math.min(beatmapTotalHits, scoreTotalHits),
+      });
+
       isPartialDifficulty = beatmapTotalHits > scoreTotalHits;
 
       if (!difficulty || isPartialDifficulty) {
