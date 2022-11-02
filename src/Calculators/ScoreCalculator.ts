@@ -39,7 +39,12 @@ export class ScoreCalculator {
     let attributes = options.attributes;
     let beatmapMD5 = options.hash ?? options.attributes?.hash;
     let rulesetId = options.rulesetId ?? options.attributes?.rulesetId;
-    let ruleset = options.ruleset ?? getRulesetById(rulesetId);
+    let ruleset = options.ruleset;
+
+    if (!ruleset && typeof rulesetId === 'number') {
+      ruleset = getRulesetById(rulesetId);
+    }
+
     let difficulty = options.difficulty && ruleset
       ? toDifficultyAttributes(options.difficulty, ruleset.id)
       : null;
@@ -61,6 +66,10 @@ export class ScoreCalculator {
     if (!attributes || !beatmapMD5 || !ruleset || !score || !difficulty || (isPartialDifficulty && !options.fix)) {
       const { data, hash } = await parseBeatmap(options);
 
+      beatmapMD5 ??= hash;
+      rulesetId ??= data.mode;
+      ruleset ??= getRulesetById(rulesetId);
+
       const combination = ruleset.createModCombination(options.mods);
 
       /**
@@ -68,10 +77,6 @@ export class ScoreCalculator {
        * Circle size actually affects the conversion process.
        */
       applyCustomCircleSize(data, combination, options);
-
-      beatmapMD5 ??= hash;
-      rulesetId ??= data.mode;
-      ruleset ??= getRulesetById(rulesetId);
 
       const beatmap = ruleset.applyToBeatmapWithMods(data, combination);
 
