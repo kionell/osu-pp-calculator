@@ -125,7 +125,12 @@ async function parseCustomBeatmap(
  * @returns Parsed beatmap.
  */
 function parseBeatmapData(data: Buffer): IBeatmap {
-  return new BeatmapDecoder().decodeFromBuffer(data, false);
+  return new BeatmapDecoder().decodeFromBuffer(data, {
+    parseColours: false,
+    parseEditor: false,
+    parseEvents: false,
+    parseStoryboard: false,
+  });
 }
 
 /**
