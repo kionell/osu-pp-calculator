@@ -20,7 +20,7 @@ This is an advanced performance calculator for the game called osu!
 Add a new dependency to your project via npm:
 
 ```bash
-npm install osu-pp-calculator
+npm install @kionell/osu-pp-calculator
 ```
 
 ## Dependencies
