@@ -35,7 +35,7 @@ npm install @kionell/osu-pp-calculator
 
 ## Beatmap calculation
 
-Beatmaps can be calculated from beatmap ID or custom beatmap file URL. All files are downloaded automatically and cached by default. You can change path to the cache or disable caching at all. The more precalculated data you have the less you need to calculate using this calculator. In case if you pass precalculated difficulty attributes and beatmap information, this calculator will try to skip beatmap parsing and calculate performance attributes immediately. This will not work if you try to output beatmap strains tho. For beatmap strains you need to parse beatmap and calculate its difficulty.
+Beatmaps can be calculated by beatmap ID or custom beatmap file URL. All files are downloaded automatically and cached by default. You can change path to the cache or disable caching at all. The more precalculated data you have the less you need to calculate using this calculator. In case if you pass precalculated difficulty attributes and beatmap information, this calculator will try to skip beatmap parsing and calculate performance attributes immediately. This will not work if you try to output beatmap strains tho. For beatmap strains you need to parse beatmap and calculate its difficulty.
 
 ### Beatmap calculation options
 
@@ -49,7 +49,7 @@ Beatmaps can be calculated from beatmap ID or custom beatmap file URL. All files
 | difficulty        | Precalculated difficulty attributes.                                                                                                                        |                                        [IDifficultyAttributes](https://kionell.github.io/osu-pp-calculator/interfaces/IDifficultyAttributes.html)                                        |    Yes   |          -         |
 | totalHits         | Total hits for gradual beatmap difficulty calculation. If it differs from the hit object count of a full beatmap then it will force difficulty calculation. |                                                                                          number                                                                                          |    Yes   | Beatmap total hits |
 | strains           | Whether to output strain peaks or not.                                                                                                                      |                                                                                          boolean                                                                                         |    Yes   |        false       |
-| accuracy          | List of accuracy for all game modes except osu!mania.                                                                                                       |                                                                                         number[]                                                                                         |    Yes   |    [95, 98, 100]   |
+| accuracy          | List of accuracy for all game modes                                                                                                     |                                                                                         number[]                                                                                         |    Yes   |    [95, 98, 100]   |
 | beatmapId         | ID of the target beatmap.                                                                                                                                   |                                                                                          number                                                                                          |    Yes   |          -         |
 | fileURL           | Custom file URL of the target beatmap.                                                                                                                      |                                                                                          string                                                                                          |    Yes   |          -         |
 | savePath          | Path to the beatmap file save location.                                                                                                                     |                                                                                          string                                                                                          |    Yes   |      "./cache"     |
@@ -80,7 +80,6 @@ const result = await beatmapCalculator.calculate({
   approachRate: 5,        // Set initial approach rate of the beatmap to 5 (not working for rulesets without AR).
   overallDifficulty: 6,   // Set initial overall difficulty of the beatmap to 6 (not working for rulesets without OD).
   clockRate: 2.2,         // Set clock rate of the beatmap to 2.2
-  lockStats: true,        // Don't scale stats with clock rate.
   totalHits: 200,         // Calculate only first 200 objects of the beatmap. 
 });
 ```
@@ -209,7 +208,7 @@ You can use almost all options from beatmap calculator for score calculator as w
 | lifeBar           | Output replay life bar if replay file is present?                                                                |                                                                                          boolean                                                                                         |    Yes   |       false       |
 | savePath          | Path to the replay file save location.                                                                           |                                                                                          string                                                                                          |    Yes   |     "./cache"     |
 | hash              | Hash of the target beatmap. Used to validate beatmap files. If wasn't specified then file will not be validated. |                                                                                          string                                                                                          |    Yes   |         -         |
-| attributes        | Missing beatmap attributes for score simulation.                                                                 | [IBeatmapInfo](https://kionell.github.io/osu-classes/interfaces/IBeatmapInfo.html) \| [IJsonableBeatmapInfo](https://kionell.github.io/osu-classes/interfaces/IJsonableBeatmapInfo.html) |    Yes   |         -         |
+| attributes        | Missing beatmap attributes for score simulation.                                                                 | [IBeatmapAttributes](https://kionell.github.io/osu-pp-calculator/interfaces/IBeatmapAttributes.html)   |    Yes   |         -         |
 | countMiss         | Target score misses.                                                                                             |                                                                                          number                                                                                          |    Yes   |         0         |
 | count50           | Target score 50's.                                                                                               |                                                                                          number                                                                                          |    Yes   |  Simulated by acc |
 | count100          | Target score 100's.                                                                                              |                                                                                          number                                                                                          |    Yes   |  Simulated by acc |
@@ -246,7 +245,6 @@ const result = await scoreCalculator.calculate({
   approachRate: 5,        // Set initial approach rate of the beatmap to 5.
   overallDifficulty: 6,   // Set initial overall difficulty of the beatmap to 6.
   clockRate: 2.2,         // Set clock rate of the beatmap to 2.2
-  lockStats: true,        // Don't scale stats with clock rate.
 });
 ```
 
