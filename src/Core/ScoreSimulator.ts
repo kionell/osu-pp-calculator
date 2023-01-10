@@ -144,18 +144,18 @@ export class ScoreSimulator {
 
   private _generateScoreInfo(options: Partial<IScoreInfo>): ScoreInfo {
     const scoreInfo = new ScoreInfo({
-      id: options?.id,
-      beatmapId: options?.beatmapId,
-      userId: options?.userId,
+      id: options?.id ?? 0,
+      beatmapId: options?.beatmapId ?? 0,
+      userId: options?.userId ?? 0,
       username: options?.username ?? 'osu!',
-      maxCombo: options?.maxCombo,
+      maxCombo: options?.maxCombo ?? 0,
       statistics: getValidHitStatistics(options?.statistics),
-      rawMods: options?.rawMods,
-      rulesetId: options?.rulesetId,
-      perfect: options?.perfect,
+      rawMods: options?.rawMods ?? 0,
+      rulesetId: options?.rulesetId ?? 0,
+      perfect: options?.perfect ?? false,
       beatmapHashMD5: options?.beatmapHashMD5,
-      date: options?.date,
-      pp: options?.pp,
+      date: options?.date ?? new Date(),
+      pp: options?.pp ?? null,
     });
 
     if (options?.mods) scoreInfo.mods = options.mods;
