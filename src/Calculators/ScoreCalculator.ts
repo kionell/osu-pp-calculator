@@ -19,6 +19,7 @@ import {
   applyCustomStats,
   applyCustomCircleSize,
   getTotalHits,
+  createBeatmapInfo,
 } from '../Core';
 
 /**
@@ -97,6 +98,8 @@ export class ScoreCalculator {
         ...attributes,
         totalHits: Math.min(beatmapTotalHits, scoreTotalHits),
       });
+
+      score.info.beatmap = createBeatmapInfo(beatmap, beatmapMD5);
 
       isPartialDifficulty = beatmapTotalHits > scoreTotalHits;
 
