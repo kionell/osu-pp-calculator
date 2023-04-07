@@ -41,7 +41,7 @@ export function toScoreInfo(data?: IScoreInfo | IJsonableScoreInfo): ScoreInfo {
 
   scoreInfo.id = jsonable?.id;
   scoreInfo.totalScore = jsonable?.totalScore;
-  scoreInfo.pp = jsonable?.pp;
+  scoreInfo.totalPerformance = jsonable?.totalPerformance;
   scoreInfo.maxCombo = jsonable?.maxCombo;
   scoreInfo.passed = jsonable?.passed;
   scoreInfo.perfect = jsonable?.perfect;
@@ -50,7 +50,7 @@ export function toScoreInfo(data?: IScoreInfo | IJsonableScoreInfo): ScoreInfo {
   scoreInfo.username = jsonable?.username;
   scoreInfo.userId = jsonable?.userId;
   scoreInfo.beatmapId = jsonable?.beatmapId;
-  scoreInfo.date = jsonable?.date;
+  scoreInfo.date = jsonable?.date ? new Date(jsonable?.date) : new Date();
   scoreInfo.beatmapHashMD5 = jsonable?.beatmapHashMD5;
   scoreInfo.rulesetId = jsonable?.rulesetId;
   scoreInfo.mods = toCombination(jsonable.mods, jsonable.rulesetId);

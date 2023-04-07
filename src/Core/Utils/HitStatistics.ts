@@ -1,5 +1,5 @@
-import { IHitStatistics, MathUtils } from 'osu-classes';
-import type { IBeatmapAttributes } from '../Interfaces';
+import { HitResult, HitStatistics, MathUtils } from 'osu-classes';
+import { IBeatmapAttributes } from '../Interfaces';
 import { GameMode } from '../Enums';
 
 interface IHitStatisticsInput {
@@ -12,7 +12,7 @@ interface IHitStatisticsInput {
   countKatu?: number;
 }
 
-export function generateHitStatistics(options: IHitStatisticsInput): Partial<IHitStatistics> {
+export function generateHitStatistics(options: IHitStatisticsInput): HitStatistics {
   switch (options.attributes.rulesetId) {
     case GameMode.Taiko:
       return generateTaikoHitStatistics(options);
@@ -27,7 +27,7 @@ export function generateHitStatistics(options: IHitStatisticsInput): Partial<IHi
   return generateOsuHitStatistics(options);
 }
 
-function generateOsuHitStatistics(options: IHitStatisticsInput): Partial<IHitStatistics> {
+function generateOsuHitStatistics(options: IHitStatisticsInput): HitStatistics {
   const attributes = options.attributes;
   const accuracy = getAccuracy(options);
   const totalHits = attributes.totalHits ?? 0;
@@ -48,15 +48,15 @@ function generateOsuHitStatistics(options: IHitStatisticsInput): Partial<IHitSta
 
   const count300 = totalHits - count100 - count50 - countMiss;
 
-  return {
-    great: count300,
-    ok: count100,
-    meh: count50,
-    miss: countMiss,
-  };
+  return new HitStatistics([
+    [HitResult.Great, count300],
+    [HitResult.Ok, count100],
+    [HitResult.Meh, count50],
+    [HitResult.Miss, countMiss],
+  ]);
 }
 
-function generateTaikoHitStatistics(options: IHitStatisticsInput): Partial<IHitStatistics> {
+function generateTaikoHitStatistics(options: IHitStatisticsInput): HitStatistics {
   const attributes = options.attributes;
   const accuracy = getAccuracy(options);
   const totalHits = attributes.totalHits ?? 0;
@@ -79,14 +79,14 @@ function generateTaikoHitStatistics(options: IHitStatisticsInput): Partial<IHitS
     count300 = totalHits - count100 - countMiss;
   }
 
-  return {
-    great: count300,
-    ok: count100,
-    miss: countMiss,
-  };
+  return new HitStatistics([
+    [HitResult.Great, count300],
+    [HitResult.Ok, count100],
+    [HitResult.Miss, countMiss],
+  ]);
 }
 
-function generateCatchHitStatistics(options: IHitStatisticsInput): Partial<IHitStatistics> {
+function generateCatchHitStatistics(options: IHitStatisticsInput): HitStatistics {
   const attributes = options.attributes;
   const accuracy = getAccuracy(options);
   const count50 = options.count50;
@@ -113,16 +113,16 @@ function generateCatchHitStatistics(options: IHitStatisticsInput): Partial<IHitS
 
   const tinyMisses = maxTinyDroplets - tinyDroplets;
 
-  return {
-    great: MathUtils.clamp(fruits, 0, maxFruits),
-    largeTickHit: MathUtils.clamp(droplets, 0, maxDroplets),
-    smallTickHit: tinyDroplets,
-    smallTickMiss: tinyMisses,
-    miss: countMiss,
-  };
+  return new HitStatistics([
+    [HitResult.Great, MathUtils.clamp(fruits, 0, maxFruits)],
+    [HitResult.LargeTickHit, MathUtils.clamp(droplets, 0, maxDroplets)],
+    [HitResult.SmallTickHit, tinyDroplets],
+    [HitResult.SmallTickMiss, tinyMisses],
+    [HitResult.Miss, countMiss],
+  ]);
 }
 
-function generateManiaHitStatistics(options: IHitStatisticsInput): Partial<IHitStatistics> {
+function generateManiaHitStatistics(options: IHitStatisticsInput): HitStatistics {
   const attributes = options.attributes;
   const accuracy = getAccuracy(options);
   const totalHits = attributes.totalHits ?? 0;
@@ -168,40 +168,22 @@ function generateManiaHitStatistics(options: IHitStatisticsInput): Partial<IHitS
 
   const countGeki = totalHits - count300 - countKatu - count100 - count50 - countMiss;
 
-  return {
-    perfect: countGeki,
-    great: count300,
-    good: countKatu,
-    ok: count100,
-    meh: count50,
-    miss: countMiss,
-  };
+  return new HitStatistics([
+    [HitResult.Perfect, countGeki],
+    [HitResult.Great, count300],
+    [HitResult.Good, countKatu],
+    [HitResult.Ok, count100],
+    [HitResult.Meh, count50],
+    [HitResult.Miss, countMiss],
+  ]);
 }
 
 function getAccuracy(options: IHitStatisticsInput): number {
   if (typeof options.accuracy !== 'number') return 1;
 
-  if (options.accuracy > 1) return options.accuracy / 100;
+  let accuracy = options.accuracy;
 
-  return options.accuracy;
-}
+  while (accuracy > 1) accuracy /= 100;
 
-export function getValidHitStatistics(original?: Partial<IHitStatistics>): IHitStatistics {
-  return {
-    perfect: original?.perfect ?? 0,
-    great: original?.great ?? 0,
-    good: original?.good ?? 0,
-    ok: original?.ok ?? 0,
-    meh: original?.meh ?? 0,
-    largeTickHit: original?.largeTickHit ?? 0,
-    smallTickMiss: original?.smallTickMiss ?? 0,
-    smallTickHit: original?.smallTickHit ?? 0,
-    miss: original?.miss ?? 0,
-    largeBonus: 0,
-    largeTickMiss: 0,
-    smallBonus: 0,
-    ignoreHit: 0,
-    ignoreMiss: 0,
-    none: 0,
-  };
+  return accuracy;
 }

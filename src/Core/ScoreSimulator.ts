@@ -1,21 +1,23 @@
 import {
   type IScoreInfo,
   ScoreInfo,
-  ScoreRank,
   MathUtils,
   IScore,
+  HitResult,
+  HitStatistics,
 } from 'osu-classes';
 
 import {
   generateHitStatistics,
-  getValidHitStatistics,
-  calculateAccuracy,
-  calculateRank,
   toCombination,
 } from './Utils';
 
+import {
+  IBeatmapAttributes,
+  IScoreSimulationOptions,
+} from './Interfaces';
+
 import { GameMode } from './Enums';
-import type { IBeatmapAttributes, IScoreSimulationOptions } from './Interfaces';
 
 /**
  * A score simulator.
@@ -55,7 +57,7 @@ export class ScoreSimulator {
     const multiplier = MathUtils.clamp(percentage, 0, 100) / 100;
 
     const scoreCombo = options.maxCombo ?? Math.round(beatmapCombo * multiplier);
-    const misses = statistics.miss ?? 0;
+    const misses = statistics.get(HitResult.Miss);
 
     // We need to limit max combo with score misses.
     const limitedCombo = Math.min(scoreCombo, beatmapCombo - misses);
@@ -84,29 +86,46 @@ export class ScoreSimulator {
       return this.simulateMax(attributes);
     }
 
-    const statistics = getValidHitStatistics(scoreInfo.statistics);
+    const statistics = scoreInfo.statistics;
     const totalHits = attributes.totalHits ?? 0;
 
     switch (scoreInfo.rulesetId) {
-      case GameMode.Fruits:
-        statistics.great = totalHits - statistics.largeTickHit
-          - statistics.smallTickHit - statistics.smallTickMiss - statistics.miss;
+      case GameMode.Fruits: {
+        const largeTickHit = statistics.get(HitResult.LargeTickHit);
+        const smallTickHit = statistics.get(HitResult.SmallTickHit);
+        const smallTickMiss = statistics.get(HitResult.SmallTickMiss);
+        const miss = statistics.get(HitResult.Miss);
 
-        statistics.largeTickHit += statistics.miss;
+        statistics.set(
+          HitResult.Great,
+          totalHits - largeTickHit - smallTickHit - smallTickMiss - miss,
+        );
+
+        statistics.set(HitResult.LargeTickHit, largeTickHit + miss);
 
         break;
+      }
 
-      case GameMode.Mania:
-        statistics.perfect = totalHits - statistics.great
-          - statistics.good - statistics.ok - statistics.meh;
+      case GameMode.Mania: {
+        const great = statistics.get(HitResult.Great);
+        const good = statistics.get(HitResult.Good);
+        const ok = statistics.get(HitResult.Ok);
+        const meh = statistics.get(HitResult.Meh);
+
+        statistics.set(HitResult.Perfect, totalHits - great - good - ok - meh);
 
         break;
+      }
 
-      default:
-        statistics.great = totalHits - statistics.ok - statistics.meh;
+      default: {
+        const ok = statistics.get(HitResult.Ok);
+        const meh = statistics.get(HitResult.Meh);
+
+        statistics.set(HitResult.Great, totalHits - ok - meh);
+      }
     }
 
-    statistics.miss = 0;
+    statistics.set(HitResult.Miss, 0);
 
     return this._generateScoreInfo({
       ...scoreInfo,
@@ -149,21 +168,18 @@ export class ScoreSimulator {
       userId: options?.userId ?? 0,
       username: options?.username ?? 'osu!',
       maxCombo: options?.maxCombo ?? 0,
-      statistics: getValidHitStatistics(options?.statistics),
+      statistics: options?.statistics ?? new HitStatistics(),
       rawMods: options?.rawMods ?? 0,
       rulesetId: options?.rulesetId ?? 0,
       perfect: options?.perfect ?? false,
       beatmapHashMD5: options?.beatmapHashMD5,
       date: options?.date ?? new Date(),
-      pp: options?.pp ?? null,
+      totalPerformance: options?.totalPerformance ?? null,
     });
 
     if (options?.mods) scoreInfo.mods = options.mods;
 
     scoreInfo.passed = scoreInfo.totalHits >= (options?.totalHits ?? 0);
-    scoreInfo.accuracy = calculateAccuracy(scoreInfo);
-
-    scoreInfo.rank = ScoreRank[calculateRank(scoreInfo)] as keyof typeof ScoreRank;
 
     return scoreInfo;
   }

@@ -71,7 +71,7 @@ export function applyCustomStats(
   // Ignore custom BPM with HT/DT mods as it can invert clock rate 
   else if (beatmap.difficulty.clockRate === 1 && typeof bpm === 'number') {
     // Clock rate set by BPM value may exceed the actual limit of clock rate.
-    beatmap.difficulty.clockRate = clampBPM(bpm) / beatmap.bpmMode;
+    beatmap.difficulty.clockRate = clampBPM(bpm) / beatmap.bpm;
   }
 
   beatmap.difficulty.approachRate = getScaledAR(beatmap, mods, stats);

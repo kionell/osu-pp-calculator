@@ -37,7 +37,7 @@ export function createBeatmapInfo(beatmap?: IBeatmap, hash?: string): IBeatmapIn
     length: (beatmap?.length ?? 0) / 1000,
     bpmMin: beatmap?.bpmMin,
     bpmMax: beatmap?.bpmMax,
-    bpmMode: beatmap?.bpmMode,
+    bpm: beatmap?.bpm,
     circleSize: beatmap?.difficulty.circleSize,
     approachRate: beatmap?.difficulty.approachRate,
     overallDifficulty: beatmap?.difficulty.overallDifficulty,
@@ -46,7 +46,7 @@ export function createBeatmapInfo(beatmap?: IBeatmap, hash?: string): IBeatmapIn
     mods: getMods(beatmap),
     maxCombo: getMaxCombo(beatmap),
     isConvert: beatmap?.originalMode !== beatmap?.mode,
-    md5: hash ?? '',
+    hashMD5: hash ?? '',
   });
 }
 
