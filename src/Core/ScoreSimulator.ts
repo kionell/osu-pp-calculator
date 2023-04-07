@@ -1,7 +1,6 @@
 import {
   type IScoreInfo,
   ScoreInfo,
-  ScoreRank,
   MathUtils,
   IScore,
 } from 'osu-classes';
@@ -9,8 +8,6 @@ import {
 import {
   generateHitStatistics,
   getValidHitStatistics,
-  calculateAccuracy,
-  calculateRank,
   toCombination,
 } from './Utils';
 
@@ -161,9 +158,6 @@ export class ScoreSimulator {
     if (options?.mods) scoreInfo.mods = options.mods;
 
     scoreInfo.passed = scoreInfo.totalHits >= (options?.totalHits ?? 0);
-    scoreInfo.accuracy = calculateAccuracy(scoreInfo);
-
-    scoreInfo.rank = ScoreRank[calculateRank(scoreInfo)] as keyof typeof ScoreRank;
 
     return scoreInfo;
   }
