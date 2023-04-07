@@ -135,6 +135,8 @@ export class ScoreCalculator {
       ruleset,
     });
 
+    score.info.pp = performance.totalPerformance;
+
     return {
       scoreInfo: score.info.toJSON(),
       lifeBar: score.replay?.lifeBar,
