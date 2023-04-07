@@ -99,10 +99,6 @@ function generateCatchHitStatistics(options: IHitStatisticsInput): Partial<IHitS
   const maxDroplets = attributes.maxDroplets ?? 0;
   const maxTinyDroplets = attributes.maxTinyDroplets ?? 0;
 
-  if (typeof count100 === 'number') {
-    countMiss += maxDroplets - count100;
-  }
-
   countMiss = MathUtils.clamp(countMiss, 0, maxDroplets + maxFruits);
 
   let droplets = count100 ?? Math.max(0, maxDroplets - countMiss);
