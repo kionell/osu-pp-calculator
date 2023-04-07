@@ -39,7 +39,7 @@
   },
   "peerDependencies": {
     "osu-catch-stable": "^3.2.3",
-    "osu-classes": "^2.2.0",
+    "osu-classes": "^2.2.1",
     "osu-downloader": "^0.8.1",
     "osu-mania-stable": "^4.0.4",
     "osu-parsers": "^4.0.0",
