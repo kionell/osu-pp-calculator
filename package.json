@@ -1,6 +1,6 @@
 {
   "name": "@kionell/osu-pp-calculator",
-  "version": "3.2.11",
+  "version": "3.2.12",
   "description": "Reimplementation of original osu-tools written in TypeScript",
   "exports": {
     "import": "./lib/index.mjs",
