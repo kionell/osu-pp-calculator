@@ -15,20 +15,14 @@ function clampStats(value: number, hasDT = false): number {
 }
 
 function clampRate(value: number): number {
-  /**
-   * This values are taken from osu!lazer's DT & HT mods.
-   */
   const MIN_LIMIT = 0.25;
-  const MAX_LIMIT = 3.0;
+  const MAX_LIMIT = 10;
 
   return MathUtils.clamp(value, MIN_LIMIT, MAX_LIMIT);
 }
 
 function clampBPM(value: number): number {
-  /**
-   * This values are taken from osu!lazer's beatmap BPM formula.
-   */
-  const MIN_LIMIT = 60;
+  const MIN_LIMIT = 1;
   const MAX_LIMIT = 10000;
 
   return MathUtils.clamp(value, MIN_LIMIT, MAX_LIMIT);
