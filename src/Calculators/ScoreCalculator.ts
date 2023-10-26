@@ -135,7 +135,7 @@ export class ScoreCalculator {
       ruleset,
     });
 
-    score.info.pp = performance.totalPerformance;
+    score.info.totalPerformance = performance.totalPerformance;
 
     return {
       scoreInfo: score.info.toJSON(),
